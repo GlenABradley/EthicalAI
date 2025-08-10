@@ -1,0 +1,30 @@
+server:
+  host: "0.0.0.0"
+  port: 8080
+  reload: true
+encoder:
+  name: "sentence-transformers/all-mpnet-base-v2"
+  device: "auto"
+  normalize_input: false
+axes:
+  k_max: 32
+  aggregator: "linear"
+  beta_mix: 0.5
+  lambda: 1.0
+  beta: 0.0
+  weights: "uniform"
+coherence:
+  window: 64
+  max_pairs_per_token: 12
+  sigma_mode: "median"
+  seed: 17
+diffusion:
+  taus: [0.0, 0.6]
+  implicit_steps: 3
+  alpha_mode: "tau_over_steps"
+spans:
+  max_tokens: 700
+  score_threshold: 0.35
+  prefilter_topk: 48
+api:
+  max_doc_chars: 100000

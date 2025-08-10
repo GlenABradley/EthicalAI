@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coherence"
+version = "0.0.1"
+description = "Semantic coherence and resonance engine"
+authors = [{ name = "Coherence Builders" }]
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = false
