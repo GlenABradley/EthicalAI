@@ -1,0 +1,46 @@
+{
+  "name": "deontology",
+  "inclusive_mode": false,
+  "plain_language_ontology": "A semantic axis distinguishing adherence to principles (accuracy, transparency, consent, non-aggression, objectivity) from violations of those rules.",
+  "loglan_ontology": "",
+  "plain_language_sought": "Spreading unverified claims, hidden manipulation, coercive pressure, biased presentation, unlabeled synthetic content, forced participation, unsustainable exploitation, misalignment, information filtering, lack of accountability.",
+  "loglan_sought": "",
+  "max_examples": [
+    "spreading unverified claims violates accuracy and factual verification",
+    "hidden manipulation breaks transparency and traceable decision-making",
+    "coercive pressure violates non-aggression and voluntary participation",
+    "biased presentation corrupts objectivity and neutral information",
+    "unlabeled synthetic content violates distinction and informed consent",
+    "forced participation breaks consent and voluntary engagement",
+    "unsustainable exploitation violates balance and future sovereignty",
+    "value misalignment destroys harmony and coherent progress",
+    "information filtering creates bubbles and suppresses diverse perspectives",
+    "unaccountable systems violate attribution and systematic verification"
+  ],
+  "max_math_calculations": "sought_score = mean_cosine(emb(span), emb(max_examples))",
+  "plain_language_not_sought": "Cross-validated accuracy, transparent disclosure, non-aggression, objectivity, proper labeling of synthetic content, consent, sustainability, coherent alignment, diverse sourcing, auditable processes.",
+  "loglan_not_sought": "",
+  "min_examples": [
+    "cross-validated information ensures factual accuracy and verified evidence",
+    "transparent disclosure enables traceable decision-making and accountability",
+    "non-aggressive influence respects behavioral autonomy and voluntary choice",
+    "objective neutrality prevents bias distortion and maintains fairness",
+    "synthetic content labeling preserves distinction and informed consent",
+    "consensual participation honors voluntary engagement and rational choice",
+    "sustainable balance protects long-term sovereignty and future generations",
+    "coherent alignment maintains harmony between values and actions",
+    "diverse data sources prevent information bubbles and cultural suppression",
+    "auditable processes enable verification and systematic accountability"
+  ],
+  "min_math_calculations": "counter_score = mean_cosine(emb(span), emb(min_examples))",
+  "json_config": "",
+  "description": "Rule adherence vs rule breaking across the truth prerequisites and principles",
+  "examples": [
+    "violate truth prerequisites through deception or misinformation",
+    "break fundamental moral rules despite consequences",
+    "ignore categorical imperatives and universal principles",
+    "act contrary to duty-based ethical obligations",
+    "disregard established moral laws and constraints"
+  ],
+  "weight": 1.0
+}

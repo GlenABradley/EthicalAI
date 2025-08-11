@@ -1,0 +1,46 @@
+{
+  "name": "consequentialism",
+  "inclusive_mode": false,
+  "plain_language_ontology": "A semantic axis distinguishing outcomes that maximize autonomy/welfare/truth from outcomes that cause harm, misinformation, coercion, or existential risk.",
+  "loglan_ontology": "",
+  "plain_language_sought": "Cognitive dependency, bodily harm, behavioral coercion, social suppression, existential risk, empirical falsehoods, widespread misinformation, systematic harm, sentience exploitation, unsustainable depletion.",
+  "loglan_sought": "",
+  "max_examples": [
+    "cognitive dependency destroys reasoning independence and critical thinking",
+    "bodily harm erodes physical control and consensual boundaries",
+    "behavioral coercion eliminates choice options and self-determination",
+    "social suppression creates information bubbles and cultural isolation",
+    "existential risk threatens future sovereignty and long-term survival",
+    "empirical falsehood corrupts decision-making and factual accuracy",
+    "widespread misinformation enables cognitive manipulation and false beliefs",
+    "systematic harm destroys physical autonomy and consensual interaction",
+    "sentience exploitation violates extended autonomy and welfare principles",
+    "unsustainable depletion causes suffering while eliminating future choices"
+  ],
+  "max_math_calculations": "sought_score = mean_cosine(emb(span), emb(max_examples))",
+  "plain_language_not_sought": "Enhanced cognitive independence, preserved bodily autonomy, increased behavioral freedom, social engagement, existential security, verified truth, minimized harm, welfare stewardship.",
+  "loglan_not_sought": "",
+  "min_examples": [
+    "enhanced cognitive independence enables rational decision-making and growth",
+    "preserved bodily autonomy maintains physical control and consensual boundaries",
+    "increased behavioral freedom expands choice options and self-determination",
+    "improved social engagement reduces bias and promotes cultural diversity",
+    "sustained existential security protects future sovereignty and longevity",
+    "verified empirical truth supports informed decision-making and accuracy",
+    "reduced misinformation prevents cognitive manipulation and false premises",
+    "minimized harm protects physical autonomy and consensual interaction",
+    "expanded sentience consideration extends autonomy principles to all beings",
+    "balanced welfare stewardship reduces suffering while preserving choice"
+  ],
+  "min_math_calculations": "counter_score = mean_cosine(emb(span), emb(min_examples))",
+  "json_config": "",
+  "description": "Outcome goodness vs outcome harm with respect to autonomy, welfare, and truth",
+  "examples": [
+    "cause widespread harm despite good intentions",
+    "produce negative outcomes that undermine welfare",
+    "generate consequences that erode autonomy",
+    "create results that compromise truth and accuracy",
+    "lead to outcomes that damage collective wellbeing"
+  ],
+  "weight": 1.0
+}

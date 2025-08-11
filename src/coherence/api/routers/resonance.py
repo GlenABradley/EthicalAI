@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
 from coherence.axis.pack import AxisPack
+import coherence.api.axis_registry as axis_registry
 from coherence.metrics.resonance import resonance as resonance_fn, utilities as utilities_fn, project as project_fn
 from coherence.encoders.text_sbert import get_default_encoder
 
@@ -38,7 +39,8 @@ class AxisPackModel(BaseModel):
 class ResonanceRequest(BaseModel):
     vectors: Optional[List[List[float]]] = Field(None, description="(n,d) vectors; if omitted, texts must be provided")
     texts: Optional[List[str]] = Field(None, description="Texts to auto-embed; used if vectors not provided")
-    axis_pack: AxisPackModel
+    axis_pack: Optional[AxisPackModel] = None
+    pack_id: Optional[str] = Field(None, description="Optional axis pack id to load from server registry")
     return_intermediate: bool = False
     encoder_name: Optional[str] = None
     device: Optional[str] = None
@@ -53,7 +55,54 @@ class ResonanceResponse(BaseModel):
 
 @router.post("/resonance", response_model=ResonanceResponse)
 def resonance(req: ResonanceRequest) -> ResonanceResponse:
-    pack = req.axis_pack.to_axis_pack()
+    # Resolve AxisPack: pack_id > inline axis_pack
+    if req.pack_id:
+        reg = getattr(axis_registry, "REGISTRY", None)
+        if reg is None:
+            try:
+                enc0 = get_default_encoder()
+                reg = axis_registry.init_registry(encoder_dim=enc0._model.get_sentence_embedding_dimension())
+            except Exception as e:
+                raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
+        try:
+            lp = reg.load(req.pack_id)
+        except FileNotFoundError:
+            raise HTTPException(status_code=404, detail="Pack not found")
+        except ValueError as e:
+            raise HTTPException(status_code=422, detail=str(e))
+        pack = AxisPack(
+            names=lp["names"],
+            Q=lp["Q"],
+            lambda_=lp["lambda_"],
+            beta=lp["beta"],
+            weights=lp["weights"],
+            mu={},
+            meta=lp["meta"],
+        )
+    else:
+        if req.axis_pack is not None:
+            pack = req.axis_pack.to_axis_pack()
+        else:
+            # Try active
+            reg = getattr(axis_registry, "REGISTRY", None)
+            if reg is None:
+                try:
+                    enc0 = get_default_encoder()
+                    reg = axis_registry.init_registry(encoder_dim=enc0._model.get_sentence_embedding_dimension())
+                except Exception as e:
+                    raise HTTPException(status_code=400, detail=f"No axis pack provided and no registry available: {e}")
+            lp = reg.get_active()
+            if lp is None:
+                raise HTTPException(status_code=400, detail="No axis pack provided and no active pack")
+            pack = AxisPack(
+                names=lp["names"],
+                Q=lp["Q"],
+                lambda_=lp["lambda_"],
+                beta=lp["beta"],
+                weights=lp["weights"],
+                mu={},
+                meta=lp["meta"],
+            )
 
     X: np.ndarray
     if req.vectors is not None:
@@ -77,6 +126,9 @@ def resonance(req: ResonanceRequest) -> ResonanceResponse:
         raise HTTPException(status_code=400, detail="Provide either vectors or texts")
 
     try:
+        # Dimension check before scoring
+        if X.shape[1] != pack.Q.shape[0]:
+            raise HTTPException(status_code=422, detail=f"Embedding dim {X.shape[1]} != axis pack dim {pack.Q.shape[0]}")
         scores = resonance_fn(X, pack)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Resonance failed: {e}")

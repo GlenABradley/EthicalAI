@@ -22,6 +22,8 @@ from coherence.pipeline.scoring import (
     compute_token_vectors,
     compute_span_vectors,
     compute_frame_vectors,
+    project_frame_roles,
+    aggregate_frame_coords,
 )
 
 
@@ -30,12 +32,20 @@ class OrchestratorParams:
     max_span_len: int = 5
     max_skip: int = 2
     diffusion_tau: Optional[float] = None
+    debug_frames: bool = False
+    # F1 additive flags (default off)
+    return_role_projections: bool = False
+    role_mode: str = "lr"  # "lr" | "agent_patient"
+    detect_evidence: bool = False
+    detect_condition: bool = False
 
 
 def run_pipeline_from_vectors(
     token_vectors: np.ndarray,
     pack: AxisPack,
     params: OrchestratorParams = OrchestratorParams(),
+    *,
+    token_texts: Optional[List[str]] = None,
 ) -> Dict[str, object]:
     """Run pipeline using precomputed token vectors.
 
@@ -52,12 +62,44 @@ def run_pipeline_from_vectors(
     tokens_out = compute_token_vectors(X, pack, external_signal=token_signal)
     spans_out = compute_span_vectors(X, pack, max_len=params.max_span_len, max_skip=params.max_skip)
 
-    frames: List[Frame] = build_frames(X, pack, saliency_thresh=0.0, arg_band=0.5, max_arg_len=2)
+    frames: List[Frame] = build_frames(
+        X,
+        pack,
+        saliency_thresh=0.0,
+        arg_band=0.5,
+        max_arg_len=2,
+        debug=bool(params.debug_frames),
+        role_mode=str(params.role_mode),
+        detect_evidence=bool(params.detect_evidence),
+        detect_condition=bool(params.detect_condition),
+        token_texts=token_texts,
+    )
     frame_vecs = compute_frame_vectors(X, frames)
 
-    return {
+    out: Dict[str, object] = {
         "tokens": tokens_out,  # dict of arrays
         "spans": spans_out,    # dict: list and array views
         "frames": frames,      # list[Frame]
         "frame_vectors": frame_vecs,  # (m, 3d)
     }
+
+    if params.return_role_projections and len(frames) > 0:
+        roles_proj = project_frame_roles(X, frames, pack)
+        frame_role_coords: List[Dict[str, object]] = []
+        frame_coords: List[Dict[str, object]] = []
+        for fr in frames:
+            rc = roles_proj.get(fr.id, {})
+            # convert to lists for JSONability at API
+            frame_role_coords.append({
+                "id": fr.id,
+                "roles": {k: v.tolist() for k, v in rc.items()},
+            })
+            agg = aggregate_frame_coords(rc)
+            frame_coords.append({
+                "id": fr.id,
+                "coords": agg.tolist(),
+            })
+        out["frame_role_coords"] = frame_role_coords
+        out["frame_coords"] = frame_coords
+
+    return out

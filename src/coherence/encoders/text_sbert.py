@@ -7,6 +7,7 @@ Deterministic given the model and inputs.
 """
 
 from dataclasses import dataclass
+import os
 from typing import List, Optional
 
 import numpy as np
@@ -45,7 +46,12 @@ class SBERTEncoder:
         if SentenceTransformer is None:
             raise RuntimeError("sentence-transformers is not installed")
         dev = _select_device(self.device)
+        print(f"[DEBUG] Loading SBERT model: {self.model_name} on device: {dev}")
         self._model = SentenceTransformer(self.model_name, device=dev)
+        # Print model info for debugging
+        print(f"[DEBUG] Model max sequence length: {self._model.max_seq_length}")
+        print(f"[DEBUG] Model device: {self._model.device}")
+        print(f"[DEBUG] Model dimension: {self._model.get_sentence_embedding_dimension()}")
 
     def encode(self, texts: List[str]) -> np.ndarray:
         """Encode texts into embeddings.
@@ -73,8 +79,11 @@ def get_default_encoder(name: Optional[str] = None, device: str = "auto", normal
 
         cfg = load_app_config()
         enc = cfg.get("encoder", {})
-        name = enc.get("name", "sentence-transformers/all-mpnet-base-v2")
-        device = enc.get("device", device)
+        # Environment overrides
+        env_name = os.getenv("COHERENCE_ENCODER")
+        env_device = os.getenv("COHERENCE_DEVICE")
+        name = env_name or enc.get("name", "sentence-transformers/all-mpnet-base-v2")
+        device = env_device or enc.get("device", device)
         normalize_input = bool(enc.get("normalize_input", normalize_input))
     return SBERTEncoder(model_name=name, device=device, normalize_input=normalize_input)
 

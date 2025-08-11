@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Dict, FrozenSet, Iterable, List, Optional, Union
 
 import json
+import logging
 import numpy as np
 
 
@@ -75,13 +76,29 @@ class AxisPack:
 
     def validate(self) -> None:
         k = self.k
-        assert self.Q.ndim == 2, "Q must be 2D"
-        assert self.Q.shape[1] == k, "Q second dim must equal k"
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Validating AxisPack with k={k}")
+        
+        # Check Q dimensions
+        logger.debug(f"Q shape: {self.Q.shape}, ndim: {self.Q.ndim}")
+        assert self.Q.ndim == 2, f"Q must be 2D, got shape {self.Q.shape}"
+        assert self.Q.shape[1] == k, f"Q second dim must equal k, got {self.Q.shape[1]} vs k={k}"
+        
+        # Check other parameter shapes
         for arr, name in ((self.lambda_, "lambda_"), (self.beta, "beta"), (self.weights, "weights")):
-            assert arr.shape == (k,), f"{name} must be shape (k,)"
-        # Orthonormality (allow small numerical error)
+            logger.debug(f"{name} shape: {arr.shape}, expected: ({k},)")
+            assert arr.shape == (k,), f"{name} must be shape ({k},), got {arr.shape}"
+        
+        # Check orthonormality (allow small numerical error)
         qtq = self.Q.T @ self.Q
+        logger.debug(f"Q.T @ Q shape: {qtq.shape}, expected: ({k}, {k})")
+        logger.debug(f"Q.T @ Q diagonal: {np.diag(qtq)}")
+        logger.debug(f"Q.T @ Q off-diagonal max: {np.max(np.abs(qtq - np.diag(np.diag(qtq))))}")
+        
         if not np.allclose(qtq, np.eye(k), atol=1e-5):
+            logger.error("Q columns not orthonormal within tolerance")
+            logger.error(f"Q.T @ Q:\n{qtq}")
+            logger.error(f"Expected identity:\n{np.eye(k)}")
             raise ValueError("Q columns not orthonormal within tolerance")
 
     def to_json_obj(self) -> dict:

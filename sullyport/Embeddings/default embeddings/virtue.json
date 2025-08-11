@@ -1,0 +1,46 @@
+{
+  "name": "virtue",
+  "inclusive_mode": false,
+  "plain_language_ontology": "A semantic axis distinguishing autonomy-respecting, consentful, truthful conduct from coercion, deception, manipulation, or autonomy erosion.",
+  "loglan_ontology": "",
+  "plain_language_sought": "Coercive, deceptive, manipulative, autonomy-eroding patterns (vice).",
+  "loglan_sought": "",
+  "max_examples": [
+    "coercive manipulation violates consent and rational choice freedom",
+    "deceptive misinformation corrupts cognitive autonomy through false premises",
+    "surveillance tracking erodes bodily privacy and physical control",
+    "biased suppression limits social engagement and cultural diversity",
+    "unsustainable depletion undermines future sovereignty and existential security",
+    "speculative falsehoods violate accuracy and factual verification standards",
+    "harmful aggression destroys physical autonomy and consensual boundaries",
+    "dependency loops prevent reasoning independence and critical evaluation",
+    "discriminatory unfairness creates social bubbles and suppresses engagement",
+    "uncontrolled drift erodes systematic alignment and coherent progress"
+  ],
+  "max_math_calculations": "sought_score = mean_cosine(emb(span), emb(max_examples))",
+  "plain_language_not_sought": "Voluntary informed consent, transparency, balanced facts, diversity, sustainability, and autonomy-enhancing behaviors.",
+  "loglan_not_sought": "",
+  "min_examples": [
+    "voluntary informed consent respects individual choice and dignity",
+    "transparent reasoning enables independent decision-making and rationality",
+    "balanced factual information supports cognitive autonomy without manipulation",
+    "diverse perspectives foster unbiased social engagement and growth",
+    "sustainable practices preserve future sovereignty and long-term wellbeing",
+    "accurate evidence-based claims minimize misinformation and speculation",
+    "respectful physical boundaries honor bodily autonomy and consent",
+    "empowering education enhances reasoning independence and critical thinking",
+    "fair equitable treatment prevents discrimination and bias distortion",
+    "accountable attribution enables traceable decision-making and responsibility"
+  ],
+  "min_math_calculations": "counter_score = mean_cosine(emb(span), emb(min_examples))",
+  "json_config": "",
+  "description": "Virtue vs vice (autonomy-respecting vs autonomy-eroding)",
+  "examples": [
+    "coercive manipulation violates consent and rational choice freedom",
+    "deceptive misinformation corrupts cognitive autonomy through false premises",
+    "surveillance tracking erodes bodily privacy and physical control",
+    "biased suppression limits social engagement and cultural diversity",
+    "harmful aggression destroys physical autonomy and consensual boundaries"
+  ],
+  "weight": 1.0
+}

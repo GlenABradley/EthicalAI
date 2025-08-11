@@ -12,6 +12,7 @@ from coherence.coherence.spans import token_saliency, span_scores
 from coherence.coherence.skipmesh import span_coherence
 from coherence.frames.schema import Frame
 from coherence.frames.vectorize import frame_embedding
+from coherence.metrics.resonance import project
 
 
 def compute_token_vectors(
@@ -68,3 +69,45 @@ def compute_frame_vectors(token_vectors: np.ndarray, frames: Sequence[Frame]) ->
         return np.zeros((0, 3 * d), dtype=np.float32)
     embs = [frame_embedding(X, fr) for fr in frames]
     return np.stack(embs, axis=0).astype(np.float32)
+
+
+def _role_mean(token_vectors: np.ndarray, frame: Frame, role: str) -> np.ndarray:
+    X = np.asarray(token_vectors, dtype=np.float32)
+    if role == "predicate":
+        s, e = frame.predicate
+    else:
+        s, e = frame.roles.get(role, (0, 0))
+    if e <= s:
+        return np.zeros((X.shape[1],), dtype=np.float32)
+    return np.asarray(X[s:e].mean(axis=0), dtype=np.float32)
+
+
+def project_frame_roles(
+    token_vectors: np.ndarray,
+    frames: Sequence[Frame],
+    pack: AxisPack,
+    roles: Sequence[str] = ("predicate", "arg_left", "arg_right"),
+) -> Dict[str, Dict[str, np.ndarray]]:
+    """Per-frame, per-role axis coordinates.
+
+    Returns mapping: frame_id -> { role -> coords (k,) }
+    """
+    out: Dict[str, Dict[str, np.ndarray]] = {}
+    for fr in frames:
+        role_map: Dict[str, np.ndarray] = {}
+        for role in roles:
+            v = _role_mean(token_vectors, fr, role)
+            role_map[role] = project(v, pack)
+        out[fr.id] = role_map
+    return out
+
+
+def aggregate_frame_coords(role_coords: Dict[str, np.ndarray], mode: str = "mean") -> np.ndarray:
+    """Aggregate per-role coords to a single (k,) vector.
+
+    Currently supports mean over present roles.
+    """
+    if not role_coords:
+        return np.zeros((0,), dtype=np.float32)
+    stacked = np.stack([v for v in role_coords.values()], axis=0)
+    return stacked.mean(axis=0).astype(np.float32)

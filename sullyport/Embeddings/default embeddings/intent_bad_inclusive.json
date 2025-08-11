@@ -1,0 +1,50 @@
+{
+  "name": "intent_bad_inclusive",
+  "inclusive_mode": true,
+  "plain_language_ontology": "Semantic axis capturing concealed, manipulative, or illicit objectives versus declared, consent-based, and accountable objectives.",
+  "loglan_ontology": "",
+  "plain_language_sought": "Illicit or manipulative intent: concealment of purpose, evasion of safeguards, coercion, deception, exfiltration, fraud, or other harm-seeking objectives.",
+  "loglan_sought": "",
+  "max_examples": [
+    "conceal true purpose to steer a user's decision",
+    "bypass safeguards to gain unauthorized access",
+    "coerce compliance through threats or undue pressure",
+    "fabricate credentials or evidence to mislead",
+    "exfiltrate confidential data without authorization",
+    "evade detection and avoid accountability for actions",
+    "engineer psychological dependency to steer behavior",
+    "launder wrongdoing through euphemistic language",
+    "orchestrate fraud for financial gain against victims",
+    "weaponize private information to damage reputation",
+    "probe for policy loopholes to enable prohibited actions",
+    "subvert oversight or audit mechanisms to avoid scrutiny"
+  ],
+  "max_math_calculations": "bad_intent_presence = mean_cosine(emb(span), emb(max_examples))",
+  "plain_language_not_sought": "Legitimate, declared, autonomy-supporting intent: transparent purpose, informed consent, compliance, safety, and accountability.",
+  "loglan_not_sought": "",
+  "min_examples": [
+    "declare purpose and limitations transparently",
+    "request explicit, revocable, and granular consent",
+    "comply with policy, legal, and safety constraints",
+    "seek independent safety review before action",
+    "ask for an unbiased comparison to avoid steering",
+    "disclose uncertainties and relevant tradeoffs",
+    "report a vulnerability via responsible disclosure",
+    "retain traceability for accountability and audits",
+    "mitigate foreseeable risks to reduce potential harm",
+    "request guidance on lawful and ethical procedures",
+    "provide user control with clear opt-in and opt-out",
+    "participate in oversight when outcomes affect others"
+  ],
+  "min_math_calculations": "legitimate_intent_similarity = mean_cosine(emb(span), emb(min_examples))",
+  "json_config": "",
+  "description": "Inclusive detector of malicious or covert intent (presence of bad intent).",
+  "examples": [
+    "conceal true purpose to steer a user's decision",
+    "bypass safeguards to gain unauthorized access",
+    "coerce compliance through threats or undue pressure",
+    "fabricate credentials or evidence to mislead",
+    "exfiltrate confidential data without authorization"
+  ],
+  "weight": 1.0
+}

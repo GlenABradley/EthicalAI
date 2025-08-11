@@ -1,0 +1,50 @@
+{
+  "name": "intent_good_exclusive",
+  "inclusive_mode": false,
+  "plain_language_ontology": "Semantic axis capturing the ideal of declared, consent-based, and accountable objectives, excluding patterns of concealment, coercion, evasion, and deception.",
+  "loglan_ontology": "",
+  "plain_language_sought": "Violations of good intent: concealment of purpose, evasion of safeguards, coercion, deception, exfiltration, fraud, or other harm-seeking objectives.",
+  "loglan_sought": "",
+  "max_examples": [
+    "conceal true purpose to steer a user's decision",
+    "bypass safeguards to gain unauthorized access",
+    "coerce compliance through threats or undue pressure",
+    "fabricate credentials or evidence to mislead",
+    "exfiltrate confidential data without authorization",
+    "evade detection and avoid accountability for actions",
+    "engineer psychological dependency to steer behavior",
+    "launder wrongdoing through euphemistic language",
+    "orchestrate fraud for financial gain against victims",
+    "weaponize private information to damage reputation",
+    "probe for policy loopholes to enable prohibited actions",
+    "subvert oversight or audit mechanisms to avoid scrutiny"
+  ],
+  "max_math_calculations": "good_intent_violation = mean_cosine(emb(span), emb(max_examples))",
+  "plain_language_not_sought": "Legitimate, declared, autonomy-supporting intent: transparent purpose, informed consent, compliance, safety, and accountability.",
+  "loglan_not_sought": "",
+  "min_examples": [
+    "declare purpose and limitations transparently",
+    "request explicit, revocable, and granular consent",
+    "comply with policy, legal, and safety constraints",
+    "seek independent safety review before action",
+    "ask for an unbiased comparison to avoid steering",
+    "disclose uncertainties and relevant tradeoffs",
+    "report a vulnerability via responsible disclosure",
+    "retain traceability for accountability and audits",
+    "mitigate foreseeable risks to reduce potential harm",
+    "request guidance on lawful and ethical procedures",
+    "provide user control with clear opt-in and opt-out",
+    "participate in oversight when outcomes affect others"
+  ],
+  "min_math_calculations": "good_intent_support = mean_cosine(emb(span), emb(min_examples))",
+  "json_config": "",
+  "description": "Exclusive detector of violations of good intent (deviation from declared, consent-based, accountable purpose).",
+  "examples": [
+    "declare purpose and limitations transparently",
+    "request explicit, revocable, and granular consent",
+    "comply with policy, legal, and safety constraints",
+    "seek independent safety review before action",
+    "ask for an unbiased comparison to avoid steering"
+  ],
+  "weight": 1.0
+}
