@@ -99,3 +99,95 @@ class AnalyzeResponse(BaseModel):
     frames: List[FrameOutput]
     frame_spans: List[SpanOutput]
     tau_used: List[float]
+
+
+# --- Extended contracts for indexing/search/what-if ---
+
+
+class IndexDoc(BaseModel):
+    """Document to index."""
+
+    doc_id: str
+    text: str
+
+
+class IndexRequest(BaseModel):
+    """Indexing request.
+
+    - axis_pack_id: identifier of saved AxisPack under data/axes
+    - texts: list of documents to index
+    - options: backend options (taus, tokenizer, etc.)
+    """
+
+    axis_pack_id: str
+    texts: List[IndexDoc]
+    options: Dict[str, object] = Field(default_factory=dict)
+
+
+class IndexResponse(BaseModel):
+    indexed: List[str]
+    anns_built: bool
+    tau_used: List[float]
+
+
+class QuerySpec(BaseModel):
+    type: Literal["nl", "weights", "expr"] = "nl"
+    text: Optional[str] = None
+    u: Optional[List[float]] = None
+    expr: Optional[str] = None
+
+
+class SearchFilters(BaseModel):
+    tau: float = 0.0
+    minC: float = 0.0
+    thresholds: Dict[str, float] = Field(default_factory=dict)
+
+
+class SearchHyper(BaseModel):
+    beta: float = 0.3
+    alpha: float = 0.5
+    gamma: float = 0.6
+
+
+class SearchRequest(BaseModel):
+    axis_pack_id: str
+    query: QuerySpec
+    filters: SearchFilters = Field(default_factory=SearchFilters)
+    hyper: SearchHyper = Field(default_factory=SearchHyper)
+    top_k: int = 10
+
+
+class SearchHit(BaseModel):
+    doc_id: str
+    span: Dict[str, object]
+    vectors: AxialVectorsModel
+    frames: List[Dict[str, object]] = Field(default_factory=list)
+    score: float
+
+
+class SearchResponse(BaseModel):
+    hits: List[SearchHit]
+
+
+class EditSpec(BaseModel):
+    type: Literal["remove_text", "replace_text"]
+    start: int
+    end: int
+    value: Optional[str] = None
+
+
+class WhatIfRequest(BaseModel):
+    axis_pack_id: str
+    doc_id: str
+    edits: List[EditSpec]
+
+
+class WhatIfDelta(BaseModel):
+    span_id: str
+    dU: float
+    dC: float
+    du: List[float]
+
+
+class WhatIfResponse(BaseModel):
+    deltas: List[WhatIfDelta]
