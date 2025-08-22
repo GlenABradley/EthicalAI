@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from hashlib import sha256
 from pathlib import Path
 from typing import Dict, List, Optional
@@ -80,7 +80,7 @@ def build_axis_pack(req: BuildRequest) -> BuildResponse:
     if req.pack_id:
         pack_id = req.pack_id
     else:
-        ts = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         pack_id = f"ap_{ts}_{pack_hash[:8]}"
 
     # Final paths
@@ -123,7 +123,7 @@ def build_axis_pack(req: BuildRequest) -> BuildResponse:
         "encoder_dim": enc._model.get_sentence_embedding_dimension(),
         "names": names,
         "modes": axis_pack.meta.get("modes", {}) if axis_pack.meta else {},
-        "created_at": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "builder_version": "advanced-builder-b",
         "pack_hash": pack_hash,
         "json_embeddings_hash": json_embeddings_hash,
