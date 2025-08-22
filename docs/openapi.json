@@ -1,0 +1,2643 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Coherence API",
+    "version": "0.0.1"
+  },
+  "paths": {
+    "/health/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Ready",
+        "description": "Readiness probe with encoder and active pack info.",
+        "operationId": "ready_health_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Ready Health Ready Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/embed": {
+      "post": {
+        "tags": [
+          "embed"
+        ],
+        "summary": "Embed",
+        "operationId": "embed_embed_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmbedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmbedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/resonance": {
+      "post": {
+        "tags": [
+          "resonance"
+        ],
+        "summary": "Resonance",
+        "operationId": "resonance_resonance_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResonanceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResonanceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pipeline/analyze": {
+      "post": {
+        "tags": [
+          "pipeline"
+        ],
+        "summary": "Analyze",
+        "operationId": "analyze_pipeline_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/coherence__api__routers__pipeline__AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/axes/build": {
+      "post": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "Build Axis Pack",
+        "operationId": "build_axis_pack_v1_axes_build_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BuildRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BuildResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/axes/{pack_id}/activate": {
+      "post": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "Activate Pack",
+        "operationId": "activate_pack_v1_axes__pack_id__activate_post",
+        "parameters": [
+          {
+            "name": "pack_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Pack Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/axes/{pack_id}": {
+      "get": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "Get Pack",
+        "operationId": "get_pack_v1_axes__pack_id__get",
+        "parameters": [
+          {
+            "name": "pack_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Pack Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/axes/{pack_id}/export": {
+      "get": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "Export Pack",
+        "description": "Export full axis pack vectors as JSON for inline testing.\n\nNote: Large payloads; intended for dev/test only.",
+        "operationId": "export_pack_v1_axes__pack_id__export_get",
+        "parameters": [
+          {
+            "name": "pack_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Pack Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/frames/index": {
+      "post": {
+        "tags": [
+          "frames"
+        ],
+        "summary": "Index Frames",
+        "operationId": "index_frames_v1_frames_index_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/coherence__api__routers__v1_frames__IndexRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/coherence__api__routers__v1_frames__IndexResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/frames/search": {
+      "get": {
+        "tags": [
+          "frames"
+        ],
+        "summary": "Search Frames",
+        "operationId": "search_frames_v1_frames_search_get",
+        "parameters": [
+          {
+            "name": "axis",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Axis name or index",
+              "title": "Axis"
+            },
+            "description": "Axis name or index"
+          },
+          {
+            "name": "min",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "title": "Min"
+            }
+          },
+          {
+            "name": "max",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "title": "Max"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 1000,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "pack_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Pack Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/coherence__api__routers__v1_frames__SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/frames/trace/{entity}": {
+      "get": {
+        "tags": [
+          "frames"
+        ],
+        "summary": "Trace Entity",
+        "operationId": "trace_entity_v1_frames_trace__entity__get",
+        "parameters": [
+          {
+            "name": "entity",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Entity"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "pack_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Pack Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TraceResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/frames/stats": {
+      "get": {
+        "tags": [
+          "frames"
+        ],
+        "summary": "Stats",
+        "description": "Return database stats and active pack summary.",
+        "operationId": "stats_v1_frames_stats_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": true,
+                  "type": "object",
+                  "title": "Response Stats V1 Frames Stats Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/axes/list": {
+      "get": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "List Packs",
+        "description": "List available axis packs found under data/axes.\n\nReturns a list of summaries with id, names, and k.",
+        "operationId": "list_packs_axes_list_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "items": {
+                      "additionalProperties": true,
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "type": "object",
+                  "title": "Response List Packs Axes List Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/axes/{axis_pack_id}": {
+      "get": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "Get Pack",
+        "description": "Get a single axis pack summary by ID.",
+        "operationId": "get_pack_axes__axis_pack_id__get",
+        "parameters": [
+          {
+            "name": "axis_pack_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Axis Pack Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Get Pack Axes  Axis Pack Id  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/axes/create": {
+      "post": {
+        "tags": [
+          "axes"
+        ],
+        "summary": "Create Pack",
+        "description": "Create an axis pack from seed phrases and persist it.\n\nUses the default encoder and diff-of-means builder.\nSaves to data/axes/{axis_pack_id}.json",
+        "operationId": "create_pack_axes_create_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAxisPack"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAxisPackResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/index": {
+      "post": {
+        "tags": [
+          "index"
+        ],
+        "summary": "Index Docs",
+        "description": "Index documents for a given axis pack id.\n\nReturns which doc_ids were indexed and whether ANN was built.",
+        "operationId": "index_docs_index_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/coherence__api__models__IndexRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/coherence__api__models__IndexResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "post": {
+        "tags": [
+          "search"
+        ],
+        "summary": "Search",
+        "description": "Search API: ANN recall on u, rerank with non-cosine scoring.\n\nReturns top_k hits with vectors and span metadata.",
+        "operationId": "search_search_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/coherence__api__models__SearchResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/whatif": {
+      "post": {
+        "tags": [
+          "whatif"
+        ],
+        "summary": "What If",
+        "description": "Counterfactual what-if analysis (stub).\n\nTODO(@builder): Implement span-level recompute after edits. For now, return empty deltas.",
+        "operationId": "what_if_whatif_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WhatIfRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WhatIfResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/analyze": {
+      "post": {
+        "tags": [
+          "analyze"
+        ],
+        "summary": "Analyze",
+        "operationId": "analyze_analyze_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeText"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/coherence__api__models__AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActivateResponse": {
+        "properties": {
+          "active": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Active"
+          }
+        },
+        "type": "object",
+        "required": [
+          "active"
+        ],
+        "title": "ActivateResponse"
+      },
+      "AnalyzeRequest": {
+        "properties": {
+          "vectors": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vectors",
+            "description": "(n,d) token vectors; if omitted, texts must be provided"
+          },
+          "texts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texts",
+            "description": "Texts to auto-embed; used if vectors not provided"
+          },
+          "axis_pack": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AxisPackModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pack Id",
+            "description": "Optional axis pack id to load from server registry"
+          },
+          "params": {
+            "$ref": "#/components/schemas/PipelineParams",
+            "default": {
+              "max_span_len": 5,
+              "max_skip": 2,
+              "debug_frames": false,
+              "return_role_projections": false,
+              "role_mode": "lr",
+              "detect_evidence": false,
+              "detect_condition": false
+            }
+          },
+          "encoder_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encoder Name"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          },
+          "normalize_input": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalize Input"
+          }
+        },
+        "type": "object",
+        "title": "AnalyzeRequest"
+      },
+      "AnalyzeText": {
+        "properties": {
+          "axis_pack_id": {
+            "type": "string",
+            "title": "Axis Pack Id"
+          },
+          "texts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Texts"
+          },
+          "options": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Options",
+            "default": {}
+          }
+        },
+        "type": "object",
+        "required": [
+          "axis_pack_id",
+          "texts"
+        ],
+        "title": "AnalyzeText",
+        "description": "Analyze text request payload."
+      },
+      "AxialVectorsModel": {
+        "properties": {
+          "alpha": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Alpha"
+          },
+          "u": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "U"
+          },
+          "r": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "R"
+          },
+          "U": {
+            "type": "number",
+            "title": "U"
+          },
+          "C": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "C"
+          },
+          "t": {
+            "type": "number",
+            "title": "T",
+            "default": 1.0
+          },
+          "tau": {
+            "type": "number",
+            "title": "Tau",
+            "default": 0.0
+          }
+        },
+        "type": "object",
+        "required": [
+          "alpha",
+          "u",
+          "r",
+          "U"
+        ],
+        "title": "AxialVectorsModel",
+        "description": "Per-axis vectors for a unit (token/span/frame).\n\nShapes\n- alpha/u/r: length-k\n- U: scalar\n- C: optional scalar (spans only)\n- t: gating scalar in [0,1]\n- tau: diffusion scale used"
+      },
+      "AxisPackModel": {
+        "properties": {
+          "names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Names"
+          },
+          "Q": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Q"
+          },
+          "lambda": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lambda"
+          },
+          "beta": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Beta"
+          },
+          "weights": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weights"
+          },
+          "mu": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mu"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "names",
+          "Q"
+        ],
+        "title": "AxisPackModel"
+      },
+      "AxisSeed": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "positives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Positives"
+          },
+          "negatives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Negatives"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "title": "AxisSeed",
+        "description": "Axis seed specification.\n\nFields\n- name: axis name\n- positives/negatives: example strings"
+      },
+      "BuildRequest": {
+        "properties": {
+          "json_paths": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Json Paths",
+            "description": "Paths to axis JSON configs"
+          },
+          "override": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Override",
+            "description": "Builder overrides"
+          },
+          "pack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pack Id",
+            "description": "Optional custom pack id"
+          }
+        },
+        "type": "object",
+        "title": "BuildRequest"
+      },
+      "BuildResponse": {
+        "properties": {
+          "pack_id": {
+            "type": "string",
+            "title": "Pack Id"
+          },
+          "dim": {
+            "type": "integer",
+            "title": "Dim"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Names"
+          },
+          "pack_hash": {
+            "type": "string",
+            "title": "Pack Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pack_id",
+          "dim",
+          "k",
+          "names",
+          "pack_hash"
+        ],
+        "title": "BuildResponse"
+      },
+      "CreateAxisPack": {
+        "properties": {
+          "axes": {
+            "items": {
+              "$ref": "#/components/schemas/AxisSeed"
+            },
+            "type": "array",
+            "title": "Axes"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "diffmean",
+              "cca",
+              "lda"
+            ],
+            "title": "Method",
+            "default": "diffmean"
+          },
+          "choquet_capacity": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choquet Capacity"
+          },
+          "lambda_": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lambda"
+          },
+          "beta": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Beta"
+          },
+          "weights": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "axes"
+        ],
+        "title": "CreateAxisPack",
+        "description": "Create an axis pack request.\n\n- axes: list of `AxisSeed`\n- method: \"diffmean\" | \"cca\" | \"lda\"\n- choquet_capacity: optional capacity mapping (keys like \"0,2,3\")\n- lambda_/beta/weights: optional per-axis parameters"
+      },
+      "CreateAxisPackResponse": {
+        "properties": {
+          "axis_pack_id": {
+            "type": "string",
+            "title": "Axis Pack Id"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Names"
+          }
+        },
+        "type": "object",
+        "required": [
+          "axis_pack_id",
+          "k",
+          "names"
+        ],
+        "title": "CreateAxisPackResponse",
+        "description": "Response after creating an axis pack."
+      },
+      "EditSpec": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "remove_text",
+              "replace_text"
+            ],
+            "title": "Type"
+          },
+          "start": {
+            "type": "integer",
+            "title": "Start"
+          },
+          "end": {
+            "type": "integer",
+            "title": "End"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          }
+        },
+        "type": "object",
+        "required": [
+          "type",
+          "start",
+          "end"
+        ],
+        "title": "EditSpec"
+      },
+      "EmbedRequest": {
+        "properties": {
+          "texts": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Texts",
+            "description": "List of input texts"
+          },
+          "encoder_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encoder Name",
+            "description": "HF model id override"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device",
+            "description": "\"cpu\" | \"cuda\" | \"mps\" | \"auto\""
+          },
+          "normalize_input": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalize Input",
+            "description": "Lowercase/strip inputs deterministically"
+          }
+        },
+        "type": "object",
+        "required": [
+          "texts"
+        ],
+        "title": "EmbedRequest"
+      },
+      "EmbedResponse": {
+        "properties": {
+          "embeddings": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Embeddings"
+          },
+          "shape": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Shape"
+          },
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "device": {
+            "type": "string",
+            "title": "Device"
+          }
+        },
+        "type": "object",
+        "required": [
+          "embeddings",
+          "shape",
+          "model_name",
+          "device"
+        ],
+        "title": "EmbedResponse"
+      },
+      "ExportResponse": {
+        "properties": {
+          "pack_id": {
+            "type": "string",
+            "title": "Pack Id"
+          },
+          "names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Names"
+          },
+          "Q": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Q"
+          },
+          "lambda_": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Lambda"
+          },
+          "beta": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Beta"
+          },
+          "weights": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Weights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pack_id",
+          "names",
+          "Q",
+          "lambda_",
+          "beta",
+          "weights"
+        ],
+        "title": "ExportResponse"
+      },
+      "FrameItem": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "predicate": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Predicate"
+          },
+          "roles": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "items": {
+                    "type": "integer"
+                  },
+                  "type": "array"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Roles"
+          },
+          "coords": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coords"
+          },
+          "role_coords": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role Coords"
+          },
+          "meta": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "FrameItem"
+      },
+      "FrameOutput": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "vectors": {
+            "$ref": "#/components/schemas/AxialVectorsModel"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "vectors"
+        ],
+        "title": "FrameOutput"
+      },
+      "GetResponse": {
+        "properties": {
+          "pack_id": {
+            "type": "string",
+            "title": "Pack Id"
+          },
+          "dim": {
+            "type": "integer",
+            "title": "Dim"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "names": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Names"
+          },
+          "meta": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Meta"
+          },
+          "pack_hash": {
+            "type": "string",
+            "title": "Pack Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pack_id",
+          "dim",
+          "k",
+          "names",
+          "meta",
+          "pack_hash"
+        ],
+        "title": "GetResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "IndexDoc": {
+        "properties": {
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "doc_id",
+          "text"
+        ],
+        "title": "IndexDoc",
+        "description": "Document to index."
+      },
+      "PipelineParams": {
+        "properties": {
+          "max_span_len": {
+            "type": "integer",
+            "title": "Max Span Len",
+            "default": 5
+          },
+          "max_skip": {
+            "type": "integer",
+            "title": "Max Skip",
+            "default": 2
+          },
+          "diffusion_tau": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diffusion Tau"
+          },
+          "debug_frames": {
+            "type": "boolean",
+            "title": "Debug Frames",
+            "default": false
+          },
+          "return_role_projections": {
+            "type": "boolean",
+            "title": "Return Role Projections",
+            "default": false
+          },
+          "role_mode": {
+            "type": "string",
+            "title": "Role Mode",
+            "default": "lr"
+          },
+          "detect_evidence": {
+            "type": "boolean",
+            "title": "Detect Evidence",
+            "default": false
+          },
+          "detect_condition": {
+            "type": "boolean",
+            "title": "Detect Condition",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "PipelineParams"
+      },
+      "QuerySpec": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "nl",
+              "weights",
+              "expr"
+            ],
+            "title": "Type",
+            "default": "nl"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "u": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "U"
+          },
+          "expr": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expr"
+          }
+        },
+        "type": "object",
+        "title": "QuerySpec"
+      },
+      "ResonanceRequest": {
+        "properties": {
+          "vectors": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vectors",
+            "description": "(n,d) vectors; if omitted, texts must be provided"
+          },
+          "texts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Texts",
+            "description": "Texts to auto-embed; used if vectors not provided"
+          },
+          "axis_pack": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AxisPackModel"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pack Id",
+            "description": "Optional axis pack id to load from server registry"
+          },
+          "return_intermediate": {
+            "type": "boolean",
+            "title": "Return Intermediate",
+            "default": false
+          },
+          "encoder_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encoder Name"
+          },
+          "device": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Device"
+          },
+          "normalize_input": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalize Input"
+          }
+        },
+        "type": "object",
+        "title": "ResonanceRequest"
+      },
+      "ResonanceResponse": {
+        "properties": {
+          "scores": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Scores"
+          },
+          "coords": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coords"
+          },
+          "utilities": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Utilities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scores"
+        ],
+        "title": "ResonanceResponse"
+      },
+      "SearchFilters": {
+        "properties": {
+          "tau": {
+            "type": "number",
+            "title": "Tau",
+            "default": 0.0
+          },
+          "minC": {
+            "type": "number",
+            "title": "Minc",
+            "default": 0.0
+          },
+          "thresholds": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Thresholds"
+          }
+        },
+        "type": "object",
+        "title": "SearchFilters"
+      },
+      "SearchHit": {
+        "properties": {
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "span": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Span"
+          },
+          "vectors": {
+            "$ref": "#/components/schemas/AxialVectorsModel"
+          },
+          "frames": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Frames"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          }
+        },
+        "type": "object",
+        "required": [
+          "doc_id",
+          "span",
+          "vectors",
+          "score"
+        ],
+        "title": "SearchHit"
+      },
+      "SearchHyper": {
+        "properties": {
+          "beta": {
+            "type": "number",
+            "title": "Beta",
+            "default": 0.3
+          },
+          "alpha": {
+            "type": "number",
+            "title": "Alpha",
+            "default": 0.5
+          },
+          "gamma": {
+            "type": "number",
+            "title": "Gamma",
+            "default": 0.6
+          }
+        },
+        "type": "object",
+        "title": "SearchHyper"
+      },
+      "SearchRequest": {
+        "properties": {
+          "axis_pack_id": {
+            "type": "string",
+            "title": "Axis Pack Id"
+          },
+          "query": {
+            "$ref": "#/components/schemas/QuerySpec"
+          },
+          "filters": {
+            "$ref": "#/components/schemas/SearchFilters"
+          },
+          "hyper": {
+            "$ref": "#/components/schemas/SearchHyper"
+          },
+          "top_k": {
+            "type": "integer",
+            "title": "Top K",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "required": [
+          "axis_pack_id",
+          "query"
+        ],
+        "title": "SearchRequest"
+      },
+      "SearchResponseItem": {
+        "properties": {
+          "frame_id": {
+            "type": "string",
+            "title": "Frame Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "axis_idx": {
+            "type": "integer",
+            "title": "Axis Idx"
+          },
+          "coord": {
+            "type": "number",
+            "title": "Coord"
+          },
+          "predicate": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Predicate"
+          },
+          "pack_id": {
+            "type": "string",
+            "title": "Pack Id"
+          },
+          "pack_hash": {
+            "type": "string",
+            "title": "Pack Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "frame_id",
+          "doc_id",
+          "axis_idx",
+          "coord",
+          "predicate",
+          "pack_id",
+          "pack_hash"
+        ],
+        "title": "SearchResponseItem"
+      },
+      "SpanOutput": {
+        "properties": {
+          "start": {
+            "type": "integer",
+            "title": "Start"
+          },
+          "end": {
+            "type": "integer",
+            "title": "End"
+          },
+          "vectors": {
+            "$ref": "#/components/schemas/AxialVectorsModel"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "vectors"
+        ],
+        "title": "SpanOutput"
+      },
+      "TokenVectors": {
+        "properties": {
+          "alpha": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Alpha"
+          },
+          "u": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "U"
+          },
+          "r": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "R"
+          },
+          "U": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "U"
+          }
+        },
+        "type": "object",
+        "required": [
+          "alpha",
+          "u",
+          "r",
+          "U"
+        ],
+        "title": "TokenVectors",
+        "description": "Token-level vectors.\n\nShapes\n- alpha/u/r: (N,k) lists of lists\n- U: (N,) list of scalars"
+      },
+      "TraceResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TraceResponseItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "TraceResponse"
+      },
+      "TraceResponseItem": {
+        "properties": {
+          "frame_id": {
+            "type": "string",
+            "title": "Frame Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "predicate": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Predicate"
+          },
+          "pack_id": {
+            "type": "string",
+            "title": "Pack Id"
+          },
+          "pack_hash": {
+            "type": "string",
+            "title": "Pack Hash"
+          }
+        },
+        "type": "object",
+        "required": [
+          "frame_id",
+          "doc_id",
+          "predicate",
+          "pack_id",
+          "pack_hash"
+        ],
+        "title": "TraceResponseItem"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "WhatIfDelta": {
+        "properties": {
+          "span_id": {
+            "type": "string",
+            "title": "Span Id"
+          },
+          "dU": {
+            "type": "number",
+            "title": "Du"
+          },
+          "dC": {
+            "type": "number",
+            "title": "Dc"
+          },
+          "du": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Du"
+          }
+        },
+        "type": "object",
+        "required": [
+          "span_id",
+          "dU",
+          "dC",
+          "du"
+        ],
+        "title": "WhatIfDelta"
+      },
+      "WhatIfRequest": {
+        "properties": {
+          "axis_pack_id": {
+            "type": "string",
+            "title": "Axis Pack Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "edits": {
+            "items": {
+              "$ref": "#/components/schemas/EditSpec"
+            },
+            "type": "array",
+            "title": "Edits"
+          }
+        },
+        "type": "object",
+        "required": [
+          "axis_pack_id",
+          "doc_id",
+          "edits"
+        ],
+        "title": "WhatIfRequest"
+      },
+      "WhatIfResponse": {
+        "properties": {
+          "deltas": {
+            "items": {
+              "$ref": "#/components/schemas/WhatIfDelta"
+            },
+            "type": "array",
+            "title": "Deltas"
+          }
+        },
+        "type": "object",
+        "required": [
+          "deltas"
+        ],
+        "title": "WhatIfResponse"
+      },
+      "coherence__api__models__AnalyzeResponse": {
+        "properties": {
+          "axes": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Axes"
+          },
+          "tokens": {
+            "$ref": "#/components/schemas/TokenVectors"
+          },
+          "spans": {
+            "items": {
+              "$ref": "#/components/schemas/SpanOutput"
+            },
+            "type": "array",
+            "title": "Spans"
+          },
+          "frames": {
+            "items": {
+              "$ref": "#/components/schemas/FrameOutput"
+            },
+            "type": "array",
+            "title": "Frames"
+          },
+          "frame_spans": {
+            "items": {
+              "$ref": "#/components/schemas/SpanOutput"
+            },
+            "type": "array",
+            "title": "Frame Spans"
+          },
+          "tau_used": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Tau Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "axes",
+          "tokens",
+          "spans",
+          "frames",
+          "frame_spans",
+          "tau_used"
+        ],
+        "title": "AnalyzeResponse",
+        "description": "API response for analysis.\n\nContains axes metadata, vectors at multiple granularities, and taus used."
+      },
+      "coherence__api__models__IndexRequest": {
+        "properties": {
+          "axis_pack_id": {
+            "type": "string",
+            "title": "Axis Pack Id"
+          },
+          "texts": {
+            "items": {
+              "$ref": "#/components/schemas/IndexDoc"
+            },
+            "type": "array",
+            "title": "Texts"
+          },
+          "options": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "axis_pack_id",
+          "texts"
+        ],
+        "title": "IndexRequest",
+        "description": "Indexing request.\n\n- axis_pack_id: identifier of saved AxisPack under data/axes\n- texts: list of documents to index\n- options: backend options (taus, tokenizer, etc.)"
+      },
+      "coherence__api__models__IndexResponse": {
+        "properties": {
+          "indexed": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Indexed"
+          },
+          "anns_built": {
+            "type": "boolean",
+            "title": "Anns Built"
+          },
+          "tau_used": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Tau Used"
+          }
+        },
+        "type": "object",
+        "required": [
+          "indexed",
+          "anns_built",
+          "tau_used"
+        ],
+        "title": "IndexResponse"
+      },
+      "coherence__api__models__SearchResponse": {
+        "properties": {
+          "hits": {
+            "items": {
+              "$ref": "#/components/schemas/SearchHit"
+            },
+            "type": "array",
+            "title": "Hits"
+          }
+        },
+        "type": "object",
+        "required": [
+          "hits"
+        ],
+        "title": "SearchResponse"
+      },
+      "coherence__api__routers__pipeline__AnalyzeResponse": {
+        "properties": {
+          "tokens": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Tokens"
+          },
+          "spans": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Spans"
+          },
+          "frames": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Frames"
+          },
+          "frame_vectors": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Frame Vectors"
+          },
+          "frame_role_coords": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frame Role Coords"
+          },
+          "frame_coords": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frame Coords"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tokens",
+          "spans",
+          "frames",
+          "frame_vectors"
+        ],
+        "title": "AnalyzeResponse"
+      },
+      "coherence__api__routers__v1_frames__IndexRequest": {
+        "properties": {
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "pack_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pack Id",
+            "description": "Axis pack id; if provided, use this pack to resolve k,d"
+          },
+          "d": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "D",
+            "description": "Embedding dim; required if deriving without pack_id"
+          },
+          "frames": {
+            "items": {
+              "$ref": "#/components/schemas/FrameItem"
+            },
+            "type": "array",
+            "title": "Frames"
+          },
+          "frame_vectors": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frame Vectors"
+          }
+        },
+        "type": "object",
+        "required": [
+          "doc_id",
+          "frames"
+        ],
+        "title": "IndexRequest"
+      },
+      "coherence__api__routers__v1_frames__IndexResponse": {
+        "properties": {
+          "ingested": {
+            "type": "integer",
+            "title": "Ingested"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          }
+        },
+        "type": "object",
+        "required": [
+          "ingested",
+          "k"
+        ],
+        "title": "IndexResponse"
+      },
+      "coherence__api__routers__v1_frames__SearchResponse": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResponseItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "SearchResponse"
+      }
+    }
+  }
+}

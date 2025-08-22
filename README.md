@@ -48,3 +48,105 @@ See the repository tree printed by the build steps. The Python source lives unde
 - If something is deferred, mark with `# TODO: @builder` and add a skipped test referencing it.
 - All public functions include docstrings with type hints and shape notes.
 - Performance counters and deterministic seeds are included.
+
+---
+
+## Documentation
+
+- API Reference: `docs/API.md`
+- Models Reference: `docs/Models.md`
+- OpenAPI JSON: generate via the export script (see below) to `docs/openapi.json`.
+
+## Features (What this software does)
+
+- Define semantic axes and build axis packs (legacy and v1 artifact-backed flows).
+- Compute embeddings, resonance, and detailed analysis over texts and/or vectors.
+- Multi-scale token, span, frame representations with role projections.
+- Frame indexing, search, tracing, and statistics over a SQLite-backed store.
+- End-to-end API suitable for powering UIs with rich visualization (e.g., heatmaps).
+
+## Architecture and Key Modules
+
+- `src/coherence/api/main.py`: FastAPI app factory, router wiring, registry bootstrap.
+- Routers under `src/coherence/api/routers/`:
+  - `health.py`: readiness and state.
+  - `embed.py`: text embedding.
+  - `resonance.py`: resonance vs. axis packs (inline or stored), intermediate outputs.
+  - `pipeline.py`: full analysis pipeline (tokens, spans, frames, vectors, roles).
+  - `v1_axes.py`: build, activate, inspect, export axis packs (artifacts-backed).
+  - `v1_frames.py`: index frames, search by axis ranges, trace entities, stats.
+  - `axes.py`: legacy file-based axis packs; create from seed phrases.
+  - `index.py`: legacy ANN indexing for docs.
+  - `search.py`: legacy ANN recall + rerank for queries.
+  - `whatif.py`: counterfactual stub.
+  - `analyze.py`: legacy analyze over file-based packs.
+- Shared models: `src/coherence/api/models.py` (see `docs/Models.md`).
+- Artifacts: default at `artifacts/` (`COHERENCE_ARTIFACTS_DIR`), e.g., `frames.sqlite`, `axis_pack:<id>.npz` and metadata.
+
+## API Overview (High level)
+
+- `/health/ready` — readiness info (encoder, active pack, frames DB).
+- `/embed` — encode texts to vectors.
+- `/resonance` — compute resonance vs. an axis pack; supports inline packs.
+- `/pipeline/analyze` — detailed analysis with spans, frames, role projections.
+- `/v1/axes/*` — build, activate, get, export axis packs (production path).
+- `/v1/frames/*` — index/search/trace/stats for frames (SQLite-backed).
+- Legacy: `/axes`, `/index`, `/search`, `/analyze`, `/whatif`.
+
+See `docs/API.md` for exhaustive endpoint specs and examples.
+
+## Configuration
+
+- `COHERENCE_ARTIFACTS_DIR` — where artifacts (axis packs, frames DB) are stored. Default: `artifacts/`.
+- `COHERENCE_ENCODER` — optional encoder override for components that accept it.
+- App config file: `configs/app.yaml` (log level, limits, etc.).
+- Logging config: `configs/logging.yaml`.
+
+## Artifacts and Data
+
+- Axis packs (v1): `{ARTIFACTS}/axis_pack:<pack_id>.npz` + `.meta.json`.
+- Frames DB: `{ARTIFACTS}/frames.sqlite`.
+- Legacy axis packs (file-based): `data/axes/<axis_pack_id>.json`.
+
+## Scripts
+
+- Seed example axes:
+  ```bash
+  python scripts/seed_axes.py --config configs/axis_packs/sample.json
+  ```
+
+- Export OpenAPI schema (writes to `docs/openapi.json`):
+  ```bash
+  python scripts/export_openapi.py --out docs/openapi.json
+  ```
+
+- Generate client collections via Make (also regenerates OpenAPI):
+  ```bash
+  # default BASE_URL is http://localhost:8080
+  make postman      # writes docs/postman_collection.json
+  make thunder      # writes docs/thunder-collection_Coherence_API.json
+  make collections  # openapi + both collections
+
+  # override base URL
+  make collections BASE_URL=http://127.0.0.1:8080
+  ```
+
+- PowerShell helper (Windows):
+  ```powershell
+  # Regenerate OpenAPI + Postman + Thunder into docs/
+  .\tools\export-openapi.ps1 -BaseUrl "http://localhost:8080" -OutDir "docs"
+  ```
+
+## Testing
+
+- Run tests:
+  ```bash
+  pytest -q
+  ```
+- Selected integration tests exercise API endpoints under `tests/`.
+
+## Development Tips
+
+- Use `uvicorn` with `--reload` for rapid iteration.
+- Check `/health/ready` to verify active axis pack and frames DB presence.
+- Prefer v1 endpoints (`/v1/axes`, `/v1/frames`) for production flows.
