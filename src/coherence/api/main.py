@@ -8,7 +8,11 @@ from starlette.middleware.base import BaseHTTPMiddleware
 import uuid
 import contextvars
 
-from coherence.api.routers import health
+from coherence.api.routers import health, axes
+from coherence.api.routers import index as index_router
+from coherence.api.routers import search as search_router
+from coherence.api.routers import whatif as whatif_router
+from coherence.api.routers import analyze as analyze_router
 from coherence.api.routers import embed as embed_router
 from coherence.api.routers import resonance as resonance_router
 from coherence.api.routers import pipeline as pipeline_router
@@ -54,6 +58,7 @@ def create_app() -> FastAPI:
     )
 
     app.include_router(health.router, prefix="/health", tags=["health"])
+    # Routers from both branches
     app.include_router(embed_router.router, tags=["embed"])
     app.include_router(resonance_router.router, tags=["resonance"])
     app.include_router(pipeline_router.router, prefix="/pipeline", tags=["pipeline"])
@@ -61,7 +66,13 @@ def create_app() -> FastAPI:
     from coherence.api.routers import v1_frames as v1_frames_router  # lazy import to avoid early DB setup
     app.include_router(v1_frames_router.router, prefix="/v1/frames", tags=["frames"]) 
 
-    # TODO: @builder — in later milestones add axes/analyze/counterfactual routers
+    app.include_router(axes.router, prefix="/axes", tags=["axes"])
+    app.include_router(index_router.router, prefix="/index", tags=["index"])
+    app.include_router(search_router.router, prefix="/search", tags=["search"])
+    app.include_router(whatif_router.router, prefix="/whatif", tags=["whatif"])
+    app.include_router(analyze_router.router, prefix="/analyze", tags=["analyze"])
+
+    # TODO: @builder — expand analyze options (multi-τ, gating)
 
     # Initialize AxisRegistry once at startup using encoder dimension
     try:
@@ -76,4 +87,4 @@ def create_app() -> FastAPI:
     return app
 
 
-# Note: do not create app at import time; use uvicorn factory: 'uvicorn coherence.api.main:create_app --factory'
+app = create_app()

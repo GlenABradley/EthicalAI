@@ -28,3 +28,29 @@ spans:
   prefilter_topk: 48
 api:
   max_doc_chars: 100000
+
+# --- Added for Agent/Search integration ---
+agent_api:
+  enabled: true
+
+index:
+  tokenizer: "simple_split"   # TODO(@builder): spaCy later
+  span_window: 64
+  span_stride: 32
+  taus: [0.0, 0.6]
+  prefilter_topk: 48
+  seed: 17
+
+ann:
+  backend: "hnsw"            # "hnsw" | "numpy"
+  space: "l2"
+  ef_construction: 200
+  M: 32
+
+search:
+  squash: true                # apply sigmoid to utilities
+  beta: 0.3                   # coherence vs resonance
+  alpha: 0.5                  # gated utility vs align/prox
+  gamma: 0.6                  # coverage vs proximity
+  minC: 0.0                   # default coherence filter
+  tau: 0.0                    # default diffusion scale
