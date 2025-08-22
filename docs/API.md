@@ -38,7 +38,7 @@ Example:
 
 ```bash
 
-curl -s http://localhost:8000/health/ready
+curl -s <<<http://localhost:8000/health/ready>>>
 
 ```
 
@@ -68,7 +68,7 @@ Example:
 
 ```bash
 
-curl -sX POST http://localhost:8000/embed \
+curl -sX POST <<<http://localhost:8000/embed>>> \
   -H "Content-Type: application/json" \
   -d '{
     "texts": ["hello world", "coherence api"],
@@ -76,7 +76,7 @@ curl -sX POST http://localhost:8000/embed \
     "normalize_input": true
   }'
 
-```
+```text
 
 ---
 
@@ -106,10 +106,12 @@ curl -sX POST http://localhost:8000/embed \
   - `coords`?: List[List[float]]  // when `return_intermediate=true`
   - `utilities`?: List[List[float]]  // when `return_intermediate=true`
 
+
 Behavior:
 
 - Axis selection priority: pack_id > inline axis_pack > active registry pack.
 - Validates `X.shape[1] == pack.Q.shape[0]`.
+
 
 Errors:
 
@@ -118,11 +120,12 @@ Errors:
 - 422 Embedding dim mismatch; bad registry state
 - 500 Encoder/registry/compute failure
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/resonance \
+curl -sX POST <<<http://localhost:8000/resonance>>> \
   -H "Content-Type: application/json" \
   -d '{
     "texts": ["A fast green car."],
@@ -130,7 +133,7 @@ curl -sX POST http://localhost:8000/resonance \
     "return_intermediate": true
   }'
 
-```
+```text
 
 ---
 
@@ -164,11 +167,13 @@ curl -sX POST http://localhost:8000/resonance \
   - `frame_role_coords`?: List[Dict[str, Any]]
   - `frame_coords`?: List[Dict[str, Any]]
 
+
 Behavior:
 
 - Axis selection: `pack_id` | `axis_pack` | active
 - Limits total text chars by `api.max_doc_chars` (default 100000).
 - Validates `d` vs pack `Q.shape[0]`.
+
 
 Errors:
 
@@ -177,11 +182,12 @@ Errors:
 - 422 Dim mismatch
 - 500 Encoder/pipeline failure
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/pipeline/analyze \
+curl -sX POST <<<http://localhost:8000/pipeline/analyze>>> \
   -H "Content-Type: application/json" \
   -d '{
     "texts": ["Alice met Bob in Paris yesterday."],
@@ -192,7 +198,7 @@ curl -sX POST http://localhost:8000/pipeline/analyze \
     }
   }'
 
-```
+```text
 
 ---
 
@@ -200,6 +206,7 @@ curl -sX POST http://localhost:8000/pipeline/analyze \
 
 - Prefix: `/v1/axes`
 - Router: `src/coherence/api/routers/v1_axes.py`
+
 
 ### Build Axis Pack
 
@@ -216,6 +223,7 @@ curl -sX POST http://localhost:8000/pipeline/analyze \
   - `names`: List[str]
   - `pack_hash`: string
 
+
 Behavior:
 
 - Uses `build_advanced_axis_pack` with default encoder.
@@ -225,23 +233,25 @@ Behavior:
 - Default `pack_id` = `ap_{UTC_YYYYMMDD_HHMMSS}_{hash8}`
 - Activates new pack.
 
+
 Errors:
 
 - 400 Missing json_paths; build failed
 - 500 Registry init failed
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/v1/axes/build \
+curl -sX POST <<<http://localhost:8000/v1/axes/build>>> \
   -H "Content-Type: application/json" \
   -d '{
     "json_paths": ["configs/axis_packs/sample.json"],
     "override": {"orthogonalize": true}
   }'
 
-```
+```text
 
 ### Activate Axis Pack
 
@@ -250,19 +260,21 @@ curl -sX POST http://localhost:8000/v1/axes/build \
 - Response model: `ActivateResponse`
   - `active`: { `pack_id`: string, `dim`: int, `k`: int, `pack_hash`: string }
 
+
 Errors:
 
 - 404 Pack not found
 - 409 Dimension/orthonormality mismatch
 - 500 Registry init failed
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/v1/axes/ap_20240620_abcdef12/activate
+curl -sX POST <<<http://localhost:8000/v1/axes/ap_20240620_abcdef12/activate>>>
 
-```
+```text
 
 ### Get Axis Pack Summary
 
@@ -276,18 +288,20 @@ curl -sX POST http://localhost:8000/v1/axes/ap_20240620_abcdef12/activate
   - `meta`: Dict[str, Any]
   - `pack_hash`: string
 
+
 Errors:
 
 - 404 Pack not found
 - 500 Registry init failed
 
+
 Example:
 
-```bash
+```text
 
-curl -s http://localhost:8000/v1/axes/ap_20240620_abcdef12
+curl -s <<<http://localhost:8000/v1/axes/ap_20240620_abcdef12>>>
 
-```
+```text
 
 ### Export Full Axis Pack
 
@@ -301,22 +315,25 @@ curl -s http://localhost:8000/v1/axes/ap_20240620_abcdef12
   - `beta`: List[float]
   - `weights`: List[float]
 
+
 Notes:
 
 - Large payloads intended for dev/test.
+
 
 Errors:
 
 - 404 Pack not found
 - 500 Registry init failed
 
+
 Example:
 
-```bash
+```text
 
-curl -s http://localhost:8000/v1/axes/ap_20240620_abcdef12/export
+curl -s <<<http://localhost:8000/v1/axes/ap_20240620_abcdef12/export>>>
 
-```
+```text
 
 ---
 
@@ -324,6 +341,7 @@ curl -s http://localhost:8000/v1/axes/ap_20240620_abcdef12/export
 
 - Prefix: `/v1/frames`
 - Router: `src/coherence/api/routers/v1_frames.py`
+
 
 ### Index Frames
 
@@ -346,22 +364,25 @@ curl -s http://localhost:8000/v1/axes/ap_20240620_abcdef12/export
   - `ingested`: int
   - `k`: int
 
+
 Behavior:
 
 - Resolves k,d in priority:
   - pack_id -> active registry -> derive from coords (needs d provided)
 - Validates coords and role_coords lengths and finiteness.
 
+
 Errors:
 
 - 400 pack_id not found
 - 422 cannot resolve k; missing d when deriving; length mismatches; invalid numbers
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/v1/frames/index \
+curl -sX POST <<<http://localhost:8000/v1/frames/index>>> \
   -H "Content-Type: application/json" \
   -d '{
     "doc_id": "doc-001",
@@ -378,7 +399,7 @@ curl -sX POST http://localhost:8000/v1/frames/index \
     ]
   }'
 
-```
+```text
 
 ### Search Frames
 
@@ -393,13 +414,14 @@ curl -sX POST http://localhost:8000/v1/frames/index \
 - Response model: `SearchResponse`
   - `items`: List<{ `frame_id`: string, `doc_id`: string, `axis_idx`: int, `coord`: float, `predicate`: List[int], `pack_id`: string, `pack_hash`: string }>
 
+
 Example:
 
-```bash
+```text
 
-curl -s "http://localhost:8000/v1/frames/search?axis=Power&min=0.5&max=1.0&limit=50"
+curl -s "<<<http://localhost:8000/v1/frames/search?axis=Power&min=0.5&max=1.0&limit=50">>>
 
-```
+```text
 
 ### Trace Entity
 
@@ -411,13 +433,14 @@ curl -s "http://localhost:8000/v1/frames/search?axis=Power&min=0.5&max=1.0&limit
 - Response model: `TraceResponse`
   - `items`: List<{ `frame_id`, `doc_id`, `predicate`: List[int], `pack_id`, `pack_hash` }>
 
+
 Example:
 
-```bash
+```text
 
-curl -s "http://localhost:8000/v1/frames/trace/Alice?limit=50"
+curl -s "<<<http://localhost:8000/v1/frames/trace/Alice?limit=50">>>
 
-```
+```text
 
 ### Stats
 
@@ -430,13 +453,14 @@ curl -s "http://localhost:8000/v1/frames/trace/Alice?limit=50"
   - `last_ingest_ts`: int
   - `active_pack`?: { `pack_id`: string, `k`: int, `schema_version`?: string }
 
+
 Example:
 
-```bash
+```text
 
-curl -s http://localhost:8000/v1/frames/stats
+curl -s <<<http://localhost:8000/v1/frames/stats>>>
 
-```
+```text
 
 ---
 
@@ -445,19 +469,21 @@ curl -s http://localhost:8000/v1/frames/stats
 - Prefix: `/axes`
 - Router: `src/coherence/api/routers/axes.py`
 
+
 ### List Axis Packs
 
 - Path: `/axes/list`
 - Method: GET
 - Response: `{ items: [ { id: string, names: List[str], k: int } ] }`
 
+
 Example:
 
-```bash
+```text
 
-curl -s http://localhost:8000/axes/list
+curl -s <<<http://localhost:8000/axes/list>>>
 
-```
+```text
 
 ### Get Axis Pack Summary
 
@@ -465,13 +491,14 @@ curl -s http://localhost:8000/axes/list
 - Method: GET
 - Response: `{ id, names, k, d, meta }`
 
+
 Example:
 
-```bash
+```text
 
-curl -s http://localhost:8000/axes/my_pack_id
+curl -s <<<http://localhost:8000/axes/my_pack_id>>>
 
-```
+```text
 
 ### Create Axis Pack from Seeds
 
@@ -490,11 +517,12 @@ curl -s http://localhost:8000/axes/my_pack_id
   - `k`: int
   - `names`: List[str]
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/axes/create \
+curl -sX POST <<<http://localhost:8000/axes/create>>> \
   -H "Content-Type: application/json" \
   -d '{
     "axes": [
@@ -504,7 +532,7 @@ curl -sX POST http://localhost:8000/axes/create \
     "method": "diffmean"
   }'
 
-```
+```text
 
 ---
 
@@ -523,15 +551,17 @@ curl -sX POST http://localhost:8000/axes/create \
   - `anns_built`: bool
   - `tau_used`: List<float>
 
+
 Errors:
 
 - 400 on invalid values/pack issues (propagated from pipeline)
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/index \
+curl -sX POST <<<http://localhost:8000/index>>> \
   -H "Content-Type: application/json" \
   -d '{
     "axis_pack_id": "ap_20240620_abcdef12",
@@ -542,7 +572,7 @@ curl -sX POST http://localhost:8000/index \
     "options": { "tokenizer": "simple", "taus": [0.0] }
   }'
 
-```
+```text
 
 ---
 
@@ -575,21 +605,24 @@ curl -sX POST http://localhost:8000/index \
     - `frames`: List<Dict<string, object>>  // related frames
     - `score`: float
 
+
 Behavior:
 
 - Requires ANN index exists for `axis_pack_id`; else 400.
 - For "nl" maps text to u via `u_from_nl`.
 - Recall top_k*4 then rerank; filters by `minC` and thresholds by axis.
 
+
 Errors:
 
 - 400 Missing index; vector length mismatch; etc.
 
+
 Example (natural language query):
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/search \
+curl -sX POST <<<http://localhost:8000/search>>> \
   -H "Content-Type: application/json" \
   -d '{
     "axis_pack_id": "ap_20240620_abcdef12",
@@ -599,13 +632,13 @@ curl -sX POST http://localhost:8000/search \
     "top_k": 5
   }'
 
-```
+```text
 
 Example (explicit weights):
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/search \
+curl -sX POST <<<http://localhost:8000/search>>> \
   -H "Content-Type: application/json" \
   -d '{
     "axis_pack_id": "ap_20240620_abcdef12",
@@ -613,7 +646,7 @@ curl -sX POST http://localhost:8000/search \
     "top_k": 5
   }'
 
-```
+```text
 
 ---
 
@@ -635,15 +668,17 @@ curl -sX POST http://localhost:8000/search \
   - `deltas`: List<WhatIfDelta> (currently empty)
     - `WhatIfDelta`: `span_id`: string, `dU`: float, `dC`: float, `du`: List[float]
 
+
 Behavior:
 
 - Currently returns `deltas: []`.
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/whatif \
+curl -sX POST <<<http://localhost:8000/whatif>>> \
   -H "Content-Type: application/json" \
   -d '{
     "axis_pack_id": "ap_20240620_abcdef12",
@@ -651,7 +686,7 @@ curl -sX POST http://localhost:8000/whatif \
     "edits": [{"type":"remove_text","start":0,"end":5}]
   }'
 
-```
+```text
 
 ---
 
@@ -676,22 +711,24 @@ curl -sX POST http://localhost:8000/whatif \
   - `frame_spans`: List<`SpanOutput`>
   - `tau_used`: List[float]
 
+
 Errors:
 
 - 400 No texts; axis pack not found in `data/axes/{axis_pack_id}.json`
 
+
 Example:
 
-```bash
+```text
 
-curl -sX POST http://localhost:8000/analyze \
+curl -sX POST <<<http://localhost:8000/analyze>>> \
   -H "Content-Type: application/json" \
   -d '{
     "axis_pack_id": "my_pack_id",
     "texts": ["Alice met Bob in Paris."]
   }'
 
-```
+```text
 
 ---
 
@@ -769,6 +806,7 @@ curl -sX POST http://localhost:8000/analyze \
 - `WhatIfDelta`: { `span_id`: string, `dU`: float, `dC`: float, `du`: List<float> }
 - `WhatIfResponse`: { `deltas`: List<WhatIfDelta> }
 
+
 ---
 
 # Notes and Tips
@@ -776,6 +814,7 @@ curl -sX POST http://localhost:8000/analyze \
 - v1 endpoints (`/v1/axes`, `/v1/frames`) integrate with the AxisRegistry and artifact store. Legacy endpoints (`/axes`, `/analyze`, `/index`, `/search`) use `data/axes/` packs and an ANN store.
 - For `resonance` and `pipeline/analyze`, if you pass `texts`, ensure the encoder dimension matches the axis pack’s `Q.shape[0]` or you’ll get 422.
 - For `/v1/frames/index`, if you don’t pass `pack_id`, either ensure an active pack exists or include `coords` and `d` so k and d can be derived.
+
 
 ---
 
