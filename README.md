@@ -37,6 +37,7 @@ pip install -r requirements.txt
 
 1. Run tests (initially mostly skipped)
 
+
 ```text
 
 pytest -q
@@ -45,6 +46,7 @@ pytest -q
 
 1. Run the API server
 
+
 ```text
 
 uvicorn coherence.api.main:app --reload --host 0.0.0.0 --port 8080
@@ -52,6 +54,7 @@ uvicorn coherence.api.main:app --reload --host 0.0.0.0 --port 8080
 ```text
 
 1. Seed an example axis pack
+
 
 ```text
 
@@ -71,6 +74,7 @@ See the repository tree printed by the build steps. The Python source lives unde
 - All public functions include docstrings with type hints and shape notes.
 - Performance counters and deterministic seeds are included.
 
+
 ---
 
 ## Documentation
@@ -79,6 +83,7 @@ See the repository tree printed by the build steps. The Python source lives unde
 - Models Reference: `docs/Models.md`
 - OpenAPI JSON: generate via the export script (see below) to `docs/openapi.json`.
 
+
 ## Features (What this software does)
 
 - Define semantic axes and build axis packs (legacy and v1 artifact-backed flows).
@@ -86,6 +91,7 @@ See the repository tree printed by the build steps. The Python source lives unde
 - Multi-scale token, span, frame representations with role projections.
 - Frame indexing, search, tracing, and statistics over a SQLite-backed store.
 - End-to-end API suitable for powering UIs with rich visualization (e.g., heatmaps).
+
 
 ## Architecture and Key Modules
 
@@ -105,6 +111,7 @@ See the repository tree printed by the build steps. The Python source lives unde
 - Shared models: `src/coherence/api/models.py` (see `docs/Models.md`).
 - Artifacts: default at `artifacts/` (`COHERENCE_ARTIFACTS_DIR`), e.g., `frames.sqlite`, `axis_pack:<id>.npz` and metadata.
 
+
 ## API Overview (High level)
 
 - `/health/ready` — readiness info (encoder, active pack, frames DB).
@@ -115,6 +122,7 @@ See the repository tree printed by the build steps. The Python source lives unde
 - `/v1/frames/*` — index/search/trace/stats for frames (SQLite-backed).
 - Legacy: `/axes`, `/index`, `/search`, `/analyze`, `/whatif`.
 
+
 See `docs/API.md` for exhaustive endpoint specs and examples.
 
 ## Configuration
@@ -124,15 +132,18 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 - App config file: `configs/app.yaml` (log level, limits, etc.).
 - Logging config: `configs/logging.yaml`.
 
+
 ## Artifacts and Data
 
 - Axis packs (v1): `{ARTIFACTS}/axis_pack:<pack_id>.npz` + `.meta.json`.
 - Frames DB: `{ARTIFACTS}/frames.sqlite`.
 - Legacy axis packs (file-based): `data/axes/<axis_pack_id>.json`.
 
+
 ## Scripts
 
 - Seed example axes:
+
 
 ```text
 
@@ -142,6 +153,7 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 
 - Export OpenAPI schema (writes to `docs/openapi.json`):
 
+
 ```text
 
   python scripts/export_openapi.py --out docs/openapi.json
@@ -149,6 +161,7 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 ```text
 
 - Generate client collections via Make (also regenerates OpenAPI):
+
 
 ```text
 
@@ -164,6 +177,7 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 
 - PowerShell helper (Windows):
 
+
 ```text
 
   # Regenerate OpenAPI + Postman + Thunder into docs/
@@ -175,6 +189,7 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 
 - Run tests:
 
+
 ```text
 
   pytest -q
@@ -182,6 +197,7 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 ```text
 
 - Selected integration tests exercise API endpoints under `tests/`.
+
 
 ## Development Tips
 
