@@ -1,32 +1,15 @@
-from __future__ import annotations
+import json, os, pathlib
+from fastapi.openapi.utils import get_openapi
 
-import argparse
-import json
-import os
-import sys
-from pathlib import Path
+# If your app lives elsewhere, adjust import below:
+from src.coherence.api.main import app  # <— update if needed
 
-# Ensure coherence/src is on sys.path when executing as a script or module
-THIS_FILE = Path(__file__).resolve()
-PROJECT_ROOT = THIS_FILE.parents[2]  # repo root
-SRC_PATH = PROJECT_ROOT / "coherence" / "src"
-if str(SRC_PATH) not in sys.path:
-    sys.path.insert(0, str(SRC_PATH))
-
-from coherence.api.main import create_app
-
-
-def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--out", type=Path, required=True, help="Output JSON path for OpenAPI schema")
-    args = ap.parse_args()
-
-    app = create_app()
-    schema = app.openapi()
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(schema, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Wrote OpenAPI to {args.out}")
-
-
-if __name__ == "__main__":
-    main()
+out = pathlib.Path("docs")
+out.mkdir(parents=True, exist_ok=True)
+schema = get_openapi(
+    title=app.title if hasattr(app, "title") else "Coherence API",
+    version=getattr(app, "version", "0.0.0"),
+    routes=app.routes,
+)
+(out / "openapi.json").write_text(json.dumps(schema, indent=2))
+print(f"Wrote {out / 'openapi.json'}")
