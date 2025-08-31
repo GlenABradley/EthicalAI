@@ -924,6 +924,45 @@
           }
         }
       }
+    },
+    "/v1/constitution/rank": {
+      "post": {
+        "tags": [
+          "constitution"
+        ],
+        "summary": "Rank",
+        "operationId": "rank_v1_constitution_rank_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RankReq"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1930,6 +1969,48 @@
         },
         "type": "object",
         "title": "QuerySpec"
+      },
+      "RankReq": {
+        "properties": {
+          "candidates": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "pref_axes": {
+            "anyOf": [
+              {
+                "prefixItems": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "type": "array",
+                "maxItems": 2,
+                "minItems": 2
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pref Axes",
+            "default": [
+              "autonomy",
+              "truthfulness"
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "candidates"
+        ],
+        "title": "RankReq"
       },
       "ResonanceRequest": {
         "properties": {

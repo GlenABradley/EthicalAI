@@ -78,6 +78,8 @@ def create_app() -> FastAPI:
         app.include_router(ethical_axes_router)
         from ethicalai.api.eval import router as ethical_eval_router
         app.include_router(ethical_eval_router)
+        from ethicalai.api.constitution import router as ethical_const_router
+        app.include_router(ethical_const_router)
     except Exception as e:
         print("EthicalAI optional layer not loaded:", e)
 
