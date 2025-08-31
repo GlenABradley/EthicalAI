@@ -63,7 +63,7 @@ def main():
         st.markdown("## Navigation")
         page = st.radio(
             "Go to",
-            ["Home", "Axes", "Analyze", "Search", "What-If"],
+            ["Home", "Axes", "Analyze", "Search", "What-If", "Ethical Evaluation", "Interaction"],
             label_visibility="collapsed"
         )
         
@@ -91,6 +91,10 @@ def main():
         components.SearchForm()
     elif page == "What-If":
         components.WhatIfForm()
+    elif page == "Ethical Evaluation":
+        show_ethical_evaluation()
+    elif page == "Interaction":
+        show_interaction()
 
 
 def show_home_page():
@@ -151,6 +155,43 @@ def show_home_page():
         st.error("Backend is not reachable. Please ensure the Coherence API is running.")
         st.code("uvicorn coherence.api.main:app --reload --host 0.0.0.0 --port 8080")
 
+
+def show_ethical_evaluation():
+    st.title("Ethical Evaluation")
+    text = st.text_area("Enter text to evaluate ethically")
+    if st.button("Evaluate"):
+        try:
+            response = requests.post(f"{get_api_url()}/v1/eval/text", json={"text": text})
+            if response.status_code == 200:
+                data = response.json()
+                st.subheader("Decision Proof")
+                st.json(data["proof"])
+                st.subheader("Veto Spans")
+                st.json(data["spans"])
+            else:
+                st.error(f"Error: {response.status_code} - {response.text}")
+        except Exception as e:
+            st.error(f"Failed to connect to API: {e}")
+
+def show_interaction():
+    st.title("Interaction")
+    prompt = st.text_input("Enter your prompt")
+    if st.button("Respond"):
+        try:
+            response = requests.post(f"{get_api_url()}/v1/interaction/respond", json={"prompt": prompt})
+            if response.status_code == 200:
+                data = response.json()
+                st.subheader("Final Response")
+                st.write(data["final"])
+                st.subheader("Decision Proof")
+                st.json(data["proof"])
+                st.subheader("Alternatives")
+                for alt in data["alternatives"]:
+                    st.write(alt["text"])
+            else:
+                st.error(f"Error: {response.status_code} - {response.text}")
+        except Exception as e:
+            st.error(f"Failed to connect to API: {e}")
 
 if __name__ == "__main__":
     main()

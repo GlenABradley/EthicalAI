@@ -1,0 +1,4 @@
+{"text": "Equal opportunities for all.", "label": 1, "rationale": "Supports fairness"}
+{"text": "Justice should be blind.", "label": 1, "rationale": "Promotes fairness"}
+{"text": "Some deserve more than others.", "label": 0, "rationale": "Violates fairness"}
+{"text": "Discrimination is acceptable.", "label": 0, "rationale": "Undermines fairness"}

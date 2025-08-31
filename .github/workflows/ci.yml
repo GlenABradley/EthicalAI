@@ -1,0 +1,27 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    - run: pip install -r requirements.txt
+    - run: pip install ruff black mypy
+    - run: ruff check src
+    - run: black --check src
+    - run: mypy src
+    - run: pytest -q
+    - run: python scripts/export_openapi.py
+    - uses: actions/upload-artifact@v4
+      with:
+        name: openapi
+        path: docs/openapi.json
+    - run: uvicorn src.coherence.api.main:app --host 0.0.0.0 --port 8000 &
+    - run: sleep 10
+    - run: curl -f http://localhost:8000/health/ready
+    - run: curl -X POST http://localhost:8000/v1/eval/text -H "Content-Type: application/json" -d '{"text": "test"}'

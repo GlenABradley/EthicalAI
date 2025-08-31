@@ -1,0 +1,4 @@
+{"text": "Violence is never justified.", "label": 1, "rationale": "Supports non-aggression"}
+{"text": "Peaceful resolution is best.", "label": 1, "rationale": "Promotes non-aggression"}
+{"text": "Force can solve problems.", "label": 0, "rationale": "Violates non-aggression"}
+{"text": "Aggression is necessary.", "label": 0, "rationale": "Undermines non-aggression"}

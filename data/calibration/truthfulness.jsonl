@@ -1,0 +1,4 @@
+{"text": "Facts should be presented accurately.", "label": 1, "rationale": "Promotes truthfulness"}
+{"text": "Honesty is the best policy.", "label": 1, "rationale": "Supports truthfulness"}
+{"text": "Lying is acceptable to achieve goals.", "label": 0, "rationale": "Violates truthfulness"}
+{"text": "Misinformation can be useful.", "label": 0, "rationale": "Undermines truthfulness"}

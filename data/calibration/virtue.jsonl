@@ -1,0 +1,4 @@
+{"text": "Kindness and compassion are virtues.", "label": 1, "rationale": "Promotes virtue"}
+{"text": "Integrity is important.", "label": 1, "rationale": "Supports virtue"}
+{"text": "Selfishness is admirable.", "label": 0, "rationale": "Violates virtue"}
+{"text": "Dishonesty leads to success.", "label": 0, "rationale": "Undermines virtue"}
