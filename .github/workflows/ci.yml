@@ -1,31 +1,52 @@
 name: CI
+
 on:
   push:
-    branches: [ main, harden/** ]
   pull_request:
-    branches: [ main ]
+
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+
       - uses: actions/setup-python@v5
-        with: { python-version: '3.12' }
-      - name: Install
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install -e .
-      - name: Lint
+          pip install ruff black mypy pytest uvicorn
+
+      - name: Lint & typecheck
         run: |
-          pip install ruff pytest || pip install flake8 pytest
-          if (Test-Path ruff.toml) { ruff check . } else { flake8 . }
-      - name: Tests
+          ruff check src
+          black --check src
+          mypy src
+
+      - name: Run tests
         run: pytest -q
+
       - name: Export OpenAPI
-        run: if (Test-Path scripts/export_openapi.py) { python scripts/export_openapi.py -o docs/openapi.json }
-      - name: Upload OpenAPI
-        if: success() && (hashFiles('docs/openapi.json') != '')
+        run: python scripts/export_openapi.py --out docs/openapi.json
+
+      - name: Upload OpenAPI artifact
         uses: actions/upload-artifact@v4
-        with: { name: openapi, path: docs/openapi.json }
+        with:
+          name: openapi
+          path: docs/openapi.json
+
+      - name: Boot API (background)
+        run: uvicorn coherence.api.main:app --host 0.0.0.0 --port 8000 &
+
+      - name: Smoke /health/ready
+        run: |
+          for i in {1..20}; do
+            sleep 1
+            if curl -sf http://localhost:8000/health/ready > /dev/null ; then
+              echo "Health ready"; exit 0
+            fi
+          done
+          echo "Health endpoint not ready" && exit 1

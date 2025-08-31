@@ -72,6 +72,14 @@ def create_app() -> FastAPI:
     app.include_router(whatif_router.router, prefix="/whatif", tags=["whatif"])
     app.include_router(analyze_router.router, prefix="/analyze", tags=["analyze"])
 
+    # EthicalAI integration (non-fatal if not present)
+    try:
+        # if you already had includes, keep them; this block only adds EthicalAI later
+        # In Phase 0 there may be no routers under ethicalai yet; keep boot resilient.
+        from ethicalai import __version__ as _ignore  # type: ignore[attr-defined]
+    except Exception as e:
+        print("EthicalAI optional layer not loaded:", e)
+
     # TODO: @builder — expand analyze options (multi-τ, gating)
 
     # Initialize AxisRegistry once at startup using encoder dimension
