@@ -1,0 +1,11 @@
+# Local development overrides
+# This file extends app.yaml with local-specific settings
+
+# Use local model path
+encoder:
+  name: "./models/sentence-transformers_all-mpnet-base-v2"
+  device: "cpu"  # Force CPU for local dev
+
+# Reduce logging verbosity
+logging:
+  level: "INFO"
