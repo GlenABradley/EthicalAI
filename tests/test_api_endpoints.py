@@ -3,10 +3,6 @@ from __future__ import annotations
 import numpy as np
 from fastapi.testclient import TestClient
 
-from coherence.api.main import app
-
-client = TestClient(app)
-
 
 def make_axis_pack(d: int = 4, k: int = 2):
     # Simple orthonormal Q with first k identity columns
@@ -26,10 +22,10 @@ def make_axis_pack(d: int = 4, k: int = 2):
     }
 
 
-def test_resonance_with_vectors():
+def test_resonance_with_vectors(api_client: TestClient):
     axis = make_axis_pack(d=4, k=2)
     X = [[1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0]]
-    resp = client.post(
+    resp = api_client.post(
         "/resonance",
         json={
             "vectors": X,
@@ -44,12 +40,12 @@ def test_resonance_with_vectors():
     assert "coords" in data and "utilities" in data
 
 
-def test_pipeline_analyze_with_vectors():
+def test_pipeline_analyze_with_vectors(api_client: TestClient):
     axis = make_axis_pack(d=4, k=2)
     # 5 tokens, 4-dim vectors
     X = np.zeros((5, 4), dtype=np.float32)
     X[2, 0] = 2.0  # one salient token
-    resp = client.post(
+    resp = api_client.post(
         "/pipeline/analyze",
         json={
             "vectors": X.tolist(),
@@ -63,10 +59,10 @@ def test_pipeline_analyze_with_vectors():
     assert isinstance(data["frames"], list)
 
 
-def test_embed_endpoint_smoke():
+def test_embed_endpoint_smoke(api_client: TestClient):
     # Small smoke test with short texts; this may download a model on first run
     texts = ["Hello world", "Semantic coherence"]
-    resp = client.post(
+    resp = api_client.post(
         "/embed",
         json={
             "texts": texts,

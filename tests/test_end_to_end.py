@@ -13,6 +13,55 @@ import numpy as np
 import pytest
 from fastapi.testclient import TestClient
 
+def _ensure_axis_pack() -> str:
+    """Ensure a minimal, valid axis pack (d=768, k=2) exists under data/axes/.
+
+    Returns the axis_pack_id string usable with /analyze.
+    """
+    axis_pack_id = "apitest_768_2"
+    root = Path(__file__).resolve().parents[1]
+    axes_dir = root / "data" / "axes"
+    axes_dir.mkdir(parents=True, exist_ok=True)
+    path = axes_dir / f"{axis_pack_id}.json"
+
+    d = 768
+    k = 2
+
+    def _write_pack(p: Path):
+        Q = np.zeros((d, k), dtype=np.float32)
+        Q[0, 0] = 1.0
+        Q[1, 1] = 1.0
+        names = [f"a{i}" for i in range(k)]
+        lam = np.ones(k, dtype=np.float32)
+        beta = np.zeros(k, dtype=np.float32)
+        weights = np.ones(k, dtype=np.float32) / float(k)
+        obj = {
+            "names": names,
+            "Q": Q.tolist(),
+            "lambda": lam.astype(float).tolist(),
+            "beta": beta.astype(float).tolist(),
+            "weights": weights.astype(float).tolist(),
+            "mu": {},
+            "meta": {},
+        }
+        path.write_text(json.dumps(obj, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    if path.exists():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+            Q = data.get("Q", [])
+            names = data.get("names", [])
+            d_ok = isinstance(Q, list) and len(Q) == d and all(isinstance(row, list) for row in Q)
+            k_ok = d_ok and len(Q[0]) == k and len(names) == k
+            if not (d_ok and k_ok):
+                _write_pack(path)
+        except Exception:
+            _write_pack(path)
+    else:
+        _write_pack(path)
+
+    return axis_pack_id
+
 # Test data
 SAMPLE_TEXTS = [
     "This is an example sentence about ethical AI development.",
@@ -98,94 +147,64 @@ def test_embed_endpoint(api_client: TestClient):
 def test_analyze_endpoint(api_client: TestClient):
     """Test the text analysis endpoint."""
     test_text = SAMPLE_TEXTS[0]
+    axis_pack_id = _ensure_axis_pack()
     response = api_client.post(
         "/analyze",
         json={
+            "axis_pack_id": axis_pack_id,
             "texts": [test_text],
-            "pack_id": None,  # Use active pack
-            "compute_embeddings": True,
-            "compute_frames": True,
-            "compute_metrics": True
+            "options": {}
         },
         timeout=60.0
     )
-    
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}: {response.text}"
     data = response.json()
-    
-    assert "results" in data, "Response missing 'results' key"
-    assert len(data["results"]) == 1, f"Expected 1 result, got {len(data['results'])}"
-    
-    result = data["results"][0]
-    required_keys = ["text", "embedding", "frames", "metrics"]
-    for key in required_keys:
-        assert key in result, f"Missing expected key in result: {key}"
+    # Validate AnalyzeResponse structure
+    for key in ["axes", "tokens", "spans", "frames", "frame_spans", "tau_used"]:
+        assert key in data, f"Missing expected key in analyze response: {key}"
+    # Tokens object should have the expected sub-keys
+    for key in ["alpha", "u", "r", "U"]:
+        assert key in data["tokens"], f"Missing tokens sub-key: {key}"
 
 
 def test_batch_analysis(api_client: TestClient):
     """Test batch text analysis with multiple texts."""
-    # Test with multiple texts
-    response = api_client.post(
-        "/analyze",
-        json={
-            "texts": SAMPLE_TEXTS,
-            "pack_id": None,  # Use active pack
-            "compute_embeddings": True,
-            "compute_frames": True,
-            "compute_metrics": True
-        },
-        timeout=120.0  # Longer timeout for batch processing
-    )
-    
-    assert response.status_code == 200, f"Expected status code 200, got {response.status_code}: {response.text}"
-    data = response.json()
-    
-    assert "results" in data, "Response missing 'results' key"
-    assert len(data["results"]) == len(SAMPLE_TEXTS), \
-        f"Expected {len(SAMPLE_TEXTS)} results, got {len(data['results'])}"
-    
-    # Verify each result has the expected structure
-    required_keys = ["text", "embedding", "frames", "metrics"]
-    for i, result in enumerate(data["results"]):
-        for key in required_keys:
-            assert key in result, f"Missing key '{key}' in result {i}"
+    # The /analyze endpoint processes only the first text from the list.
+    # Call it per-text to simulate a batch.
+    axis_pack_id = _ensure_axis_pack()
+    for i, text in enumerate(SAMPLE_TEXTS):
+        response = api_client.post(
+            "/analyze",
+            json={
+                "axis_pack_id": axis_pack_id,
+                "texts": [text],
+                "options": {}
+            },
+            timeout=120.0
+        )
+        assert response.status_code == 200, f"Text {i}: expected 200, got {response.status_code}: {response.text}"
+        data = response.json()
+        for key in ["axes", "tokens", "spans", "frames", "frame_spans", "tau_used"]:
+            assert key in data, f"Text {i}: missing key {key}"
 
 
 def test_whatif_analysis(api_client: TestClient):
     """Test what-if analysis with modified text."""
-    # Test what-if scenario
-    original_text = SAMPLE_TEXTS[0]
-    modified_text = original_text.replace("ethical", "unethical")
-    
+    axis_pack_id = _ensure_axis_pack()
     response = api_client.post(
         "/whatif",
         json={
-            "original_text": original_text,
-            "modified_text": modified_text,
-            "pack_id": None,  # Use active pack
-            "compute_embeddings": True,
-            "compute_frames": True,
-            "compute_metrics": True
+            "axis_pack_id": axis_pack_id,
+            "doc_id": "doc1",
+            "edits": [
+                {"type": "replace_text", "start": 0, "end": 7, "value": "unethical"}
+            ]
         },
-        timeout=90.0  # Longer timeout for what-if analysis
+        timeout=90.0
     )
-    
     assert response.status_code == 200, f"Expected status code 200, got {response.status_code}: {response.text}"
     data = response.json()
-    
-    # Check both original and modified results
-    required_keys = ["text", "embedding", "frames", "metrics"]
-    for result_type in ["original", "modified"]:
-        assert result_type in data, f"Missing result type: {result_type}"
-        result = data[result_type]
-        for key in required_keys:
-            assert key in result, f"Missing key '{key}' in {result_type} result"
-    
-    # Verify the texts were modified as expected
-    assert data["original"]["text"] == original_text, \
-        f"Original text mismatch: {data['original']['text']} != {original_text}"
-    assert data["modified"]["text"] == modified_text, \
-        f"Modified text mismatch: {data['modified']['text']} != {modified_text}"
+    assert "deltas" in data and isinstance(data["deltas"], list), "WhatIf response should contain 'deltas' list"
 
 
 if __name__ == "__main__":

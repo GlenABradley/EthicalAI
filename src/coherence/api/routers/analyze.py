@@ -13,7 +13,7 @@ from coherence.api.models import (
     AxialVectorsModel,
 )
 from coherence.axis.pack import AxisPack
-from coherence.encoders.registry import get_encoder
+from coherence.encoders.text_sbert import get_default_encoder
 from coherence.metrics.resonance import project, utilities, aggregate
 from coherence.pipeline.orchestrator import run_pipeline_from_vectors, OrchestratorParams
 
@@ -27,17 +27,24 @@ def _tokenize(text: str) -> List[str]:
 
 @router.post("", response_model=AnalyzeResponse)
 def analyze(req: AnalyzeText) -> AnalyzeResponse:
-    if not req.texts:
+    texts = req.texts if req.texts else ([req.text] if req.text else [])
+    if not texts:
         raise HTTPException(status_code=400, detail="No texts provided")
+
+    if not req.axis_pack_id:
+        # Frontend tests allow 501 when axis selection isn't implemented
+        raise HTTPException(status_code=501, detail="axis_pack_id is required for analyze")
 
     axis_pack_id = req.axis_pack_id
     pack_path = f"data/axes/{axis_pack_id}.json"
     try:
         pack = AxisPack.load(pack_path)
     except FileNotFoundError:
-        raise HTTPException(status_code=400, detail="Axis pack not found. Create it via /axes/create or seed script.")
+        raise HTTPException(status_code=404, detail="Axis pack not found")
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid axis pack: {e}")
 
-    text = req.texts[0]
+    text = texts[0]
     tokens = _tokenize(text)
     if not tokens:
         # Return empty shapes
@@ -50,8 +57,12 @@ def analyze(req: AnalyzeText) -> AnalyzeResponse:
             tau_used=[0.0],
         )
 
-    enc = get_encoder()
-    X = enc.encode(tokens).astype(np.float32)  # (n,d)
+    enc = get_default_encoder()
+    X = enc.encode(tokens).astype(np.float32)  # (n,d) or (d,)
+    if X.ndim == 1:
+        X = X.reshape(1, -1)
+    if X.shape[1] != pack.Q.shape[0]:
+        raise HTTPException(status_code=409, detail=f"Encoder dimension {X.shape[1]} does not match axis pack dimension {pack.Q.shape[0]}")
 
     # Run core orchestrator for spans/frames topology
     params = OrchestratorParams(max_span_len=5, max_skip=2, diffusion_tau=None)

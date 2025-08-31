@@ -24,6 +24,22 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 
+@pytest.fixture(scope="session", autouse=True)
+def _preload_real_encoder_if_requested():
+    """Optionally pre-load the real encoder once per test session.
+
+    Enable by setting COHERENCE_TEST_REAL_ENCODER to true/1/yes.
+    This avoids re-initializing the SentenceTransformer for each test case.
+    """
+    use_real = os.getenv("COHERENCE_TEST_REAL_ENCODER", "").lower() in ("1", "true", "yes")
+    if use_real:
+        try:
+            from coherence.encoders.text_sbert import get_default_encoder
+            get_default_encoder()
+        except Exception as e:
+            print(f"Warning: failed to preload real encoder: {e}")
+
+
 def _make_sample_axis(path: Path, name: str):
     data = {
         "name": name,
@@ -72,20 +88,28 @@ def api_client(tmp_artifacts_dir: Path) -> TestClient:
     os.environ["COHERENCE_TEST_MODE"] = "true"
     os.environ["COHERENCE_ENCODER"] = "all-mpnet-base-v2"
     
+    # Allow opting into real encoder via env var without changing tests
+    use_real = os.getenv("COHERENCE_TEST_REAL_ENCODER", "").lower() in ("1", "true", "yes")
+    if use_real:
+        from coherence.api.main import create_app
+        app = create_app()
+        client = TestClient(app)
+        return client
+    
     # Mock the encoder to prevent model downloading during tests
     from coherence.encoders.text_sbert import SBERTEncoder
     
     # Create a mock encoder that doesn't actually load the model
     mock_encoder = MagicMock()
+    # Expose minimal _model API expected by health.create_app/init
+    mock_encoder._model = MagicMock()
+    mock_encoder._model.get_sentence_embedding_dimension.return_value = 768
+    # Proper encode() implementation returning arrays/lists
     def mock_encode(texts):
-        # Return proper numpy array with shape (num_texts, embedding_dim)
-        # Mock the encoder to return proper numpy arrays
         if np is not None:
-            mock_encoder.encode.return_value = np.random.rand(len(texts), 384).astype(np.float32)
+            return np.random.rand(len(texts), 768).astype(np.float32)
         else:
-            # Fallback if numpy is not available
-            mock_encoder.encode.return_value = [[0.1] * 384 for _ in texts]
-        mock_encoder._model.get_sentence_embedding_dimension.return_value = 384  
+            return [[0.1] * 768 for _ in texts]
     mock_encoder.encode.side_effect = mock_encode
     mock_encoder.model_name = "all-mpnet-base-v2"
     mock_encoder.device = "cpu"

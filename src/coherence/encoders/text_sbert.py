@@ -17,6 +17,9 @@ try:
 except Exception:  # pragma: no cover - import fallback
     SentenceTransformer = None  # type: ignore
 
+# Simple module-level cache to avoid reloading models repeatedly
+# Keyed by (model_name, resolved_device, normalize_input)
+_ENCODER_CACHE: dict[tuple[str, str, bool], "SBERTEncoder"] = {}
 
 def _select_device(device: str) -> str:
     if device == "auto":
@@ -85,7 +88,16 @@ def get_default_encoder(name: Optional[str] = None, device: str = "auto", normal
         name = env_name or enc.get("name", "sentence-transformers/all-mpnet-base-v2")
         device = env_device or enc.get("device", device)
         normalize_input = bool(enc.get("normalize_input", normalize_input))
-    return SBERTEncoder(model_name=name, device=device, normalize_input=normalize_input)
+    # Resolve device for caching key to avoid distinct entries for "auto"
+    resolved_device = _select_device(device)
+    cache_key = (name, resolved_device, bool(normalize_input))
+    cached = _ENCODER_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    encoder = SBERTEncoder(model_name=name, device=resolved_device, normalize_input=normalize_input)
+    _ENCODER_CACHE[cache_key] = encoder
+    return encoder
 
 """Sentence-Transformers encoder (Milestone 1).
 

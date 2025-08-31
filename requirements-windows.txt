@@ -11,6 +11,7 @@ fastapi>=0.68.0
 uvicorn[standard]>=0.15.0
 pydantic>=1.8.0
 httpx>=0.28.1
+aiohttp>=3.12.15
 
 # Development
 torch>=1.9.0  # Required for sentence-transformers
