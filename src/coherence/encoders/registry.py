@@ -21,6 +21,9 @@ def get_encoder(name: str = "sbert", **kwargs: Any) -> SBERTEncoder:
     if key in ("default", "sbert"):
         if key == "default" and not kwargs:
             return get_default_encoder()
+        # Ensure model_name is provided for SBERTEncoder
+        if "model_name" not in kwargs:
+            kwargs["model_name"] = "all-mpnet-base-v2"
         return SBERTEncoder(**kwargs)  # type: ignore[arg-type]
     raise ValueError(f"Unknown encoder: {name}")
 

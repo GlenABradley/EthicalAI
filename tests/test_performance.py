@@ -6,6 +6,7 @@ under different load conditions.
 """
 import asyncio
 import time
+import json
 from concurrent.futures import ThreadPoolExecutor
 from typing import List, Dict, Any
 

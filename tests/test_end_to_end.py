@@ -49,32 +49,34 @@ TEST_AXIS_PACK = {
 }
 
 
-@pytest.mark.asyncio
-async def test_health_check(api_client: TestClient):
+def test_health_check(api_client: TestClient):
     """Test the health check endpoint."""
-    # Skip the actual health check since it's hanging
-    # Instead, verify we can make a basic request to the API
-    print("\n=== Starting basic API test ===")
+    print("\n=== Starting health check test ===")
+    print("Making request to /health/ready...")
     
     try:
-        async with api_client as client:
-            # Test a simple endpoint that doesn't require model loading
-            response = await client.get("/")
-            print(f"Response status: {response.status_code}")
+        response = api_client.get("/health/ready")
+        print(f"Response status: {response.status_code}")
+        print(f"Response text: {response.text[:200]}...")
+        
+        assert response.status_code == 200, f"Expected status code 200, got {response.status_code}: {response.text}"
+        data = response.json()
+        print("Response JSON parsed successfully")
+        
+        # Check for expected keys in the health check response
+        required_keys = ["encoder_model", "encoder_dim", "active_pack", "frames_db_present"]
+        print("Checking for required keys in response...")
+        for key in required_keys:
+            assert key in data, f"Missing expected key in health check response: {key}"
+            print(f"  ✓ Found key: {key}")
             
-            # The root endpoint might return 404 or 200 depending on the API
-            # Just verify we got a response
-            assert response.status_code in (200, 404), \
-                f"Unexpected status code: {response.status_code}"
-                
-        print("=== Basic API test completed successfully ===\n")
-        return True
+        print("=== Health check test completed successfully ===\n")
         
     except Exception as e:
         print(f"!!! Test failed with exception: {str(e)}")
         import traceback
         traceback.print_exc()
-        return False
+        raise
 
 
 def test_embed_endpoint(api_client: TestClient):

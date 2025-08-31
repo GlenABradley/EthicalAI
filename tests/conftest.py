@@ -4,10 +4,17 @@ import json
 import shutil
 import tempfile
 import importlib
+import unittest.mock
 from pathlib import Path
 from typing import Iterator, List
+from unittest.mock import MagicMock
 
 import pytest
+try:
+    import numpy as np
+except ImportError:
+    print("Warning: numpy not installed. Some tests may fail.")
+    np = None
 from fastapi.testclient import TestClient
 
 # Ensure src/ is importable when running tests without installation
@@ -54,8 +61,8 @@ def sample_axis_jsons(tmp_artifacts_dir: Path) -> List[Path]:
     return [a1, a2]
 
 
-@pytest.fixture(scope="function")  # Changed to function scope to avoid issues
-async def api_client(tmp_artifacts_dir: Path) -> TestClient:
+@pytest.fixture(scope="function")
+def api_client(tmp_artifacts_dir: Path) -> TestClient:
     # Reset registry and load app fresh
     import coherence.api.axis_registry as axis_registry
     axis_registry.REGISTRY = None
@@ -63,14 +70,54 @@ async def api_client(tmp_artifacts_dir: Path) -> TestClient:
     # Set test environment variables
     os.environ["COHERENCE_ARTIFACTS_DIR"] = str(tmp_artifacts_dir)
     os.environ["COHERENCE_TEST_MODE"] = "true"
-    os.environ["COHERENCE_ENCODER"] = "all-mpnet-base-v2"  # Explicitly set encoder
+    os.environ["COHERENCE_ENCODER"] = "all-mpnet-base-v2"
     
-    # Import and create app
+    # Mock the encoder to prevent model downloading during tests
+    from coherence.encoders.text_sbert import SBERTEncoder
+    
+    # Create a mock encoder that doesn't actually load the model
+    mock_encoder = MagicMock()
+    def mock_encode(texts):
+        # Return proper numpy array with shape (num_texts, embedding_dim)
+        # Mock the encoder to return proper numpy arrays
+        if np is not None:
+            mock_encoder.encode.return_value = np.random.rand(len(texts), 384).astype(np.float32)
+        else:
+            # Fallback if numpy is not available
+            mock_encoder.encode.return_value = [[0.1] * 384 for _ in texts]
+        mock_encoder._model.get_sentence_embedding_dimension.return_value = 384  
+    mock_encoder.encode.side_effect = mock_encode
+    mock_encoder.model_name = "all-mpnet-base-v2"
+    mock_encoder.device = "cpu"
+    
+    with unittest.mock.patch('coherence.encoders.text_sbert.get_default_encoder', return_value=mock_encoder):
+        # Import and create app with mocked encoder
+        from coherence.api.main import create_app
+        app = create_app()
+        
+        # Create test client
+        client = TestClient(app)
+        
+        return client
+
+
+@pytest.fixture(scope="function")
+def api_client_real_encoder(tmp_artifacts_dir: Path) -> TestClient:
+    """API client fixture that uses the real encoder (no mocking)."""
+    # Reset registry and load app fresh
+    import coherence.api.axis_registry as axis_registry
+    axis_registry.REGISTRY = None
+    
+    # Set test environment variables
+    os.environ["COHERENCE_ARTIFACTS_DIR"] = str(tmp_artifacts_dir)
+    os.environ["COHERENCE_TEST_MODE"] = "true"
+    os.environ["COHERENCE_ENCODER"] = "all-mpnet-base-v2"
+    
+    # Import and create app with real encoder (no mocking)
     from coherence.api.main import create_app
     app = create_app()
     
     # Create test client
     client = TestClient(app)
     
-    # Skip health check to avoid hanging
     return client
