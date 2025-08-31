@@ -74,9 +74,10 @@ def create_app() -> FastAPI:
 
     # EthicalAI integration (non-fatal if not present)
     try:
-        # if you already had includes, keep them; this block only adds EthicalAI later
-        # In Phase 0 there may be no routers under ethicalai yet; keep boot resilient.
-        from ethicalai import __version__ as _ignore  # type: ignore[attr-defined]
+        from ethicalai.api.axes import router as ethical_axes_router
+        app.include_router(ethical_axes_router)
+        from ethicalai.api.eval import router as ethical_eval_router
+        app.include_router(ethical_eval_router)
     except Exception as e:
         print("EthicalAI optional layer not loaded:", e)
 

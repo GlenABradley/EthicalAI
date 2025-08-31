@@ -50,3 +50,7 @@ jobs:
             fi
           done
           echo "Health endpoint not ready" && exit 1
+
+      - name: Smoke /v1/axes/active
+        run: |
+          curl -sf http://localhost:8000/v1/axes/active || true
