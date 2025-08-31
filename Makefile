@@ -6,7 +6,7 @@ OPENAPI_JSON := $(DOCS_DIR)/openapi.json
 POSTMAN_JSON := $(DOCS_DIR)/postman_collection.json
 THUNDER_JSON := $(DOCS_DIR)/thunder-collection_Coherence_API.json
 
-.PHONY: openapi postman thunder collections all
+.PHONY: openapi postman thunder collections all dev test
 
 openapi:
 	python scripts/export_openapi.py --out $(OPENAPI_JSON)
@@ -24,3 +24,9 @@ all: collections
 	@echo "  $(OPENAPI_JSON)"
 	@echo "  $(POSTMAN_JSON)"
 	@echo "  $(THUNDER_JSON)"
+
+dev:
+	uvicorn coherence.api.main:app --reload --host 0.0.0.0 --port 8080
+
+test:
+	pytest -q

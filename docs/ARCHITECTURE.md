@@ -20,6 +20,20 @@ The system operationalizes the objective "Maximize human autonomy based on objec
 3. Evaluate text for veto.
 4. Use in reranker or interaction for safe responses.
 
+## Architecture Diagram
+
+```mermaid
+graph TD
+    A[User] --> B[UI]
+    B --> C[API]
+    C --> D[Evaluator]
+    D --> E[Axis Pack]
+    C --> F[Constitution]
+    F --> D
+    C --> G[Interaction]
+    G --> F
+```
+
 ## Technologies
 
 - Python backend with FastAPI.

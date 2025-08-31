@@ -1,6 +1,6 @@
-# Coherence
+# EthicalAI
 
-Coherence is a semantic analysis engine that allows users to define semantic axes and compute resonance and internal coherence over text. It outputs per-axis vectors at token, span, frame, and frame-span levels, with multi-scale diffusion and a lightweight logical frame layer.
+EthicalAI is a semantic analysis engine that allows users to define semantic axes and compute resonance and internal coherence over text. It outputs per-axis vectors at token, span, frame, and frame-span levels, with multi-scale diffusion and a lightweight logical frame layer.
 
 This repository follows the authoritative build plan provided. We will implement the system milestone-by-milestone with concrete artifacts, tests, and a runnable API.
 
@@ -30,37 +30,28 @@ python -m venv .venv && source .venv/bin/activate
 1. Install dependencies
 
 ```bash
-
 pip install -r requirements.txt
-
-```text
+```
 
 1. Run tests (initially mostly skipped)
 
 
-```text
-
+```bash
 pytest -q
-
-```text
+```
 
 1. Run the API server
 
-
-```text
-
+```bash
 uvicorn coherence.api.main:app --reload --host 0.0.0.0 --port 8080
-
-```text
+```
 
 1. Seed an example axis pack
 
 
-```text
-
+```bash
 python scripts/seed_axes.py --config configs/axis_packs/sample.json
-
-```text
+```
 
 ## Repository Layout
 
@@ -145,62 +136,55 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 - Seed example axes:
 
 
-```text
-
-  python scripts/seed_axes.py --config configs/axis_packs/sample.json
-
-```text
+```bash
+python scripts/seed_axes.py --config configs/axis_packs/sample.json
+```
 
 - Export OpenAPI schema (writes to `docs/openapi.json`):
 
 
-```text
-
-  python scripts/export_openapi.py --out docs/openapi.json
-
-```text
+```bash
+python scripts/export_openapi.py --out docs/openapi.json
+```
 
 - Generate client collections via Make (also regenerates OpenAPI):
 
 
-```text
+```bash
+# default BASE_URL is http://localhost:8080
+make postman      # writes docs/postman_collection.json
+make thunder      # writes docs/thunder-collection_Coherence_API.json
+make collections  # openapi + both collections
 
-  # default BASE_URL is <<<http://localhost:8080>>>
-  make postman      # writes docs/postman_collection.json
-  make thunder      # writes docs/thunder-collection_Coherence_API.json
-  make collections  # openapi + both collections
-
-  # override base URL
-  make collections BASE_URL=<<<http://127.0.0.1:8080>>>
-
-```text
+# override base URL
+make collections BASE_URL=http://127.0.0.1:8080
+```
 
 - PowerShell helper (Windows):
 
 
-```text
-
-  # Regenerate OpenAPI + Postman + Thunder into docs/
-  .\tools\export-openapi.ps1 -BaseUrl "<<<http://localhost:8080">>> -OutDir "docs"
-
-```text
+```powershell
+# Regenerate OpenAPI + Postman + Thunder into docs/
+.\tools\export-openapi.ps1 -BaseUrl "http://localhost:8080" -OutDir "docs"
+```
 
 ## Testing
 
 - Run tests:
 
 
-```text
-
-  pytest -q
-
-```text
+```bash
+pytest -q
+```
 
 - Selected integration tests exercise API endpoints under `tests/`.
-
 
 ## Development Tips
 
 - Use `uvicorn` with `--reload` for rapid iteration.
 - Check `/health/ready` to verify active axis pack and frames DB presence.
 - Prefer v1 endpoints (`/v1/axes`, `/v1/frames`) for production flows.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.

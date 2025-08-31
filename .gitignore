@@ -17,7 +17,6 @@ Thumbs.db
 .vscode/
 
 # Artifacts & outputs (generated)
-artifacts/
 output/
 *.npz
 *.npz.*
