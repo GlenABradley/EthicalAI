@@ -10,9 +10,4 @@ router = APIRouter()
 # Include the v1 axes router with versioned prefix
 router.include_router(v1_axes_router, prefix="/v1/axes", tags=["v1_axes"])
 
-@router.get("/health")
-async def health_check() -> Dict[str, str]:
-    """Health check endpoint."""
-    return {"status": "ok"}
-
-# Removed the duplicate /axes endpoint
+# Removed the duplicate /health and /axes endpoints
