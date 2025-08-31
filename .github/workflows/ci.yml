@@ -57,6 +57,20 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"prompt":"hello", "n": 2}' | jq .policy.strictness >/dev/null
 
+      - name: Calibrate thresholds (smoke)
+        run: |
+          python - <<'PY'
+          import json, numpy as np, pathlib
+          art = pathlib.Path("artifacts"); art.mkdir(exist_ok=True)
+          pack_id="ci-pack"
+          v = np.ones(8, dtype=float)/np.sqrt(8)
+          np.savez_compressed(art / f"axis_pack:{pack_id}.npz", autonomy=v)
+          (art / f"axis_pack:{pack_id}.meta.json").write_text(json.dumps({"meta":{}}))
+          PY
+          python -m ethicalai.axes.calibrate --pack ci-pack \
+            --dataset data/calibration/autonomy.jsonl \
+            --reports reports
+
       - name: Smoke /v1/axes/active
         run: |
           curl -sf http://localhost:8000/v1/axes/active || true

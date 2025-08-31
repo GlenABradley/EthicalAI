@@ -71,14 +71,18 @@ def activate(pack_id: str):
     if not (meta_path.exists() and npz_path.exists()):
         raise HTTPException(404, "Axis pack not found")
     arrs = np.load(npz_path)
-    axes = [Axis(name=k, vector=arrs[k], threshold=0.0, provenance={"loaded":"npz"}) for k in arrs.files]
     meta = json.loads(meta_path.read_text())
-    # restore thresholds if present
-    th = (meta.get("thresholds") or {})
-    for ax in axes:
-        ax.threshold = float(th.get(ax.name, 0.0))
-    pack = AxisPack(id=pack_id, axes=axes, dim=int(meta.get("dim", axes[0].vector.shape[0])), meta=meta.get("meta", {}))
-    ACTIVE["pack"] = pack
+    thresholds = meta.get("thresholds", {})
+    axes = [
+        Axis(name=k, vector=arrs[k], threshold=float(thresholds.get(k, 0.0)), provenance=meta.get("meta", {}))
+        for k in arrs.files
+    ]
+    ACTIVE["pack"] = AxisPack(
+        id=pack_id,
+        axes=axes,
+        dim=axes[0].vector.shape[0],
+        meta=meta.get("meta",{})
+    )
     return {"ok": True}
 
 @router.get("/active")
