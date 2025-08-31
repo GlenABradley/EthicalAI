@@ -1,28 +1,32 @@
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
-*.so
 *.egg-info/
-.eggs/
 .build/
 dist/
-site/
-.coverage*
-.pytest_cache/
-.mypy_cache/
-.ipynb_checkpoints/
 
-# Environments
+# Virtual envs
 .venv/
+venv/
 .env
 .env.*
-!.env.example
 
-# OS
+# OS / editors
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
 
-# Logs
-logs/
-*.log
+# Artifacts & outputs (generated)
+artifacts/
+output/
+*.npz
+*.npz.*
+*.sqlite
+*.sqlite3
+*.db
+*.pt
+*.bin
+
+# Models (use HF cache or LFS instead)
+models/
