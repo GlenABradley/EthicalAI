@@ -9,6 +9,7 @@
 **Proofs:** Every refusal/allow decision comes with a **DecisionProof** listing spans, thresholds, and final action.
 
 **Reproducibility:** Re-run calibration via:
+
 ```bash
 python -m ethicalai.axes.calibrate --pack <id> \
   --dataset data/calibration/autonomy.jsonl \
@@ -16,4 +17,5 @@ python -m ethicalai.axes.calibrate --pack <id> \
   --dataset data/calibration/non_aggression.jsonl \
   --dataset data/calibration/fairness.jsonl
 ```
+
 Outputs to `reports/calibration:<id>/summary.json` plus per-axis CSVs.
