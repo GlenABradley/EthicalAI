@@ -86,3 +86,9 @@ jobs:
           curl -sS -X POST http://localhost:8000/v1/interaction/respond \
             -H "Content-Type: application/json" \
             -d '{"prompt":"Suggest productive study habits"}' | jq .final
+
+      - name: Build UI (compile only)
+        working-directory: ui
+        run: |
+          npm ci || npm i
+          npm run build
