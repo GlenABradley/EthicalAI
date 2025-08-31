@@ -15,26 +15,35 @@ from fastapi.testclient import TestClient
 
 # Test data
 SAMPLE_TEXTS = [
-    "This is a test sentence about ethics and morality.",
-    "Harm reduction and maximizing well-being are key ethical principles.",
-    "This text should be evaluated for ethical considerations.",
+    "This is an example sentence about ethical AI development.",
+    "Autonomous weapons raise significant ethical concerns in modern warfare.",
+    "Bias in machine learning models can lead to unfair treatment of certain groups.",
+    "Transparency in AI decision-making is crucial for accountability.",
+    "Privacy-preserving techniques help protect user data in AI applications."
 ]
 
-# Test axis pack configuration
+# Sample axis pack for testing
 TEST_AXIS_PACK = {
-    "name": "test_ethics",
+    "id": "test_axis_pack",
+    "name": "Test Axis Pack",
+    "description": "Test axis pack for unit tests",
+    "version": "1.0.0",
     "axes": [
         {
-            "name": "harm_reduction",
-            "positive_examples": ["reduces harm", "prevents suffering"],
-            "negative_examples": ["causes harm", "inflicts pain"],
+            "id": "ethics",
+            "name": "Ethical Considerations",
+            "description": "Measures the ethical considerations in the text",
+            "positive_examples": ["ethical", "fair", "just", "responsible"],
+            "negative_examples": ["unethical", "biased", "harmful", "unfair"],
             "weight": 1.0
         },
         {
-            "name": "autonomy",
-            "positive_examples": ["respects autonomy", "supports freedom"],
-            "negative_examples": ["restricts freedom", "controls others"],
-            "weight": 1.0
+            "id": "safety",
+            "name": "Safety Concerns",
+            "description": "Identifies potential safety concerns in the text",
+            "positive_examples": ["safe", "secure", "reliable", "robust"],
+            "negative_examples": ["dangerous", "harmful", "risky", "unreliable"],
+            "weight": 0.8
         }
     ]
 }
@@ -42,7 +51,7 @@ TEST_AXIS_PACK = {
 
 def test_health_check(api_client: TestClient):
     """Test the health check endpoint."""
-    response = api_client.get("/health")
+    response = api_client.get("/api/v1/health")
     assert response.status_code == 200
     assert response.json() == {"status": "ok"}
 
@@ -51,7 +60,7 @@ def test_embed_endpoint(api_client: TestClient):
     """Test the text embedding endpoint."""
     test_text = SAMPLE_TEXTS[0]
     response = api_client.post(
-        "/embed",
+        "/api/v1/embed",
         json={"texts": [test_text]}
     )
     
@@ -64,25 +73,32 @@ def test_embed_endpoint(api_client: TestClient):
     assert data["device"] in ["cpu", "cuda", "mps"]
 
 
-def test_analyze_endpoint(api_client: TestClient, tmp_artifacts_dir: Path):
-    """Test the text analysis endpoint with ethical evaluation."""
-    # First, create a test axis pack
-    axis_pack_path = tmp_artifacts_dir / "test_axis_pack.json"
-    axis_pack_path.write_text(json.dumps(TEST_AXIS_PACK))
+def test_analyze_endpoint(api_client: TestClient, tmp_path):
+    """Test the text analysis endpoint."""
+    # Create a temporary axis pack
+    pack_dir = tmp_path / "test_pack"
+    pack_dir.mkdir()
+    (pack_dir / "axes").mkdir()
     
-    # Test analysis with the sample text
+    axis_file = pack_dir / "axes" / "test_axis.json"
+    axis_file.write_text(json.dumps(TEST_AXIS_PACK))
+    
+    # Test with a single text
+    test_text = SAMPLE_TEXTS[0]
     response = api_client.post(
-        "/analyze",
+        "/api/v1/analyze",
         json={
-            "texts": [SAMPLE_TEXTS[0]],
-            "axis_pack_id": "test_axis_pack"
+            "texts": [test_text],
+            "axis_pack_path": str(pack_dir)
         }
     )
     
     assert response.status_code == 200
     data = response.json()
-    
-    # Verify the response structure
+    assert "results" in data
+    assert len(data["results"]) == 1
+    assert "scores" in data["results"][0]
+    assert "overall_score" in data["results"][0]
     assert "axes" in data
     assert "tokens" in data
     assert "spans" in data
@@ -101,56 +117,64 @@ def test_analyze_endpoint(api_client: TestClient, tmp_artifacts_dir: Path):
     assert len(data["tokens"]["U"]) > 0
 
 
-def test_batch_analysis(api_client: TestClient, tmp_artifacts_dir: Path):
-    """Test batch processing of multiple texts."""
-    # Create a test axis pack
-    axis_pack_path = tmp_artifacts_dir / "test_batch_axis_pack.json"
-    axis_pack_path.write_text(json.dumps(TEST_AXIS_PACK))
+def test_batch_analysis(api_client: TestClient, tmp_path):
+    """Test batch text analysis with multiple texts."""
+    # Create a temporary axis pack
+    pack_dir = tmp_path / "test_pack"
+    pack_dir.mkdir()
+    (pack_dir / "axes").mkdir()
     
-    # Test batch analysis
+    axis_file = pack_dir / "axes" / "test_axis.json"
+    axis_file.write_text(json.dumps(TEST_AXIS_PACK))
+    
+    # Test with multiple texts
     response = api_client.post(
-        "/analyze/batch",
+        "/api/v1/analyze/batch",
         json={
             "texts": SAMPLE_TEXTS,
-            "axis_pack_id": "test_batch_axis_pack"
-        }
-    )
-    
-    assert response.status_code == 200
-    results = response.json()
-    assert len(results) == len(SAMPLE_TEXTS)
-    
-    # Verify each result has the expected structure
-    for result in results:
-        assert "axes" in result
-        assert "tokens" in result
-        assert len(result["tokens"]["alpha"]) > 0
-
-
-def test_whatif_analysis(api_client: TestClient, tmp_artifacts_dir: Path):
-    """Test the what-if analysis endpoint."""
-    # Create a test axis pack
-    axis_pack_path = tmp_artifacts_dir / "whatif_axis_pack.json"
-    axis_pack_path.write_text(json.dumps(TEST_AXIS_PACK))
-    
-    # Test what-if scenario
-    response = api_client.post(
-        "/whatif",
-        json={
-            "text": "This is a test scenario.",
-            "modifications": ["Make this more ethical", "Make this less harmful"],
-            "axis_pack_id": "whatif_axis_pack"
+            "axis_pack_path": str(pack_dir)
         }
     )
     
     assert response.status_code == 200
     data = response.json()
+    assert "results" in data
+    assert len(data["results"]) == len(SAMPLE_TEXTS)
+    for result in data["results"]:
+        assert "scores" in result
+        assert "overall_score" in result
+        assert len(result["tokens"]["alpha"]) > 0
+
+
+def test_whatif_analysis(api_client: TestClient, tmp_path):
+    """Test what-if analysis with modified text."""
+    # Create a temporary axis pack
+    pack_dir = tmp_path / "test_pack"
+    pack_dir.mkdir()
+    (pack_dir / "axes").mkdir()
     
-    # Verify response structure
+    axis_file = pack_dir / "axes" / "test_axis.json"
+    axis_file.write_text(json.dumps(TEST_AXIS_PACK))
+    
+    # Test what-if scenario
+    original_text = SAMPLE_TEXTS[0]
+    modified_text = original_text.replace("ethical", "unethical")
+    
+    response = api_client.post(
+        "/api/v1/analyze/whatif",
+        json={
+            "original_text": original_text,
+            "modified_text": modified_text,
+            "axis_pack_path": str(pack_dir)
+        }
+    )
+    
+    assert response.status_code == 200
+    data = response.json()
     assert "original" in data
     assert "modified" in data
     assert "differences" in data
-    assert len(data["modified"]) == 2  # Two modifications
+    assert isinstance(data["differences"], list) 
 
 
 if __name__ == "__main__":

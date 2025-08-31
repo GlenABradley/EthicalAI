@@ -37,12 +37,16 @@ try {
     Write-TimestampedMessage "Installing package in development mode..." -Color "Cyan"
     pip install -e .
 
-    # Run the tests with coverage
+    # Run the tests with coverage using pytest.ini configuration
     Write-TimestampedMessage "Running tests with coverage..." -Color "Cyan"
-    $testResults = python -m pytest tests/ -v --cov=src --cov-report=term-missing
+    python -m pytest tests/
 
     # Display test results
-    Write-Host $testResults -ForegroundColor "Green"
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "All tests passed!" -ForegroundColor "Green"
+    } else {
+        Write-Host "Some tests failed. See above for details." -ForegroundColor "Red"
+    }
 
     # Generate HTML coverage report
     Write-TimestampedMessage "Generating HTML coverage report..." -Color "Cyan"
