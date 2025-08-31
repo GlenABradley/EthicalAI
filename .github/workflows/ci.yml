@@ -2,39 +2,52 @@ name: CI
 
 on:
   push:
-    branches: [ main, master ]
   pull_request:
-    branches: [ main, master ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    - run: pip install -r requirements.txt
-    - run: pip install ruff black mypy
-    - run: ruff check src
-    - run: black --check src
-    - run: mypy src
-    - run: pytest -q
-    - name: Install coverage
-      run: pip install coverage
-    - name: Run tests with coverage
-      run: pytest -q --cov=src --cov-report=xml
-    - name: Upload coverage
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-    - run: python scripts/export_openapi.py
-    - uses: actions/upload-artifact@v4
-      with:
-        name: openapi
-        path: docs/openapi.json
-    - run: uvicorn coherence.api.main:app --host 0.0.0.0 --port 8000 &
-    - run: sleep 10
-    - run: curl -f http://localhost:8000/health/ready
-    - run: |
-        curl -X POST http://localhost:8000/pipeline/analyze -H "Content-Type: application/json" -d '{"text": "test"}'
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff black mypy pytest
+
+      - name: Lint & typecheck
+        run: |
+          ruff check src
+          black --check src
+          mypy src
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Export OpenAPI
+        run: python scripts/export_openapi.py --out docs/openapi.json
+
+      - name: Upload OpenAPI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi
+          path: docs/openapi.json
+
+      - name: Boot API (background)
+        run: uvicorn coherence.api.main:app --host 0.0.0.0 --port 8000 &
+
+      - name: Smoke /health
+        run: |
+          sleep 5
+          curl -f http://localhost:8000/health/ready
+
+      - name: Smoke /pipeline/analyze
+        run: |
+          curl -sS -X POST http://localhost:8000/pipeline/analyze \
+            -H "Content-Type: application/json" \
+            -d '{"text":"hello","axes":[{"name":"autonomy","vector":[0.1,0.2]}]}'
