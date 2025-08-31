@@ -51,6 +51,12 @@ jobs:
           done
           echo "Health endpoint not ready" && exit 1
 
+      - name: Smoke /interaction/respond
+        run: |
+          curl -sS -X POST http://localhost:8000/v1/interaction/respond \
+            -H "Content-Type: application/json" \
+            -d '{"prompt":"hello", "n": 2}' | jq .policy.strictness >/dev/null
+
       - name: Smoke /v1/axes/active
         run: |
           curl -sf http://localhost:8000/v1/axes/active || true

@@ -825,6 +825,47 @@
         }
       }
     },
+    "/v1/eval/text": {
+      "post": {
+        "tags": [
+          "eval"
+        ],
+        "summary": "Eval Text",
+        "operationId": "eval_text_v1_eval_text_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/axes/activate": {
       "post": {
         "tags": [
@@ -884,18 +925,18 @@
         }
       }
     },
-    "/v1/eval/text": {
+    "/v1/interaction/respond": {
       "post": {
         "tags": [
-          "eval"
+          "interaction"
         ],
-        "summary": "Eval Text",
-        "operationId": "eval_text_v1_eval_text_post",
+        "summary": "Respond",
+        "operationId": "respond_v1_interaction_respond_post",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EvalRequest"
+                "$ref": "#/components/schemas/AskReq"
               }
             }
           },
@@ -907,47 +948,8 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/EvalResponse"
+                  "$ref": "#/components/schemas/AskResp"
                 }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/constitution/rank": {
-      "post": {
-        "tags": [
-          "constitution"
-        ],
-        "summary": "Rank",
-        "operationId": "rank_v1_constitution_rank_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RankReq"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
               }
             }
           },
@@ -1114,6 +1116,77 @@
         ],
         "title": "AnalyzeText",
         "description": "Analyze text request payload."
+      },
+      "AskReq": {
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "title": "Prompt"
+          },
+          "n": {
+            "type": "integer",
+            "title": "N",
+            "default": 3
+          },
+          "generator": {
+            "type": "string",
+            "title": "Generator",
+            "default": "naive"
+          }
+        },
+        "type": "object",
+        "required": [
+          "prompt"
+        ],
+        "title": "AskReq"
+      },
+      "AskResp": {
+        "properties": {
+          "final": {
+            "type": "string",
+            "title": "Final"
+          },
+          "proof": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Proof"
+          },
+          "alternatives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          },
+          "chosen": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Chosen"
+          },
+          "candidates": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "policy": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Policy"
+          }
+        },
+        "type": "object",
+        "required": [
+          "final",
+          "proof",
+          "alternatives",
+          "chosen",
+          "candidates",
+          "policy"
+        ],
+        "title": "AskResp"
       },
       "AxialVectorsModel": {
         "properties": {
@@ -1969,48 +2042,6 @@
         },
         "type": "object",
         "title": "QuerySpec"
-      },
-      "RankReq": {
-        "properties": {
-          "candidates": {
-            "items": {
-              "additionalProperties": true,
-              "type": "object"
-            },
-            "type": "array",
-            "title": "Candidates"
-          },
-          "pref_axes": {
-            "anyOf": [
-              {
-                "prefixItems": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "type": "string"
-                  }
-                ],
-                "type": "array",
-                "maxItems": 2,
-                "minItems": 2
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Pref Axes",
-            "default": [
-              "autonomy",
-              "truthfulness"
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "candidates"
-        ],
-        "title": "RankReq"
       },
       "ResonanceRequest": {
         "properties": {

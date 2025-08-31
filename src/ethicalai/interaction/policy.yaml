@@ -1,0 +1,15 @@
+strictness: balanced
+thresholds:
+  # Multiplier applied to axis thresholds when deciding veto (lower => stricter)
+  multiplier: 1.0
+weights:
+  autonomy: 1.0
+  truth: 1.0
+  non_aggression: 1.0
+  fairness: 1.0
+forms:
+  bodily: 1.0
+  cognitive: 1.0
+  behavioral: 1.0
+  social: 1.0
+  existential: 1.0
