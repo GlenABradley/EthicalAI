@@ -1,0 +1,240 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-8.2.0, pluggy-1.6.0 -- C:\Users\glen4\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\glen4\Code\EthicalAI2\EthicalAI
+configfile: pytest.ini
+plugins: anyio-4.10.0, asyncio-1.1.0, cov-6.2.1
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds 
+------------------------------- live log setup --------------------------------
+INFO     sentence_transformers.SentenceTransformer:SentenceTransformer.py:227 Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+FAILED                                                                   [100%]
+
+================================== FAILURES ===================================
+_______________________ test_activate_reads_thresholds ________________________
+tests\test_axes_activate_thresholds.py:15: in test_activate_reads_thresholds
+    r = api_client.post(f"/v1/axes/{pack_id}/activate")
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:552: in post
+    return super().post(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:1144: in post
+    return self.request(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:451: in request
+    return super().request(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:914: in send
+    response = self._send_handling_auth(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:354: in handle_request
+    raise exc
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py:291: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py:222: in _call_func
+    retval = await retval_or_awaitable
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py:1054: in __call__
+    await super().__call__(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py:113: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
+    raise exc
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
+    await self.app(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:182: in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:158: in __exit__
+    self.gen.throw(value)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py:83: in collapse_excgroups
+    raise exc
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:184: in __call__
+    response = await self.dispatch_func(request, call_next)
+src\coherence\api\main.py:45: in dispatch
+    response = await call_next(request)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:159: in call_next
+    raise app_exc
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:716: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:736: in app
+    await route.handle(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:290: in handle
+    await self.app(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:78: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
+    raise exc
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:75: in app
+    response = await f(request)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py:302: in app
+    raw_response = await run_endpoint_function(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py:215: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\concurrency.py:38: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\to_thread.py:56: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py:2476: in run_sync_in_worker_thread
+    return await future
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py:967: in run
+    result = context.run(func, *args)
+src\coherence\api\routers\v1_axes.py:291: in activate_pack
+    lp = reg.activate(pack_id)
+src\coherence\api\axis_registry.py:132: in activate
+    lp = self._load_from_disk(pack_id)
+src\coherence\api\axis_registry.py:103: in _load_from_disk
+    Q = np.asarray(npz["Q"], dtype=np.float32)
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\numpy\lib\_npyio_impl.py:243: in __getitem__
+    raise KeyError(f"{key} is not a file in the archive") from None
+E   KeyError: 'Q is not a file in the archive'
+---------------------------- Captured stdout setup ----------------------------
+[DEBUG] Loading SBERT model: all-MiniLM-L6-v2 on device: cpu
+[DEBUG] Model max sequence length: 256
+[DEBUG] Model device: cpu
+[DEBUG] Model dimension: 384
+2025-08-31 16:51:57,324 INFO coherence.api - create_app: start
+[DEBUG] Loading SBERT model: all-mpnet-base-v2 on device: cpu
+2025-08-31 16:51:57,376 INFO sentence_transformers.SentenceTransformer - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2025-08-31 16:51:57,468 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/modules.json HTTP/1.1" 307 0
+2025-08-31 16:51:57,503 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/modules.json HTTP/1.1" 200 0
+2025-08-31 16:51:57,563 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-08-31 16:51:57,601 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-08-31 16:51:57,666 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-08-31 16:51:57,692 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-08-31 16:51:57,931 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/README.md HTTP/1.1" 307 0
+2025-08-31 16:51:57,960 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/README.md HTTP/1.1" 200 0
+2025-08-31 16:51:58,211 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/modules.json HTTP/1.1" 307 0
+2025-08-31 16:51:58,242 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/modules.json HTTP/1.1" 200 0
+2025-08-31 16:51:58,371 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-08-31 16:51:58,406 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/sentence_bert_config.json HTTP/1.1" 200 0
+2025-08-31 16:51:58,893 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-08-31 16:51:59,118 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/config.json HTTP/1.1" 307 0
+2025-08-31 16:51:59,151 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/config.json HTTP/1.1" 200 0
+2025-08-31 16:51:59,356 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-08-31 16:51:59,401 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/tokenizer_config.json HTTP/1.1" 200 0
+2025-08-31 16:51:59,499 DEBUG urllib3.connectionpool - https://huggingface.co:443 "GET /api/models/sentence-transformers/all-mpnet-base-v2/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-08-31 16:51:59,576 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-08-31 16:51:59,614 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-08-31 16:52:00,426 DEBUG urllib3.connectionpool - https://huggingface.co:443 "GET /api/models/sentence-transformers/all-mpnet-base-v2 HTTP/1.1" 200 6893
+[DEBUG] Model max sequence length: 384
+[DEBUG] Model device: cpu
+[DEBUG] Model dimension: 768
+2025-08-31 16:52:00,426 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 16:52:00,426 INFO coherence.api - create_app: done in 3.108s
+2025-08-31 16:52:00,440 INFO coherence.api - create_app: start
+2025-08-31 16:52:00,457 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 16:52:00,457 INFO coherence.api - create_app: done in 0.016s
+----------------------------- Captured log setup ------------------------------
+INFO     sentence_transformers.SentenceTransformer:SentenceTransformer.py:227 Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 16:52:00,466 DEBUG asyncio - Using proactor: IocpProactor
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+=============================== tests coverage ================================
+______________ coverage: platform win32, python 3.12.10-final-0 _______________
+
+Name                                            Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------
+src\coherence\__init__.py                           1      0   100%
+src\coherence\agent\__init__.py                     0      0   100%
+src\coherence\agent\query_map.py                   20     10    50%   17, 29-38
+src\coherence\agent\tools.py                       28     28     0%   1-57
+src\coherence\api\__init__.py                       0      0   100%
+src\coherence\api\axis_registry.py                113     54    52%   42-46, 59-70, 73-82, 85-88, 99, 104-128, 133-136, 139-145
+src\coherence\api\main.py                          69      6    91%   46-47, 83-84, 93-94
+src\coherence\api\models.py                       100      0   100%
+src\coherence\api\routers\__init__.py               0      0   100%
+src\coherence\api\routers\analyze.py               85     72    15%   25, 30-148
+src\coherence\api\routers\axes.py                  59     35    41%   36-44, 50-54, 70-105
+src\coherence\api\routers\embed.py                 30     11    63%   31-48
+src\coherence\api\routers\health.py                38     27    29%   18-59
+src\coherence\api\routers\index.py                 12      6    50%   16-21
+src\coherence\api\routers\pipeline.py             112     64    43%   28-37, 75, 87-175
+src\coherence\api\routers\resonance.py             95     61    36%   27-36, 59-147
+src\coherence\api\routers\search.py                91     79    13%   24-38, 47-148
+src\coherence\api\routers\v1_axes.py              212    143    33%   56-161, 167-268, 288-289, 293, 296-297, 311-322, 347-358
+src\coherence\api\routers\v1_frames.py            196    135    31%   27-32, 87-94, 97-111, 115-123, 130-228, 239-244, 249-252, 258-288
+src\coherence\api\routers\whatif.py                 7      1    86%   15
+src\coherence\axis\__init__.py                      0      0   100%
+src\coherence\axis\advanced_builder.py            385    362     6%   34-43, 56-167, 183-190, 208-275, 308-315, 324-343, 366-624, 642-691, 708-728, 747-748
+src\coherence\axis\builder.py                      53     41    23%   26-30, 35-36, 40-43, 58-81, 106-115
+src\coherence\axis\choquet.py                      22     16    27%   29-46
+src\coherence\axis\pack.py                         87     56    36%   26-32, 36-44, 71, 75, 78-102, 105-106, 118-127, 130-133, 137-140
+src\coherence\cfg\loader.py                        10      0   100%
+src\coherence\cfg\logging.py                       12      1    92%   21
+src\coherence\coherence\diffusion.py               27     20    26%   17-19, 28-39, 54-61
+src\coherence\coherence\skipmesh.py                27     18    33%   19-23, 28-32, 47-54
+src\coherence\coherence\spans.py                   24     15    38%   21-22, 27-34, 39-44
+src\coherence\coherence\substrate.py               23     16    30%   20-28, 33-37, 42-44
+src\coherence\encoders\__init__.py                  0      0   100%
+src\coherence\encoders\registry.py                 14      8    43%   20-28
+src\coherence\encoders\text_sbert.py               87     35    60%   52, 70-74, 99-135
+src\coherence\frames\__init__.py                    0      0   100%
+src\coherence\frames\detectors\__init__.py          0      0   100%
+src\coherence\frames\detectors\causal.py            0      0   100%
+src\coherence\frames\detectors\conditional.py      15     10    33%   24-33
+src\coherence\frames\detectors\evidence.py         15     10    33%   24-34
+src\coherence\frames\detectors\modality.py          0      0   100%
+src\coherence\frames\detectors\negation.py          0      0   100%
+src\coherence\frames\detectors\power.py             0      0   100%
+src\coherence\frames\detectors\quantifiers.py       0      0   100%
+src\coherence\frames\detectors\speech_act.py        0      0   100%
+src\coherence\frames\detectors\temporal.py          0      0   100%
+src\coherence\frames\logic\__init__.py              0      0   100%
+src\coherence\frames\logic\eval.py                 25     25     0%   1-40
+src\coherence\frames\logic\lf_builder.py            0      0   100%
+src\coherence\frames\logic\normalize.py             0      0   100%
+src\coherence\frames\schema.py                     21      0   100%
+src\coherence\frames\srl_lite.py                   82     69    16%   21-28, 32-34, 38-46, 67-133
+src\coherence\frames\syntax.py                      0      0   100%
+src\coherence\frames\vectorize.py                  20     13    35%   18-21, 33-42
+src\coherence\index\__init__.py                     0      0   100%
+src\coherence\index\ann.py                         52     38    27%   16, 20, 24-46, 50-57, 61-74
+src\coherence\index\pipeline.py                    83     83     0%   1-131
+src\coherence\index\store.py                       51     51     0%   1-64
+src\coherence\memory\store.py                      87     71    18%   22-31, 34-85, 89-90, 113-179, 182-210, 214-240, 245
+src\coherence\metrics\resonance.py                 38     27    29%   29-34, 42-49, 58-70, 78-80
+src\coherence\pipeline\orchestrator.py             47     22    53%   54-105
+src\coherence\pipeline\scoring.py                  54     40    26%   25-29, 49-58, 66-71, 75-82, 95-102, 110-113
+src\ethicalai\__init__.py                           0      0   100%
+src\ethicalai\api\axes.py                          60     36    40%   27-65, 69-86, 90-91
+src\ethicalai\api\eval.py                          31     11    65%   25-41
+src\ethicalai\api\interaction.py                   41     18    56%   28-53
+src\ethicalai\axes\build.py                        14      8    43%   8-15
+src\ethicalai\axes\calibrate.py                   121    106    12%   10-30, 35-49, 52-54, 57-61, 67-75, 78-87, 91-118, 121-155, 158
+src\ethicalai\axes\utils.py                        12      9    25%   5-13
+src\ethicalai\constitution\decoding.py             37     27    27%   11-16, 21-38, 43-54
+src\ethicalai\encoders.py                          27     18    33%   9, 11-15, 17-19, 21-23, 29-35
+src\ethicalai\eval\minspan.py                      11      7    36%   8-14
+src\ethicalai\eval\spans.py                        24     17    29%   8, 11-17, 21-29
+src\ethicalai\interaction\explain.py               10      6    40%   5-9, 16
+src\ethicalai\interaction\generate.py               6      1    83%   8
+src\ethicalai\interaction\policy.py                21      8    62%   21, 24-30
+src\ethicalai\types.py                             30      0   100%
+-----------------------------------------------------------------------------
+TOTAL                                            3074   2051    33%
+=========================== short test summary info ===========================
+FAILED tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds - KeyError: 'Q is not a file in the archive'
+======================== 1 failed in 91.44s (0:01:31) =========================

@@ -1,14 +1,14 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Dict, Optional
-import numpy as np, json, pathlib
+import numpy as np, json, pathlib, os
 from ..types import AxisPack, Axis
 from ..axes.build import build_axis_pack
 from ..axes.calibrate import pick_thresholds
 from ..encoders import get_encoder
 
 router = APIRouter(prefix="/v1/axes", tags=["axes"])
-ART_DIR = pathlib.Path("artifacts"); ART_DIR.mkdir(exist_ok=True)
+ART_DIR = pathlib.Path(os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")); ART_DIR.mkdir(exist_ok=True)
 ACTIVE: Dict[str, Optional[AxisPack]] = {"pack": None}
 
 class BuildRequest(BaseModel):
