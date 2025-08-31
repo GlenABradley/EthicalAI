@@ -11,9 +11,10 @@
     "noEmit": true,
     "skipLibCheck": true,
     "baseUrl": ".",
+    "types": ["node", "@playwright/test"],
     "paths": {
       "@/*": ["src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
