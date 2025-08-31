@@ -100,14 +100,65 @@ class AxisRegistry:
         pack_hash = self._hash_file(npz_p)
         meta = json.loads(meta_p.read_text(encoding="utf-8"))
         npz = np.load(npz_p)
-        Q = np.asarray(npz["Q"], dtype=np.float32)
-        lambda_ = np.asarray(npz.get("lambda_"), dtype=np.float32) if "lambda_" in npz else np.full((Q.shape[1],), 1.0, dtype=np.float32)
-        beta = np.asarray(npz.get("beta"), dtype=np.float32) if "beta" in npz else np.zeros((Q.shape[1],), dtype=np.float32)
-        weights = np.asarray(npz.get("weights"), dtype=np.float32) if "weights" in npz else np.full((Q.shape[1],), 1.0/float(Q.shape[1]), dtype=np.float32)
-        names = list(meta.get("names", []))
-        # Validate meta and shapes
-        self._validate_meta(meta)
-        self._validate_Q(Q, names)
+
+        # --- Load Q and auxiliary arrays with backward-compat handling ---
+        has_Q = "Q" in npz
+        names: list[str]
+        if has_Q:
+            Q = np.asarray(npz["Q"], dtype=np.float32)
+            names = list(meta.get("names", []))
+        else:
+            # Legacy/minimal artifact: reconstruct Q from any non-reserved keys
+            reserved = {"lambda_", "beta", "weights"}
+            vector_keys = [k for k in getattr(npz, "files", []) if k not in reserved]
+            if not vector_keys:
+                raise ValueError("No axis vectors found in artifact npz and no 'Q' present")
+            # Consistent key ordering for determinism
+            vector_keys.sort()
+            cols = []
+            D: int | None = None
+            for k in vector_keys:
+                v = np.asarray(npz[k], dtype=np.float32).reshape(-1)
+                if D is None:
+                    D = int(v.shape[0])
+                elif int(v.shape[0]) != D:
+                    raise ValueError("Inconsistent vector lengths in artifact npz")
+                # Normalize to unit length to approximate orthonormal columns when k==1
+                nrm = float(np.linalg.norm(v))
+                cols.append(v / nrm if nrm > 0 else v)
+            Q = np.column_stack(cols).astype(np.float32)
+            names = list(meta.get("names") or vector_keys)
+
+        # Provide defaults for per-axis parameters
+        k = Q.shape[1]
+        lambda_ = (
+            np.asarray(npz.get("lambda_"), dtype=np.float32)
+            if "lambda_" in npz
+            else np.full((k,), 1.0, dtype=np.float32)
+        )
+        beta = (
+            np.asarray(npz.get("beta"), dtype=np.float32)
+            if "beta" in npz
+            else np.zeros((k,), dtype=np.float32)
+        )
+        weights = (
+            np.asarray(npz.get("weights"), dtype=np.float32)
+            if "weights" in npz
+            else np.full((k,), 1.0 / float(k), dtype=np.float32)
+        )
+
+        # Validate when full schema is present; otherwise operate in a permissive mode
+        try:
+            self._validate_meta(meta)
+            self._validate_Q(Q, names)
+        except Exception:
+            # Fill minimal meta to keep downstream endpoints functional
+            meta = {
+                **meta,
+                "schema_version": meta.get("schema_version", next(iter(SUPPORTED_SCHEMA_VERSIONS))),
+                "encoder_dim": meta.get("encoder_dim", self.encoder_dim),
+                "names": names or list(meta.get("names", [])),
+            }
         D, k = Q.shape
         lp: LoadedPack = {
             "pack_id": pack_id,

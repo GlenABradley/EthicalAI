@@ -45,6 +45,113 @@ class CreateResponse(BaseModel):
     names: List[str]
 
 
+@router.post("", response_model=CreateResponse, status_code=status.HTTP_201_CREATED)
+def create_axis_pack_from_config(payload: Dict[str, object]) -> CreateResponse:
+    """Create an axis pack from a single axis config JSON.
+
+    Expects fields similar to configs under `configs/axis_packs/`:
+    - name: str
+    - max_examples: List[str] (treated as positives)
+    - min_examples: List[str] (treated as negatives)
+    Other fields are ignored but preserved in `meta` where reasonable.
+    """
+    # Basic validation
+    name = (payload.get("name") if isinstance(payload, dict) else None)
+    max_examples = (payload.get("max_examples") if isinstance(payload, dict) else None)
+    min_examples = (payload.get("min_examples") if isinstance(payload, dict) else None)
+
+    if not isinstance(name, str) or name.strip() == "":
+        raise HTTPException(status_code=400, detail="Missing or invalid 'name'")
+    if not isinstance(max_examples, list) or not all(isinstance(x, str) for x in max_examples):
+        raise HTTPException(status_code=400, detail="'max_examples' must be a list of strings")
+    if not isinstance(min_examples, list) or not all(isinstance(x, str) for x in min_examples):
+        raise HTTPException(status_code=400, detail="'min_examples' must be a list of strings")
+
+    # Determine pack_id from name
+    raw = name.strip()
+    pack_id = "".join(ch if (ch.isalnum() or ch in "_-") else "_" for ch in raw)
+
+    # If already exists, return 409 (tests accept 409 for idempotency)
+    data_axes_dir = Path("data/axes")
+    data_axes_dir.mkdir(parents=True, exist_ok=True)
+    pack_json_path = data_axes_dir / f"{pack_id}.json"
+    if pack_json_path.exists():
+        raise HTTPException(status_code=409, detail="Axis pack already exists")
+
+    # Build seeds mapping expected by simple builder
+    seeds = {name: {"positive": max_examples, "negative": min_examples}}
+
+    # Encoder
+    try:
+        enc = get_default_encoder()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Encoder init failed: {e}")
+
+    # Build using diff-of-means
+    try:
+        pack = build_axis_pack_from_seeds(seeds, encode_fn=enc.encode)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Axis build failed: {e}")
+
+    # Enrich meta minimally
+    try:
+        base_meta = dict(payload) if isinstance(payload, dict) else {}
+    except Exception:
+        base_meta = {}
+    pack.meta = {**(pack.meta or {}), **{k: v for k, v in base_meta.items() if k not in {"max_examples", "min_examples"}}, "built_from": "v1.root"}
+
+    # Persist JSON for analyzer
+    pack.save(pack_json_path)
+
+    # Persist artifacts for registry
+    artifacts_dir = Path(DEFAULT_ARTIFACTS_DIR)
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    temp_npz = artifacts_dir / "axis_pack:temp_root.npz"
+    np.savez_compressed(
+        temp_npz,
+        Q=pack.Q,
+        lambda_=pack.lambda_,
+        beta=pack.beta,
+        weights=pack.weights,
+    )
+    npz_bytes = temp_npz.read_bytes()
+    pack_hash = sha256(npz_bytes).hexdigest()
+    npz_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    npz_path.write_bytes(npz_bytes)
+    try:
+        temp_npz.unlink(missing_ok=True)  # type: ignore[arg-type]
+    except Exception:
+        pass
+
+    D = int(pack.Q.shape[0])
+    names = list(pack.names)
+    builder_params = {
+        "whitening_method": "qr",
+        "use_lda": False,
+        "orthogonalize": True,
+        "margin_alpha": 0.0,
+        "encoder_model": enc.model_name,
+        "encoder_dim": enc._model.get_sentence_embedding_dimension(),
+    }
+    meta = {
+        "schema_version": SCHEMA_VERSION,
+        "encoder_model": enc.model_name,
+        "encoder_dim": enc._model.get_sentence_embedding_dimension(),
+        "names": names,
+        "modes": {},
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "builder_version": "diffmean-basic",
+        "pack_hash": pack_hash,
+        "json_embeddings_hash": "",
+        "builder_params": builder_params,
+        "notes": "",
+    }
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return CreateResponse(pack_id=pack_id, dim=D, k=len(names), names=names)
+
+
 @router.post("/create", response_model=CreateResponse, status_code=status.HTTP_201_CREATED)
 def create_axis_pack(req: CreateAxisPack) -> CreateResponse:
     """Create an axis pack from seed phrases.
@@ -363,3 +470,29 @@ def export_pack(pack_id: str) -> ExportResponse:
         beta=lp["beta"].tolist(),
         weights=lp["weights"].tolist(),
     )
+
+
+class ListItem(BaseModel):
+    id: str
+    names: List[str]
+    k: int
+
+
+class ListResponse(BaseModel):
+    items: List[ListItem]
+
+
+@router.get("", response_model=ListResponse)
+def list_axis_packs() -> ListResponse:
+    """List available axis packs stored under data/axes."""
+    data_axes_dir = Path("data/axes")
+    data_axes_dir.mkdir(parents=True, exist_ok=True)
+    items: List[ListItem] = []
+    for p in sorted(data_axes_dir.glob("*.json")):
+        try:
+            ap = AxisPack.load(p)
+            items.append(ListItem(id=p.stem, names=list(ap.names), k=int(ap.k)))
+        except Exception:
+            # Skip invalid packs
+            continue
+    return ListResponse(items=items)
