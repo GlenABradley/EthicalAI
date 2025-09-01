@@ -239,8 +239,6 @@ class TestPerformanceBenchmarks:
         
         # First, cause some errors
         error_requests = [
-            {"texts": []},  # Empty array
-            {"texts": [""]},  # Empty string
             {"invalid": "data"},  # Invalid format
         ]
         
@@ -248,6 +246,12 @@ class TestPerformanceBenchmarks:
             response = api_client.post("/embed", json=error_req)
             # Should get error response
             assert response.status_code in [400, 422]
+        
+        # Test that empty texts are handled with proper error codes
+        response = api_client.post("/embed", json={"texts": []})
+        assert response.status_code == 422
+        response = api_client.post("/embed", json={"texts": [""]})
+        assert response.status_code == 200  # Empty string is valid, empty list is not
         
         # Now test that valid requests still work efficiently
         recovery_times = []

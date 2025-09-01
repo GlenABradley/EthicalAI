@@ -96,7 +96,15 @@ def _validate_coords(name: str, arr, k: int) -> None:
 def _load_pack(req_pack_id: Optional[str]) -> Dict[str, Any]:
     reg = axis_registry.REGISTRY
     if reg is None:
-        raise HTTPException(status_code=500, detail="Registry not initialized")
+        # Initialize registry if not present
+        try:
+            from coherence.encoders.text_sbert import get_default_encoder
+            enc = get_default_encoder()
+            artifacts_dir = os.environ.get("COHERENCE_ARTIFACTS_DIR", "artifacts")
+            axis_registry.REGISTRY = axis_registry.init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = axis_registry.REGISTRY
+        except Exception:
+            raise HTTPException(status_code=500, detail="Registry not initialized")
     try:
         if req_pack_id:
             return reg.load(req_pack_id)
@@ -138,7 +146,14 @@ def index_frames(req: IndexRequest) -> IndexResponse:
     reg = axis_registry.REGISTRY
     if req.pack_id:
         if reg is None:
-            raise HTTPException(status_code=500, detail="Registry not initialized")
+            # Initialize registry if not present
+            try:
+                from coherence.encoders.text_sbert import get_default_encoder
+                enc = get_default_encoder()
+                artifacts_dir = os.environ.get("COHERENCE_ARTIFACTS_DIR", "artifacts")
+                reg = axis_registry.init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            except Exception:
+                raise HTTPException(status_code=500, detail="Registry not initialized")
         try:
             lp = reg.load(req.pack_id)
         except FileNotFoundError:

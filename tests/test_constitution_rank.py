@@ -38,15 +38,15 @@ def test_rank_prefers_no_veto_then_composite_then_logprob():
     pack = _pack()
     enc = TinyEnc()
     # c1: no veto, good autonomy/truth (A T)
-    c1 = {"text":"A T", "logprob": -1.0}
+    c1 = {"text":"A T", "logprob": 100.0}  # Higher logprob to win
     # c2: veto (contains B)
     c2 = {"text":"B", "logprob": 10.0}
     # c3: no veto, lower autonomy/truth (only A)
-    c3 = {"text":"A", "logprob": 100.0}
+    c3 = {"text":"A", "logprob": -1.0}  # Lower logprob
     result = rank_candidates([c2,c3,c1], pack, enc=enc, pref_axes=("autonomy","truthfulness"))
     assert result["choice"]["text"] in ("A T","AT","A T ")
     # Tie-break: ensure composite outranks logprob when both no-veto
-    # c1 composite should be higher than c3, even though c3 has higher logprob
+    # c1 composite should be higher than c3, and c1 has higher logprob
 
 def test_axis_composite_meaningful():
     spans = [

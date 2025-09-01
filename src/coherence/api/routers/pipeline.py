@@ -83,6 +83,17 @@ def _frame_to_dict(f) -> Dict[str, Any]:
 
 @router.post("/analyze", response_model=AnalyzeResponse)
 def analyze(req: AnalyzeRequest) -> AnalyzeResponse:
+    # Check payload size first before other validations
+    if req.texts is not None:
+        try:
+            cfg = load_app_config()
+            max_chars = int(cfg.get("api", {}).get("max_doc_chars", 100000))
+        except Exception:
+            max_chars = 100000
+        total_chars = sum(len(t) for t in req.texts)
+        if total_chars > max_chars:
+            raise HTTPException(status_code=413, detail="max_doc_chars exceeded")
+    
     # Resolve AxisPack: pack_id > inline axis_pack > active
     if req.pack_id:
         if axis_registry.REGISTRY is None:
@@ -110,15 +121,6 @@ def analyze(req: AnalyzeRequest) -> AnalyzeResponse:
         if X.ndim != 2:
             raise HTTPException(status_code=400, detail="vectors must be 2D (n,d)")
     elif req.texts is not None:
-        # Enforce payload character limit
-        try:
-            cfg = load_app_config()
-            max_chars = int(cfg.get("api", {}).get("max_doc_chars", 100000))
-        except Exception:
-            max_chars = 100000
-        total_chars = sum(len(t) for t in req.texts)
-        if total_chars > max_chars:
-            raise HTTPException(status_code=413, detail="max_doc_chars exceeded")
         try:
             enc = get_default_encoder(
                 name=req.encoder_name,

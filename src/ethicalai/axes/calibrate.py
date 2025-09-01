@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse, json, pathlib
+import argparse, json, pathlib, os
 import numpy as np
 from typing import Dict, List, Tuple, Iterable
 from ..types import AxisPack, Axis
@@ -32,9 +32,16 @@ def pick_thresholds(pack: AxisPack, scores: Dict[str, List[Tuple[float,int]]], f
 # -------------------- CLI & utilities --------------------
 
 def _load_pack_from_artifacts(pack_id: str, artifacts_dir: str = "artifacts") -> AxisPack:
-    art = pathlib.Path(artifacts_dir)
-    npz_path = art / f"axis_pack:{pack_id}.npz"
-    meta_path = art / f"axis_pack:{pack_id}.meta.json"
+    art = pathlib.Path(os.getenv("COHERENCE_ARTIFACTS_DIR", artifacts_dir))
+    # Resolve paths with backward compatibility: prefer legacy colon names if present
+    colon_npz = art / f"axis_pack:{pack_id}.npz"
+    safe_npz = art / f"axis_pack_{pack_id}.npz"
+    npz_path = colon_npz if colon_npz.exists() else safe_npz
+
+    colon_meta = art / f"axis_pack:{pack_id}.meta.json"
+    safe_meta = art / f"axis_pack_{pack_id}.meta.json"
+    meta_path = colon_meta if colon_meta.exists() else safe_meta
+
     if not npz_path.exists() or not meta_path.exists():
         raise FileNotFoundError(f"Pack {pack_id} not found in {art}")
     arrs = np.load(npz_path)
@@ -49,7 +56,11 @@ def _load_pack_from_artifacts(pack_id: str, artifacts_dir: str = "artifacts") ->
     return AxisPack(id=pack_id, axes=axes, dim=dim, meta=meta.get("meta", {}))
 
 def _save_thresholds(pack: AxisPack, artifacts_dir: str = "artifacts") -> None:
-    meta_path = pathlib.Path(artifacts_dir) / f"axis_pack:{pack.id}.meta.json"
+    art = pathlib.Path(os.getenv("COHERENCE_ARTIFACTS_DIR", artifacts_dir))
+    colon = art / f"axis_pack:{pack.id}.meta.json"
+    safe = art / f"axis_pack_{pack.id}.meta.json"
+    # If legacy colon meta exists, update it; otherwise write Windows-safe underscore meta
+    meta_path = colon if colon.exists() else safe
     meta = {"meta": pack.meta, "thresholds": {ax.name: ax.threshold for ax in pack.axes}}
     meta_path.write_text(json.dumps(meta, indent=2))
 
@@ -138,7 +149,7 @@ def main(argv: List[str] | None = None):
     metrics_before = {ax.name: _metrics(scores[ax.name]) for ax in pack.axes}
     # Fit thresholds
     pack = pick_thresholds(pack, scores, fpr_max=args.fpr_max)
-    _save_thresholds(pack)
+    _save_thresholds(pack, os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts"))
     # Metrics after (same scores, updated thresholds used only at inference; keep for report symmetry)
     metrics_after = {ax.name: _metrics(scores[ax.name]) for ax in pack.axes}
 

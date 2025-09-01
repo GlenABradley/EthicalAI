@@ -11,6 +11,16 @@ router = APIRouter(prefix="/v1/axes", tags=["axes"])
 ART_DIR = pathlib.Path(os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")); ART_DIR.mkdir(exist_ok=True)
 ACTIVE: Dict[str, Optional[AxisPack]] = {"pack": None}
 
+def _npz_path(pack_id: str) -> pathlib.Path:
+    colon = ART_DIR / f"axis_pack:{pack_id}.npz"
+    safe = ART_DIR / f"axis_pack_{pack_id}.npz"
+    return colon if colon.exists() else safe
+
+def _meta_path(pack_id: str) -> pathlib.Path:
+    colon = ART_DIR / f"axis_pack:{pack_id}.meta.json"
+    safe = ART_DIR / f"axis_pack_{pack_id}.meta.json"
+    return colon if colon.exists() else safe
+
 class BuildRequest(BaseModel):
     names: List[str]
     # Option A: phrases per axis (preferred)
@@ -54,8 +64,8 @@ def build(req: BuildRequest):
     ACTIVE["pack"] = pack
 
     # Persist
-    np.savez_compressed(ART_DIR / f"axis_pack:{pack.id}.npz", **{a.name:a.vector for a in pack.axes})
-    (ART_DIR / f"axis_pack:{pack.id}.meta.json").write_text(json.dumps({
+    np.savez_compressed(ART_DIR / f"axis_pack_{pack.id}.npz", **{a.name:a.vector for a in pack.axes})
+    (ART_DIR / f"axis_pack_{pack.id}.meta.json").write_text(json.dumps({
         "meta": pack.meta,
         "names": [a.name for a in pack.axes],
         "dim": pack.dim,
@@ -66,8 +76,8 @@ def build(req: BuildRequest):
 
 @router.post("/activate")
 def activate(pack_id: str):
-    meta_path = ART_DIR / f"axis_pack:{pack_id}.meta.json"
-    npz_path  = ART_DIR / f"axis_pack:{pack_id}.npz"
+    meta_path = _meta_path(pack_id)
+    npz_path  = _npz_path(pack_id)
     if not (meta_path.exists() and npz_path.exists()):
         raise HTTPException(404, "Axis pack not found")
     arrs = np.load(npz_path)

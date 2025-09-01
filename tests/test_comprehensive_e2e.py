@@ -133,8 +133,10 @@ class TestComprehensiveEthicalAI:
         print(f"Create axis pack status: {create_response.status_code}")
         
         if create_response.status_code in [200, 201]:
-            # Test loading the created axis pack
-            response = api_client.get("/v1/axes/consequentialism_test")
+            # Test loading the created axis pack using the returned pack_id
+            pack_data = create_response.json()
+            pack_id = pack_data["pack_id"]
+            response = api_client.get(f"/v1/axes/{pack_id}")
             print(f"Axis pack response status: {response.status_code}")
             print(f"Axis pack response: {response.json() if response.status_code == 200 else response.text}")
             

@@ -12,6 +12,11 @@ from coherence.encoders.text_sbert import get_default_encoder
 router = APIRouter()
 
 
+@router.get("")
+def health() -> Dict[str, Any]:
+    """Health check endpoint."""
+    return {"status": "ok"}
+
 @router.get("/ready")
 def ready() -> Dict[str, Any]:
     """Lightweight readiness probe.

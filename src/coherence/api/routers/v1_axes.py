@@ -21,7 +21,8 @@ from coherence.axis.pack import AxisPack
 router = APIRouter()
 
 SCHEMA_VERSION = "axis-pack/1.1"
-DEFAULT_ARTIFACTS_DIR = os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")
+def get_artifacts_dir() -> str:
+    return os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")
 
 
 class BuildRequest(BaseModel):
@@ -104,9 +105,9 @@ def create_axis_pack_from_config(payload: Dict[str, object]) -> CreateResponse:
     pack.save(pack_json_path)
 
     # Persist artifacts for registry
-    artifacts_dir = Path(DEFAULT_ARTIFACTS_DIR)
+    artifacts_dir = Path(get_artifacts_dir())
     artifacts_dir.mkdir(parents=True, exist_ok=True)
-    temp_npz = artifacts_dir / "axis_pack:temp_root.npz"
+    temp_npz = artifacts_dir / "axis_pack_temp_root.npz"
     np.savez_compressed(
         temp_npz,
         Q=pack.Q,
@@ -116,8 +117,8 @@ def create_axis_pack_from_config(payload: Dict[str, object]) -> CreateResponse:
     )
     npz_bytes = temp_npz.read_bytes()
     pack_hash = sha256(npz_bytes).hexdigest()
-    npz_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
-    meta_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    npz_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
     npz_path.write_bytes(npz_bytes)
     try:
         temp_npz.unlink(missing_ok=True)  # type: ignore[arg-type]
@@ -220,9 +221,9 @@ def create_axis_pack(req: CreateAxisPack) -> CreateResponse:
     pack.save(data_axes_dir / f"{pack_id}.json")
 
     # Persist artifacts for registry
-    artifacts_dir = Path(DEFAULT_ARTIFACTS_DIR)
+    artifacts_dir = Path(get_artifacts_dir())
     artifacts_dir.mkdir(parents=True, exist_ok=True)
-    temp_npz = artifacts_dir / "axis_pack:temp_create.npz"
+    temp_npz = artifacts_dir / "axis_pack_temp_create.npz"
     np.savez_compressed(
         temp_npz,
         Q=pack.Q,
@@ -232,8 +233,8 @@ def create_axis_pack(req: CreateAxisPack) -> CreateResponse:
     )
     npz_bytes = temp_npz.read_bytes()
     pack_hash = sha256(npz_bytes).hexdigest()
-    npz_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
-    meta_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    npz_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
     npz_path.write_bytes(npz_bytes)
     try:
         temp_npz.unlink(missing_ok=True)  # type: ignore[arg-type]
@@ -265,17 +266,37 @@ def create_axis_pack(req: CreateAxisPack) -> CreateResponse:
     }
     meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    # Activate the newly created pack in the registry
+    global REGISTRY
+    reg = REGISTRY
+    if reg is None:
+        try:
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
+        except Exception:
+            pass  # Continue without activation if registry init fails
+    
+    if reg is not None:
+        try:
+            reg.activate(pack_id)
+        except Exception:
+            pass  # Continue without activation if activation fails
+
     return CreateResponse(pack_id=pack_id, dim=D, k=len(names), names=names)
 
 
 @router.post("/build", response_model=BuildResponse, status_code=status.HTTP_201_CREATED)
 def build_axis_pack(req: BuildRequest) -> BuildResponse:
     # Ensure registry
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
 
@@ -294,11 +315,11 @@ def build_axis_pack(req: BuildRequest) -> BuildResponse:
         raise HTTPException(status_code=400, detail=f"Axis build failed: {e}")
 
     # Save artifacts
-    artifacts_dir = Path(DEFAULT_ARTIFACTS_DIR)
+    artifacts_dir = Path(get_artifacts_dir())
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
     # Temporary npz path to compute hash first
-    temp_npz = artifacts_dir / "axis_pack:temp_build.npz"
+    temp_npz = artifacts_dir / "axis_pack_temp_build.npz"
     np.savez_compressed(
         temp_npz,
         Q=axis_pack.Q,
@@ -316,9 +337,9 @@ def build_axis_pack(req: BuildRequest) -> BuildResponse:
         ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         pack_id = f"ap_{ts}_{pack_hash[:8]}"
 
-    # Final paths
-    npz_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
-    meta_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    # Final paths (Windows-safe)
+    npz_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
 
     # Move temp to final
     npz_path.write_bytes(npz_bytes)
@@ -387,11 +408,14 @@ class ActivateResponse(BaseModel):
 
 @router.post("/{pack_id}/activate", response_model=ActivateResponse)
 def activate_pack(pack_id: str) -> ActivateResponse:
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
     try:
@@ -415,11 +439,14 @@ class GetResponse(BaseModel):
 
 @router.get("/{pack_id}", response_model=GetResponse)
 def get_pack(pack_id: str) -> GetResponse:
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
     try:
@@ -451,11 +478,14 @@ def export_pack(pack_id: str) -> ExportResponse:
 
     Note: Large payloads; intended for dev/test only.
     """
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
     try:
