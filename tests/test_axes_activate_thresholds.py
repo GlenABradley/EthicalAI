@@ -7,9 +7,9 @@ def test_activate_reads_thresholds(api_client: TestClient, tmp_artifacts_dir: pa
     art.mkdir(parents=True, exist_ok=True)
 
     pack_id = "thresh-pack"
-    # Create a proper axis pack with Q matrix format
-    v = np.ones(8, dtype=np.float32) / np.sqrt(8)
-    Q = v.reshape(-1, 1)  # Shape (8, 1) for single axis
+    # Create a proper axis pack with Q matrix format (768D to match all-mpnet-base-v2)
+    v = np.ones(768, dtype=np.float32) / np.sqrt(768)
+    Q = v.reshape(-1, 1)  # Shape (768, 1) for single axis
     lambda_ = np.array([1.0], dtype=np.float32)
     beta = np.array([0.0], dtype=np.float32)
     weights = np.array([1.0], dtype=np.float32)
@@ -25,14 +25,14 @@ def test_activate_reads_thresholds(api_client: TestClient, tmp_artifacts_dir: pa
         json.dumps({
             "schema_version": "axis-pack/1.1",
             "encoder_model": "all-mpnet-base-v2",
-            "encoder_dim": 8,
+            "encoder_dim": 768,
             "names": ["autonomy"],
             "modes": {},
             "created_at": "2023-01-01T00:00:00",
             "builder_version": "test",
             "pack_hash": "test_hash",
             "json_embeddings_hash": "",
-            "builder_params": {"encoder_dim": 8},
+            "builder_params": {"encoder_dim": 768},
             "notes": "",
             "thresholds": {"autonomy": 0.123}
         })
