@@ -24,6 +24,20 @@ SCHEMA_VERSION = "axis-pack/1.1"
 def get_artifacts_dir() -> str:
     return os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")
 
+def _find_npz_path(pack_id: str) -> Path:
+    """Find NPZ file with either colon or underscore naming convention."""
+    artifacts_dir = Path(get_artifacts_dir())
+    colon_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
+    underscore_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    return colon_path if colon_path.exists() else underscore_path
+
+def _find_meta_path(pack_id: str) -> Path:
+    """Find meta file with either colon or underscore naming convention."""
+    artifacts_dir = Path(get_artifacts_dir())
+    colon_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    underscore_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
+    return colon_path if colon_path.exists() else underscore_path
+
 
 class BuildRequest(BaseModel):
     json_paths: Optional[List[str]] = Field(None, description="Paths to axis JSON configs")
@@ -421,10 +435,10 @@ def activate_pack(pack_id: str) -> ActivateResponse:
     try:
         lp = reg.activate(pack_id)
     except FileNotFoundError:
-        # Debug: Check if files exist
+        # Debug: Check if files exist with both naming conventions
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
         artifacts_dir = get_artifacts_dir()
-        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
-        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
         detail = f"Pack not found: {pack_id}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
         raise HTTPException(status_code=404, detail=detail)
     except ValueError as e:
@@ -432,9 +446,9 @@ def activate_pack(pack_id: str) -> ActivateResponse:
         raise HTTPException(status_code=409, detail=str(e))
     except Exception as e:
         # Debug: Catch any other exceptions during activation
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
         artifacts_dir = get_artifacts_dir()
-        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
-        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
         detail = f"Pack activate error: {pack_id}. Error: {e}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
         raise HTTPException(status_code=500, detail=detail)
     return ActivateResponse(active={"pack_id": lp["pack_id"], "dim": lp["D"], "k": lp["k"], "pack_hash": lp["hash"]})
@@ -464,17 +478,17 @@ def get_pack(pack_id: str) -> GetResponse:
     try:
         lp = reg.load(pack_id)
     except FileNotFoundError:
-        # Debug: Check if files exist
+        # Debug: Check if files exist with both naming conventions
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
         artifacts_dir = get_artifacts_dir()
-        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
-        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
         detail = f"Pack not found: {pack_id}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
         raise HTTPException(status_code=404, detail=detail)
     except Exception as e:
         # Debug: Catch any other exceptions during loading
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
         artifacts_dir = get_artifacts_dir()
-        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
-        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
         detail = f"Pack load error: {pack_id}. Error: {e}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
         raise HTTPException(status_code=500, detail=detail)
     return GetResponse(

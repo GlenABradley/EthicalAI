@@ -46,28 +46,16 @@ class AxisRegistry:
                 pass
 
     def _npz_path(self, pack_id: str) -> Path:
-        # Prefer legacy colon naming if it exists; otherwise use Windows-safe underscore
-        colon = self.root / f"axis_pack:{pack_id}.npz"
-        safe = self.root / f"axis_pack_{pack_id}.npz"
-        if colon.exists():
-            return colon
-        elif safe.exists():
-            return safe
-        else:
-            # Return the safe path for creation
-            return safe
+        """Find NPZ file with either colon or underscore naming convention."""
+        colon_path = self.root / f"axis_pack:{pack_id}.npz"
+        underscore_path = self.root / f"axis_pack_{pack_id}.npz"
+        return colon_path if colon_path.exists() else underscore_path
 
     def _meta_path(self, pack_id: str) -> Path:
-        # Prefer legacy colon naming if it exists; otherwise use Windows-safe underscore
-        colon = self.root / f"axis_pack:{pack_id}.meta.json"
-        safe = self.root / f"axis_pack_{pack_id}.meta.json"
-        if colon.exists():
-            return colon
-        elif safe.exists():
-            return safe
-        else:
-            # Return the safe path for creation
-            return safe
+        """Find meta file with either colon or underscore naming convention."""
+        colon_path = self.root / f"axis_pack:{pack_id}.meta.json"
+        underscore_path = self.root / f"axis_pack_{pack_id}.meta.json"
+        return colon_path if colon_path.exists() else underscore_path
 
     def _hash_file(self, p: Path) -> str:
         b = p.read_bytes()
@@ -169,7 +157,11 @@ class AxisRegistry:
         try:
             self._validate_meta(meta)
             self._validate_Q(Q, names)
-        except Exception:
+        except Exception as e:
+            # Debug: Log validation failure details
+            print(f"DEBUG: Validation failed for pack {pack_id}: {e}")
+            print(f"DEBUG: Meta keys: {list(meta.keys())}")
+            print(f"DEBUG: Q shape: {Q.shape}, names: {names}")
             # Fill minimal meta to keep downstream endpoints functional
             meta = {
                 **meta,
@@ -220,6 +212,11 @@ REGISTRY: Optional[AxisRegistry] = None
 
 def init_registry(encoder_dim: int, artifacts_dir: Optional[str] = None) -> AxisRegistry:
     global REGISTRY
-    if REGISTRY is None:
-        REGISTRY = AxisRegistry(Path(artifacts_dir or DEFAULT_ARTIFACTS_DIR), encoder_dim)
+    artifacts_path = Path(artifacts_dir or DEFAULT_ARTIFACTS_DIR)
+    
+    # Always create a new registry if parameters have changed or if none exists
+    if (REGISTRY is None or 
+        REGISTRY.encoder_dim != encoder_dim or 
+        REGISTRY.root != artifacts_path):
+        REGISTRY = AxisRegistry(artifacts_path, encoder_dim)
     return REGISTRY

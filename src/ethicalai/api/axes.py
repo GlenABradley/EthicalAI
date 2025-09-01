@@ -100,6 +100,7 @@ def activate_path(pack_id: str):
     """Path-param variant expected by tests: POST /v1/axes/{pack_id}/activate"""
     return activate(pack_id)
 
+
 @router.get("/active")
 def active():
     p = ACTIVE["pack"]
