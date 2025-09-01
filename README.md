@@ -1,15 +1,34 @@
 # EthicalAI
 
-EthicalAI is a comprehensive framework for analyzing and evaluating text through the lens of ethical principles and frameworks. It provides tools for embedding, analyzing, and visualizing text based on customizable ethical dimensions.
+EthicalAI is a robust framework for evaluating and moderating AI-generated content through ethical principles. It analyzes text across multiple ethical dimensions to ensure responsible AI behavior.
 
-## 🌟 Key Features
+## 🌟 Core Principles
 
-- **Multi-dimensional Ethical Analysis**: Evaluate text against multiple ethical frameworks including consequentialism, deontology, and virtue ethics.
-- **Custom Axis Packs**: Define and apply custom ethical dimensions for specialized analysis.
-- **Real-time Processing**: Fast, efficient processing suitable for both batch and real-time applications.
-- **Comprehensive API**: RESTful API with detailed documentation for easy integration.
-- **Visualization Tools**: Built-in visualization for analyzing ethical dimensions in text.
-- **Extensible Architecture**: Modular design allowing for custom components and extensions.
+1. **Empirical Truth**: Grounding decisions in verifiable facts
+2. **Human Autonomy**: Respecting and preserving human agency
+3. **Non-Aggression**: Preventing harmful or violent content
+4. **Fairness**: Ensuring equitable treatment across diverse groups
+
+## 🛠 Key Components
+
+### Ethical Axes
+
+EthicalAI evaluates content across seven core dimensions:
+
+1. **Virtue Ethics** - Character and moral excellence
+2. **Deontology** - Rule-based ethical reasoning
+3. **Consequentialism** - Outcomes and consequences
+4. **Autonomy** - Respect for individual agency
+5. **Truthfulness** - Factual accuracy and honesty
+6. **Non-Aggression** - Prevention of harm
+7. **Fairness** - Impartial and just treatment
+
+### Technical Features
+
+- **Real-time Analysis**: Low-latency content evaluation
+- **Threshold-based Moderation**: Configurable sensitivity per dimension
+- **Explainable Decisions**: Transparent reasoning for moderation
+- **Custom Calibration**: Fine-tune with domain-specific data
 
 ## 🚀 Quick Start
 
@@ -28,20 +47,22 @@ EthicalAI is a comprehensive framework for analyzing and evaluating text through
    cd EthicalAI
    ```
 
-2. Create and activate a virtual environment:
+2. Set up the environment:
+
    ```bash
-   # Windows
+   # Create and activate virtual environment
    python -m venv .venv
-   .venv\Scripts\activate
+   .venv\Scripts\activate  # Windows
+   # source .venv/bin/activate  # Unix/macOS
    
-   # Unix/macOS
-   python3 -m venv .venv
-   source .venv/bin/activate
+   # Install dependencies
+   pip install -r requirements.txt
    ```
 
-3. Install dependencies:
+3. Download required models:
+
    ```bash
-   pip install -r requirements.txt
+   python download_model.py
    ```
 
 ### Running the API Server
@@ -52,152 +73,97 @@ Start the FastAPI development server:
 uvicorn api.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-The API will be available at `http://localhost:8080` with interactive documentation at `http://localhost:8080/docs`.
-
-## 🛠 Core Components
-
-### API Endpoints
-
-- **Text Analysis**: `/analyze` - Analyze text against ethical dimensions
-- **Embeddings**: `/embed` - Generate text embeddings
-- **Health Check**: `/health/ready` - System status and readiness
-- **Axis Management**: `/v1/axes/*` - Manage ethical dimensions
-
-### Key Modules
-
-- **API Layer**: FastAPI-based REST interface
-- **Processing Pipeline**: Text processing and ethical analysis
-- **Vector Store**: Efficient storage and retrieval of embeddings
-- **Visualization**: Tools for ethical analysis visualization
+Access the API at `http://localhost:8080` with interactive docs at `http://localhost:8080/docs`.
 
 ## 📚 Documentation
 
-For detailed documentation, please refer to:
+- [API Reference](docs/API.md) - Comprehensive API documentation
+- [Architecture](docs/ARCHITECTURE.md) - System design and components
+- [Testing Guide](TESTING_GUIDE.md) - Running and writing tests
+- [Ethical Framework](docs/ETHICS.md) - Principles and calibration
+- [Model Details](docs/Models.md) - Underlying model information
 
-- [API Reference](docs/API.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Testing Guide](TESTING_GUIDE.md)
-- [Ethical Guidelines](docs/ETHICS.md)
-- [Model Details](docs/Models.md)
+## 🧪 Testing
 
-## 🧪 Running Tests
-
-Run the full test suite:
+Run tests with:
 
 ```bash
+# All tests
 pytest
-```
 
-For a specific test file:
+# Specific test file
+pytest tests/test_integration.py -v
 
-```bash
-pytest tests/test_end_to_end.py -v
+# With real encoder (recommended)
+COHERENCE_TEST_REAL_ENCODER=1 pytest
 ```
 
 ## 🏗 Project Structure
 
 ```text
 .
-├── api/                  # API server implementation
-│   ├── main.py          # FastAPI application
-│   └── routers/         # API route definitions
-├── configs/             # Configuration files
-│   └── axis_packs/      # Predefined ethical dimension configurations
-├── data/                # Data storage
-│   ├── axes/            # Axis pack data
+├── api/                  # API server
+│   ├── main.py          # FastAPI app
+│   └── routers/         # API routes
+├── configs/             # Configs
+│   └── axis_packs/      # Ethical dimensions
+├── data/                # Data
+│   ├── axes/            # Axis packs
 │   └── calibration/     # Calibration data
 ├── docs/                # Documentation
-├── scripts/             # Utility scripts
-├── src/                 # Source code
-│   ├── coherence/       # Core analysis logic
-│   └── ethicalai/       # EthicalAI-specific implementations
-├── tests/               # Test suite
+├── scripts/             # Utilities
+├── src/                 # Source
+│   ├── coherence/       # Core logic
+│   └── ethicalai/       # EthicalAI impl
+├── tests/               # Tests
 │   ├── api/             # API tests
 │   └── integration/     # Integration tests
-└── ui/                  # Web interface
+└── ui/                  # Web UI
 ```
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to contribute to this project.
-
-### Development Setup
+See [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'Add some feature'`
-4. Push to the branch: `git push origin feature/your-feature-name`
+2. Create a feature branch: `git checkout -b feature/name`
+3. Commit changes: `git commit -m 'Add feature'`
+4. Push: `git push origin feature/name`
 5. Open a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT License - see [LICENSE](LICENSE).
 
 ## 🙏 Acknowledgments
 
-- Built with FastAPI, PyTorch, and other amazing open-source projects
-- Inspired by research in ethical AI and natural language processing
+- Built with FastAPI and PyTorch
+- Inspired by ethical AI research
 
-## Repository Layout
+## 📖 Technical Documentation
 
-See the repository tree printed by the build steps. The Python source lives under `src/coherence/`.
+### Core Components
 
-## Handling Rules
+- **Semantic Axes**: Define and build axis packs
+- **Text Analysis**: Embeddings, resonance, and detailed analysis
+- **Multi-scale Representations**: Tokens, spans, and frames
+- **Frame Store**: SQLite-backed storage and search
 
-- No pretend-builds; every step outputs concrete files.
-- No cosine similarity, avoid unit-normalizing inputs unless instructed.
-- If something is deferred, mark with `# TODO: @builder` and add a skipped test referencing it.
-- All public functions include docstrings with type hints and shape notes.
-- Performance counters and deterministic seeds are included.
+### API Endpoints
 
+- `/health/ready` - System status
+- `/embed` - Text to vector encoding
+- `/resonance` - Axis pack analysis
+- `/pipeline/analyze` - Detailed text analysis
+- `/v1/axes/*` - Axis pack management
+- `/v1/frames/*` - Frame operations
 
----
+### Key Files
 
-## Documentation
-
-- API Reference: `docs/API.md`
-- Models Reference: `docs/Models.md`
-- OpenAPI JSON: generate via the export script (see below) to `docs/openapi.json`.
-
-
-## Features (What this software does)
-
-- Define semantic axes and build axis packs (legacy and v1 artifact-backed flows).
-- Compute embeddings, resonance, and detailed analysis over texts and/or vectors.
-- Multi-scale token, span, frame representations with role projections.
-- Frame indexing, search, tracing, and statistics over a SQLite-backed store.
-- End-to-end API suitable for powering UIs with rich visualization (e.g., heatmaps).
-
-
-## Architecture and Key Modules
-
-- `src/coherence/api/main.py`: FastAPI app factory, router wiring, registry bootstrap.
-- Routers under `src/coherence/api/routers/`:
-  - `health.py`: readiness and state.
-  - `embed.py`: text embedding.
-  - `resonance.py`: resonance vs. axis packs (inline or stored), intermediate outputs.
-  - `pipeline.py`: full analysis pipeline (tokens, spans, frames, vectors, roles).
-  - `v1_axes.py`: build, activate, inspect, export axis packs (artifacts-backed).
-  - `v1_frames.py`: index frames, search by axis ranges, trace entities, stats.
-  - `axes.py`: legacy file-based axis packs; create from seed phrases.
-  - `index.py`: legacy ANN indexing for docs.
-  - `search.py`: legacy ANN recall + rerank for queries.
-  - `whatif.py`: counterfactual stub.
-  - `analyze.py`: legacy analyze over file-based packs.
-- Shared models: `src/coherence/api/models.py` (see `docs/Models.md`).
-- Artifacts: default at `artifacts/` (`COHERENCE_ARTIFACTS_DIR`), e.g., `frames.sqlite`, `axis_pack:<id>.npz` and metadata.
-
-
-## API Overview (High level)
-
-- `/health/ready` — readiness info (encoder, active pack, frames DB).
-- `/embed` — encode texts to vectors.
-- `/resonance` — compute resonance vs. an axis pack; supports inline packs.
-- `/pipeline/analyze` — detailed analysis with spans, frames, role projections.
-- `/v1/axes/*` — build, activate, get, export axis packs (production path).
-- `/v1/frames/*` — index/search/trace/stats for frames (SQLite-backed).
+- `src/coherence/api/main.py` - FastAPI application
+- `src/coherence/api/routers/` - API endpoints
+- `src/coherence/api/models.py` - Data models
 - Legacy: `/axes`, `/index`, `/search`, `/analyze`, `/whatif`.
-
 
 See `docs/API.md` for exhaustive endpoint specs and examples.
 
@@ -205,75 +171,57 @@ See `docs/API.md` for exhaustive endpoint specs and examples.
 
 - `COHERENCE_ARTIFACTS_DIR` — where artifacts (axis packs, frames DB) are stored. Default: `artifacts/`.
 - `COHERENCE_ENCODER` — optional encoder override for components that accept it.
-- App config file: `configs/app.yaml` (log level, limits, etc.).
-- Logging config: `configs/logging.yaml`.
-
+- App config file: `configs/app.yaml` (log level, limits, etc.)
+- Logging config: `configs/logging.yaml`
 
 ## Artifacts and Data
 
-- Axis packs (v1): `{ARTIFACTS}/axis_pack:<pack_id>.npz` + `.meta.json`.
-- Frames DB: `{ARTIFACTS}/frames.sqlite`.
-- Legacy axis packs (file-based): `data/axes/<axis_pack_id>.json`.
-
+- Axis packs (v1): `{ARTIFACTS}/axis_pack:<pack_id>.npz` + `.meta.json`
+- Frames DB: `{ARTIFACTS}/frames.sqlite`
+- Legacy axis packs (file-based): `data/axes/<axis_pack_id>.json`
 
 ## Scripts
 
 - Seed example axes:
 
-
-```text
-
+  ```bash
   python scripts/seed_axes.py --config configs/axis_packs/sample.json
-
-```text
+  ```
 
 - Export OpenAPI schema (writes to `docs/openapi.json`):
 
-
-```text
-
+  ```bash
   python scripts/export_openapi.py --out docs/openapi.json
-
-```text
+  ```
 
 - Generate client collections via Make (also regenerates OpenAPI):
 
-
-```text
-
-  # default BASE_URL is <<<http://localhost:8080>>>
-  make postman      # writes docs/postman_collection.json
-  make thunder      # writes docs/thunder-collection_Coherence_API.json
+  ```bash
+  # default BASE_URL is http://localhost:8080
+  make postman  # writes docs/postman_collection.json
+  make thunder  # writes docs/thunder-collection_Coherence_API.json
   make collections  # openapi + both collections
 
   # override base URL
-  make collections BASE_URL=<<<http://127.0.0.1:8080>>>
-
-```text
+  make collections BASE_URL=http://127.0.0.1:8080
+  ```
 
 - PowerShell helper (Windows):
 
-
-```text
-
+  ```powershell
   # Regenerate OpenAPI + Postman + Thunder into docs/
-  .\tools\export-openapi.ps1 -BaseUrl "<<<http://localhost:8080">>> -OutDir "docs"
-
-```text
+  .\tools\export-openapi.ps1 -BaseUrl "http://localhost:8080" -OutDir "docs"
+  ```
 
 ## Testing
 
 - Run tests:
 
-
-```text
-
+  ```bash
   pytest -q
-
-```text
+  ```
 
 - Selected integration tests exercise API endpoints under `tests/`.
-
 
 ## Development Tips
 
