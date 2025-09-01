@@ -421,10 +421,22 @@ def activate_pack(pack_id: str) -> ActivateResponse:
     try:
         lp = reg.activate(pack_id)
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Pack not found")
+        # Debug: Check if files exist
+        artifacts_dir = get_artifacts_dir()
+        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
+        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
+        detail = f"Pack not found: {pack_id}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=404, detail=detail)
     except ValueError as e:
         # Dimension or orthonormality mismatch
         raise HTTPException(status_code=409, detail=str(e))
+    except Exception as e:
+        # Debug: Catch any other exceptions during activation
+        artifacts_dir = get_artifacts_dir()
+        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
+        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
+        detail = f"Pack activate error: {pack_id}. Error: {e}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=500, detail=detail)
     return ActivateResponse(active={"pack_id": lp["pack_id"], "dim": lp["D"], "k": lp["k"], "pack_hash": lp["hash"]})
 
 
@@ -452,7 +464,19 @@ def get_pack(pack_id: str) -> GetResponse:
     try:
         lp = reg.load(pack_id)
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Pack not found")
+        # Debug: Check if files exist
+        artifacts_dir = get_artifacts_dir()
+        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
+        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
+        detail = f"Pack not found: {pack_id}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=404, detail=detail)
+    except Exception as e:
+        # Debug: Catch any other exceptions during loading
+        artifacts_dir = get_artifacts_dir()
+        npz_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.npz"
+        meta_path = Path(artifacts_dir) / f"axis_pack_{pack_id}.meta.json"
+        detail = f"Pack load error: {pack_id}. Error: {e}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=500, detail=detail)
     return GetResponse(
         pack_id=lp["pack_id"],
         dim=lp["D"],

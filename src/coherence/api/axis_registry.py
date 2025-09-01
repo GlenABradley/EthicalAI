@@ -49,13 +49,25 @@ class AxisRegistry:
         # Prefer legacy colon naming if it exists; otherwise use Windows-safe underscore
         colon = self.root / f"axis_pack:{pack_id}.npz"
         safe = self.root / f"axis_pack_{pack_id}.npz"
-        return colon if colon.exists() else safe
+        if colon.exists():
+            return colon
+        elif safe.exists():
+            return safe
+        else:
+            # Return the safe path for creation
+            return safe
 
     def _meta_path(self, pack_id: str) -> Path:
         # Prefer legacy colon naming if it exists; otherwise use Windows-safe underscore
         colon = self.root / f"axis_pack:{pack_id}.meta.json"
         safe = self.root / f"axis_pack_{pack_id}.meta.json"
-        return colon if colon.exists() else safe
+        if colon.exists():
+            return colon
+        elif safe.exists():
+            return safe
+        else:
+            # Return the safe path for creation
+            return safe
 
     def _hash_file(self, p: Path) -> str:
         b = p.read_bytes()
