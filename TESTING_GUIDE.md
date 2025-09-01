@@ -1,203 +1,484 @@
-# EthicalAI Comprehensive Testing Guide
+# EthicalAI Testing Guide
 
-This guide covers the complete test suite for the EthicalAI project, including backend API tests, ethical evaluation tests, frontend integration tests, and performance benchmarks.
+## Overview
 
-## 🎯 Test Coverage Overview
+This guide provides comprehensive documentation for the EthicalAI test suite, including unit tests, integration tests, performance benchmarks, and end-to-end tests. The testing strategy emphasizes real-world validation through the use of actual encoder models in testing environments.
 
-The comprehensive test suite covers:
+## Test Categories
 
-### Backend API Testing
-- ✅ **Text Embedding & Vector Generation**
-- ✅ **Ethical Evaluation Pipeline**
-- ✅ **Axis Pack Loading & Configuration**
-- ✅ **Vector Topology Analysis**
-- ✅ **Batch Processing Capabilities**
-- ✅ **What-if Analysis Functionality**
-- ✅ **Error Handling & Edge Cases**
-- ✅ **API Contract Compliance**
+### 1. Unit Tests
+- **Purpose**: Validate individual components in isolation
+- **Location**: `tests/unit/`
+- **Key Features**:
+  - Mock external dependencies
+  - Fast execution
+  - High test coverage
+  - Isolated component testing
 
-### Frontend Integration Testing
-- ✅ **React Component Integration**
-- ✅ **Frontend-Backend API Communication**
-- ✅ **Real-time Analysis Workflow**
-- ✅ **Visualization Data Flow**
-- ✅ **Error Handling & User Experience**
-- ✅ **Performance & Responsiveness**
-- ✅ **Accessibility Compliance**
+### 2. Integration Tests
+- **Purpose**: Verify component interactions
+- **Location**: `tests/integration/`
+- **Key Features**:
+  - Test component integration
+  - Verify API contracts
+  - Validate data flow between components
+  - Includes both happy paths and error cases
 
-### Ethical Evaluation Testing
-- ✅ **All Axis Packs (Consequentialism, Deontology, Virtue, etc.)**
-- ✅ **Cross-Axis Ethical Analysis**
-- ✅ **Real-world Ethical Scenarios**
-- ✅ **Ethical Consistency Validation**
-- ✅ **Complex Moral Dilemma Analysis**
+### 3. Performance Tests
+- **Purpose**: Measure and validate system performance
+- **Location**: `tests/performance/`
+- **Key Features**:
+  - Benchmark critical paths
+  - Measure response times under load
+  - Validate memory usage patterns
+  - Test with real encoder models
 
-### Performance & Stress Testing
-- ✅ **Single & Batch Embedding Performance**
-- ✅ **Concurrent Request Handling**
-- ✅ **Large Text Input Processing**
-- ✅ **Memory Usage Stability**
-- ✅ **Error Recovery Performance**
-- ✅ **Rapid-fire Request Testing**
+### 4. End-to-End Tests
+- **Purpose**: Validate complete user workflows
+- **Location**: `tests/e2e/`
+- **Key Features**:
+  - Full stack testing
+  - Real browser automation
+  - User journey validation
+  - Cross-browser compatibility
 
-## 🚀 Quick Start - Run All Tests
+## Real Encoder Testing
 
-### Option 1: Automated Test Runner (Recommended)
+The test suite includes the capability to test with real encoder models by setting the `COHERENCE_TEST_REAL_ENCODER=1` environment variable. This is particularly useful for:
+
+1. **Model Validation**: Ensuring the encoder produces expected embeddings
+2. **Performance Benchmarking**: Measuring real-world performance characteristics
+3. **Integration Testing**: Validating the complete pipeline with actual models
+
+### Enabling Real Encoder Tests
+
 ```bash
-# Run the comprehensive test suite
-python run_comprehensive_tests.py
+# Run all tests with real encoder
+COHERENCE_TEST_REAL_ENCODER=1 pytest
+
+# Run specific test with real encoder
+COHERENCE_TEST_REAL_ENCODER=1 pytest tests/test_encoder.py -v
 ```
 
-This will execute all test categories and provide a detailed summary report.
+### Performance Benchmarks
 
-### Option 2: Manual Test Execution
+Performance tests include:
 
-#### Backend Tests
+1. **Single Embedding Performance**
+   - Measures latency for individual text embeddings
+   - Tracks memory usage per request
+   - Validates response consistency
+
+2. **Batch Processing**
+   - Tests with various batch sizes
+   - Measures throughput (embeddings/second)
+   - Validates memory efficiency
+
+3. **Concurrent Requests**
+   - Tests system under concurrent load
+   - Measures throughput and error rates
+   - Validates thread safety
+
+4. **Long-Running Tests**
+   - Validates memory stability over time
+   - Detects resource leaks
+   - Ensures consistent performance
+
+## Test Environment
+
+### Prerequisites
+
+- Python 3.8+
+- Node.js 16+ (for frontend tests)
+- Dependencies from `requirements.txt` and `requirements-test.txt`
+- Sufficient disk space for test artifacts
+
+### Configuration
+
+Environment variables for test configuration:
+
 ```bash
-# Core end-to-end tests
-python -m pytest tests/test_end_to_end.py -v
+# Required for real encoder tests
+COHERENCE_TEST_REAL_ENCODER=1
 
-# Comprehensive API tests
-python -m pytest tests/test_comprehensive_e2e.py -v
+# Directory for test artifacts (default: ./test_artifacts)
+COHERENCE_ARTIFACTS_DIR=./test_artifacts
 
-# Frontend integration tests (backend perspective)
-python -m pytest tests/test_frontend_integration.py -v
+# Log level (debug, info, warning, error, critical)
+COHERENCE_LOG_LEVEL=info
 
-# Axis pack and ethical evaluation tests
-python -m pytest tests/test_axis_packs_comprehensive.py -v
-
-# Performance benchmarks
-python -m pytest tests/test_performance_benchmarks.py -v -s
+# Override default encoder model
+COHERENCE_ENCODER=all-mpnet-base-v2
 ```
 
-#### Frontend Tests
+## Running Tests
+
+### Quick Start
+
 ```bash
+# Install test dependencies
+pip install -r requirements-test.txt
+
+# Run all tests
+pytest
+
+# Run tests with coverage report
+pytest --cov=src --cov-report=term-missing
+```
+
+### Test Selection
+
+Run specific test categories:
+
+```bash
+# Run unit tests only
+pytest tests/unit/
+
+# Run integration tests
+pytest tests/integration/
+
+# Run performance benchmarks
+pytest tests/performance/ -m "performance"
+
+# Run tests with specific markers
+pytest -m "not slow"  # Skip slow tests
+pytest -m "integration"  # Run only integration tests
+```
+
+### Frontend Tests
+
+```bash
+# Navigate to UI directory
 cd ui
-npm test
-```
 
-## 📋 Prerequisites
-
-### Backend Testing Requirements
-```bash
-# Install Python dependencies
-pip install -r requirements.txt
-
-# Additional test dependencies
-pip install pytest pytest-asyncio httpx numpy scikit-learn
-```
-
-### Frontend Testing Requirements
-```bash
-cd ui
+# Install dependencies
 npm install
+
+# Run tests
+npm test
+
+# Run tests with coverage
+npm test -- --coverage
 ```
 
-Required packages:
-- `@testing-library/react`
-- `@testing-library/jest-dom`
-- `vitest`
-- `msw` (v2.x)
-- `jsdom`
+## Test Configuration
 
-## 🔧 Test Configuration
+### Pytest Configuration
 
-### Backend Test Configuration
+The project includes a `pytest.ini` file with default configurations:
 
-#### Pytest Configuration (`pytest.ini`)
 ```ini
 [pytest]
-asyncio_mode = auto
-asyncio_default_fixture_loop_scope = function
-addopts = -v --tb=short --cov=src --cov-report=term-missing
+testpaths = tests
 python_files = test_*.py
+python_classes = Test*
 python_functions = test_*
-log_cli = true
-log_cli_level = INFO
-timeout = 300
+addopts = -v --tb=short --cov=src --cov-report=term-missing
+markers =
+    slow: marks tests as slow (deselect with '-m "not slow"')
+    performance: performance benchmark tests
+    integration: integration tests
+    e2e: end-to-end tests
 ```
 
-#### Test Fixtures (`tests/conftest.py`)
-- **Mocked encoder**: Prevents model downloading during tests
-- **Temporary artifacts directory**: Isolated test environment
-- **API client fixture**: Configured TestClient with proper scoping
+### Environment Variables
 
-### Frontend Test Configuration
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `COHERENCE_TEST_REAL_ENCODER` | Use real encoder model (1) or mocks (0) | 0 |
+| `COHERENCE_ARTIFACTS_DIR` | Directory for test artifacts | `./test_artifacts` |
+| `COHERENCE_LOG_LEVEL` | Logging level | `info` |
+| `COHERENCE_ENCODER` | Override default encoder model | `all-mpnet-base-v2` |
 
-#### Vitest Configuration (`ui/vitest.config.ts`)
+## Test Fixtures
+
+The test suite includes several fixtures to support testing:
+
+### Backend Fixtures (`tests/conftest.py`)
+
+```python
+@pytest.fixture(scope="session")
+def tmp_artifacts_dir():
+    """Create a temporary directory for test artifacts."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        yield Path(tmpdir)
+
+@pytest.fixture(scope="module")
+def api_client(tmp_artifacts_dir):
+    """Create a test client with overridden settings."""
+    settings.ARTIFACTS_DIR = tmp_artifacts_dir
+    with TestClient(app) as client:
+        yield client
+
+@pytest.fixture(scope="module")
+def real_encoder():
+    """Fixture that provides a real encoder model."""
+    if not os.environ.get("COHERENCE_TEST_REAL_ENCODER"):
+        pytest.skip("Real encoder tests disabled. Set COHERENCE_TEST_REAL_ENCODER=1 to enable.")
+    return get_default_encoder()
+```
+
+### Frontend Mocks (`ui/src/__mocks__/server.ts`)
+
 ```typescript
-export default defineConfig({
-  plugins: [react()],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/setupTests.ts',
-  },
+import { setupServer } from 'msw/node'
+import { handlers } from './handlers'
+
+export const server = setupServer(...handlers)
+```
+
+## Writing Tests
+
+### Backend Test Example
+
+```python
+import pytest
+from fastapi.testclient import TestClient
+
+@pytest.mark.integration
+class TestEmbeddingAPI:
+    def test_text_embedding(self, api_client):
+        """Test that text embedding returns expected vector dimensions."""
+        response = api_client.post("/v1/embed", json={"text": "Test input"})
+        assert response.status_code == 200
+        data = response.json()
+        assert "embedding" in data
+        assert len(data["embedding"]) == 768  # Expected embedding dimension
+
+    @pytest.mark.performance
+    def test_embedding_performance(self, api_client, benchmark):
+        """Benchmark embedding performance."""
+        def run():
+            return api_client.post("/v1/embed", json={"text": "Performance test"})
+        
+        # Run benchmark
+        result = benchmark(run)
+        assert result.status_code == 200
+```
+
+### Frontend Test Example
+
+```typescript
+// ui/src/components/__tests__/Analyzer.test.tsx
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Analyzer } from '../Analyzer'
+
+describe('Analyzer', () => {
+  it('processes text input and displays results', async () => {
+    render(<Analyzer />)
+    
+    // Simulate user input
+    const input = screen.getByRole('textbox')
+    await userEvent.type(input, 'Test input')
+    
+    // Click analyze button
+    const button = screen.getByRole('button', { name: /analyze/i })
+    await userEvent.click(button)
+    
+    // Verify loading state
+    expect(screen.getByText(/analyzing/i)).toBeInTheDocument()
+    
+    // Wait for results
+    await waitFor(() => {
+      expect(screen.getByText(/results/i)).toBeInTheDocument()
+    })
+  })
 })
 ```
 
-#### MSW Setup (`ui/src/setupTests.ts`)
-```typescript
-import { beforeAll, afterEach, afterAll } from 'vitest'
-import { server } from './__mocks__/server'
+## Test Categories in Detail
 
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
+### 1. Unit Tests
+
+#### Encoder Tests
+- Model loading and initialization
+- Text preprocessing
+- Embedding generation
+- Batch processing
+- Error handling
+
+#### Axis Pack Tests
+- Pack loading and validation
+- Vector operations
+- Similarity calculations
+- Threshold application
+- Metadata handling
+
+### 2. Integration Tests
+
+#### API Endpoint Tests
+- Request validation
+- Response formatting
+- Error conditions
+- Authentication/authorization
+- Rate limiting
+
+#### Pipeline Tests
+- End-to-end text processing
+- Multi-stage transformations
+- Error propagation
+- Resource cleanup
+
+### 3. Performance Tests
+
+#### Load Testing
+- Concurrent user simulation
+- Throughput measurement
+- Resource utilization
+- Scaling behavior
+
+#### Stress Testing
+- System limits
+- Failure recovery
+- Degradation patterns
+- Memory management
+
+### 4. End-to-End Tests
+
+#### User Flows
+- Complete analysis workflow
+- Error scenarios
+- Edge cases
+- Cross-browser compatibility
+
+#### API Contract Tests
+- Request/response validation
+- Version compatibility
+- Backward compatibility
+- Documentation accuracy
+
+## Best Practices
+
+### Writing Maintainable Tests
+
+1. **Descriptive Test Names**
+   ```python
+   # Bad
+   def test_case1():
+   
+   # Good
+   def test_embedding_returns_expected_dimensions():
+   ```
+
+2. **Use Fixtures for Setup**
+   ```python
+   @pytest.fixture
+def sample_texts():
+    return ["First text", "Second text"]
+
+   def test_batch_processing(sample_texts):
+       # Test code here
+   ```
+
+3. **Assertion Clarity**
+   ```python
+   # Less clear
+   assert result == expected
+   
+   # More descriptive
+   assert result["status"] == "success", "Expected successful status"
+   assert len(result["embedding"]) == 768, "Embedding dimension mismatch"
+   ```
+
+### Performance Testing Guidelines
+
+1. **Baseline Establishment**
+   - Establish performance baselines
+   - Document expected performance characteristics
+   - Set performance budgets
+
+2. **Continuous Monitoring**
+   - Track performance metrics over time
+   - Set up alerts for regressions
+   - Document performance trends
+
+3. **Realistic Testing**
+   - Use production-like data
+   - Test with realistic load patterns
+   - Consider network conditions
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Tests Hanging**
+   - Check for unclosed resources
+   - Verify timeouts are appropriate
+   - Look for deadlocks in concurrent code
+
+2. **Intermittent Failures**
+   - Check for race conditions
+   - Ensure proper test isolation
+   - Verify test data consistency
+
+3. **Performance Regressions**
+   - Check for new dependencies
+   - Review recent code changes
+   - Verify resource constraints
+
+### Debugging Tips
+
+```python
+# Enable debug logging
+import logging
+logging.basicConfig(level=logging.DEBUG)
+
+# Use pytest's debugging features
+pytest --pdb  # Drop into debugger on failure
+pytest --trace  # Start debugger immediately
 ```
 
-## 📊 Test Categories Detailed
+## CI/CD Integration
 
-### 1. Core Backend API Tests (`test_comprehensive_e2e.py`)
+The test suite is designed to work with CI/CD pipelines:
 
-#### Text Embedding Tests
-- Single text embedding validation
-- Batch embedding processing
-- Vector dimensionality verification
-- Embedding uniqueness validation
+```yaml
+# Example GitHub Actions workflow
+name: Test
 
-#### Ethical Evaluation Tests
-- Ethical vs harmful text analysis
-- Complex ethical scenario processing
-- Multi-axis ethical evaluation
-- Detailed analysis generation
+on: [push, pull_request]
 
-#### Vector Topology Tests
-- Similarity matrix generation
-- Clustering analysis
-- Topology property validation
-- High-dimensional vector operations
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-test.txt
+    
+    - name: Run tests
+      env:
+        COHERENCE_TEST_REAL_ENCODER: 1
+      run: |
+        pytest --cov=src --cov-report=xml
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+```
 
-### 2. Axis Pack Tests (`test_axis_packs_comprehensive.py`)
+## License
 
-#### Individual Axis Pack Testing
-- **Consequentialism**: Outcome-based ethical evaluation
-- **Deontology**: Duty-based ethical evaluation  
-- **Virtue Ethics**: Character-based ethical evaluation
-- **Intent-based**: Good/bad intention analysis
-
-#### Cross-Axis Analysis
-- Multi-framework ethical evaluation
-- Consistency checking across axes
-- Complex moral dilemma analysis
-- Real-world scenario testing
-
-### 3. Frontend Integration Tests (`comprehensive-integration.test.tsx`)
-
-#### Component Integration
-- App component rendering
-- Text input and analysis workflow
-- Real-time feedback systems
-- Visualization component integration
-
-#### API Integration
-- Health check monitoring
-- Embedding request handling
-- Analysis result processing
-- Error state management
-
-#### User Experience Testing
-- Loading states and feedback
+This testing guide and associated test suite are part of the EthicalAI project and are made available under the same license as the main project.
 - Error handling and recovery
 - Performance under load
 - Accessibility compliance

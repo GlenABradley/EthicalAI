@@ -1,103 +1,263 @@
-# Coherence API — Comprehensive Documentation
+# EthicalAI API Documentation
 
-This document enumerates all endpoints exposed by the FastAPI app in `src/coherence/api/main.py`, with exact request/response schemas, behavior, error conditions, and example calls.
+This document provides comprehensive documentation for the EthicalAI REST API, including all available endpoints, request/response schemas, and usage examples. The API is built with FastAPI and provides tools for ethical text analysis, embedding generation, and axis management.
 
-References:
+## Base URL
 
-- App wiring: `src/coherence/api/main.py`
-- Routers: `src/coherence/api/routers/`
-- Shared models: `src/coherence/api/models.py`
+All API endpoints are relative to the base URL of your deployment (e.g., `http://localhost:8080` for local development).
 
-Environment/config:
+## Authentication
 
-- `COHERENCE_ARTIFACTS_DIR` (default `artifacts`) stores frames DB and v1 axis pack artifacts.
-- `COHERENCE_ENCODER` can override default encoder in some endpoints.
-- App initializes an AxisRegistry on startup if encoder loads.
+Most endpoints do not require authentication for local development. For production deployments, consider implementing API key authentication.
 
----
+## Response Format
 
-## Health
+All API responses follow a standard format:
 
-- Path: `/health/ready`
-- Method: GET
-- Router: `src/coherence/api/routers/health.py`
-- Request: none
-- Response: JSON
-  - `status`: "ok"
-  - `encoder_model`: string
-  - `encoder_dim`: int | null
-  - `active_pack`: { `pack_id`: string, `k`: int, `pack_hash`: string, `schema_version`?: string } | null
-  - `frames_db_present`: boolean
-  - `frames_db_size_bytes`: int
+- Successful responses (HTTP 2xx) return JSON with the requested data
+- Error responses (HTTP 4xx/5xx) include a JSON body with an `error` field containing details
 
-Errors:
+## Rate Limiting
 
-- None expected (best-effort), may fall back to nulls.
+By default, the API enforces rate limiting to prevent abuse. The current limits are:
 
-Example:
+- 60 requests per minute per IP address for most endpoints
+- 10 requests per minute for resource-intensive operations
 
-```bash
+## Versioning
 
-curl -s <<<http://localhost:8000/health/ready>>>
+The API uses URL versioning (e.g., `/v1/endpoint`). The current version is `v1`.
 
+## Health Check
+
+### Check API Status
+
+```http
+GET /health/ready
 ```
 
----
+Returns the current status of the API and its components.
 
-## Embedding
+#### Response
 
-- Path: `/embed`
-- Method: POST
-- Router: `src/coherence/api/routers/embed.py`
-- Request model: `EmbedRequest`
-  - `texts`: List[str] (required)
-  - `encoder_name`?: string
-  - `device`?: "cpu" | "cuda" | "mps" | "auto"
-  - `normalize_input`?: boolean
-- Response model: `EmbedResponse`
-  - `embeddings`: List[List[float]]  // shape (n,d)
-  - `shape`: [n, d]
-  - `model_name`: string
-  - `device`: string
+```json
+{
+  "status": "ok",
+  "encoder_model": "all-mpnet-base-v2",
+  "encoder_dim": 768,
+  "active_pack": {
+    "pack_id": "default",
+    "k": 5,
+    "pack_hash": "a1b2c3d4",
+    "schema_version": "1.0.0"
+  },
+  "frames_db_present": true,
+  "frames_db_size_bytes": 1048576,
+  "version": "1.0.0",
+  "uptime_seconds": 12345
+}
+```
 
-Errors:
+#### Fields
 
-- 500 Failed to load encoder / Encoding failed
+- `status`: Current status of the API ("ok" when healthy)
+- `encoder_model`: Name of the current text embedding model
+- `encoder_dim`: Dimensionality of the embedding vectors
+- `active_pack`: Information about the currently loaded axis pack
+  - `pack_id`: Unique identifier for the axis pack
+  - `k`: Number of dimensions in the axis pack
+  - `pack_hash`: Hash of the axis pack contents
+  - `schema_version`: Version of the axis pack schema
+- `frames_db_present`: Whether the frames database is available
+- `frames_db_size_bytes`: Size of the frames database in bytes
+- `version`: API version
+- `uptime_seconds`: How long the API has been running
 
-Example:
+#### Example Request
 
 ```bash
+curl -X GET "http://localhost:8080/health/ready" \
+  -H "Accept: application/json"
+```
 
-curl -sX POST <<<http://localhost:8000/embed>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "texts": ["hello world", "coherence api"],
-    "device": "auto",
-    "normalize_input": true
-  }'
+#### Status Codes
 
-```text
+- `200 OK`: Service is healthy
+- `503 Service Unavailable`: One or more components are not ready
 
 ---
 
-## Resonance
+## Text Embedding
 
-- Path: `/resonance`
-- Method: POST
-- Router: `src/coherence/api/routers/resonance.py`
-- Request model: `ResonanceRequest`
-  - `vectors`?: List[List[float]]  // (n,d), mutually exclusive with texts
-  - `texts`?: List[str]
-  - `axis_pack`?: Inline AxisPackModel
-    - `names`: List[str]
-    - `Q`: List[List[float]]  // (d,k)
-    - `lambda_`?: List[float] (alias "lambda")
-    - `beta`?: List[float]
-    - `weights`?: List[float]
-    - `mu`?: dict
-    - `meta`?: dict
-  - `pack_id`?: string
-  - `return_intermediate`: boolean (default false)
+### Generate Embeddings
+
+```http
+POST /embed
+```
+
+Converts input texts into dense vector representations using the configured embedding model.
+
+#### Request Body
+
+```json
+{
+  "texts": ["Sample text to embed", "Another example text"],
+  "encoder_name": "all-mpnet-base-v2",
+  "device": "auto",
+  "normalize_input": true
+}
+```
+
+##### Fields
+
+- `texts` (required, array of strings): List of text strings to embed
+- `encoder_name` (optional, string): Name of the encoder model to use (default: "all-mpnet-base-v2")
+- `device` (optional, string): Device to run the model on ("cpu", "cuda", "mps", or "auto")
+- `normalize_input` (optional, boolean): Whether to normalize input text (default: true)
+
+#### Response
+
+```json
+{
+  "embeddings": [
+    [0.1, 0.2, 0.3, ...],
+    [0.4, 0.5, 0.6, ...]
+  ],
+  "shape": [2, 768],
+  "model_name": "all-mpnet-base-v2",
+  "device": "cuda:0"
+}
+```
+
+##### Fields
+
+- `embeddings`: Array of embedding vectors, one for each input text
+- `shape`: Dimensions of the returned embeddings array [num_texts, embedding_dimension]
+- `model_name`: Name of the model used for embedding
+- `device`: Device where the computation was performed
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8080/embed" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "texts": ["AI should be transparent", "Ethical considerations are important"],
+    "device": "auto"
+  }'
+```
+
+#### Status Codes
+
+- `200 OK`: Successfully generated embeddings
+- `400 Bad Request`: Invalid input (e.g., empty texts array)
+- `422 Unprocessable Entity`: Validation error in request
+- `500 Internal Server Error`: Failed to load encoder or process request
+
+#### Rate Limit
+
+This endpoint is rate limited to 60 requests per minute per IP address.text
+
+---
+
+## Text Analysis
+
+### Analyze Text Resonance
+
+```http
+POST /resonance
+```
+
+Analyzes input texts against specified ethical dimensions (axes) and returns resonance scores.
+
+#### Request Body
+
+```json
+{
+  "texts": ["Sample text to analyze", "Another example text"],
+  "axis_pack": {
+    "names": ["autonomy", "fairness", "transparency"],
+    "Q": [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]],
+    "lambda_": [1.0, 1.0, 1.0],
+    "beta": [0.0, 0.0, 0.0],
+    "weights": [0.33, 0.33, 0.34],
+    "meta": {
+      "description": "Sample ethical dimensions"
+    }
+  },
+  "return_intermediate": true
+}
+```
+
+##### Fields
+
+- `texts` (required, array of strings): List of text strings to analyze
+- `vectors` (optional, array of arrays of numbers): Pre-computed embedding vectors (mutually exclusive with `texts`)
+- `axis_pack` (optional, object): Inline axis pack definition
+  - `names` (required, array of strings): Names of the ethical dimensions
+  - `Q` (required, matrix of numbers): Orthonormal basis vectors for the axes
+  - `lambda_` (optional, array of numbers): Eigenvalues for each axis
+  - `beta` (optional, array of numbers): Bias terms for each axis
+  - `weights` (optional, array of numbers): Weights for combining axes
+  - `mu` (optional, object): Mean vector for centering
+  - `meta` (optional, object): Additional metadata about the axis pack
+- `pack_id` (optional, string): ID of a pre-defined axis pack to use
+- `return_intermediate` (optional, boolean): Whether to include intermediate calculations in the response
+
+#### Response
+
+```json
+{
+  "resonance_scores": [
+    [0.85, 0.72, 0.91],
+    [0.62, 0.78, 0.55]
+  ],
+  "texts": ["Sample text to analyze", "Another example text"],
+  "axis_names": ["autonomy", "fairness", "transparency"],
+  "intermediate": {
+    "embeddings": [[...]],
+    "projections": [[...]],
+    "scores": [...]
+  },
+  "model_name": "all-mpnet-base-v2",
+  "axis_pack_id": "inline_pack_123"
+}
+```
+
+##### Fields
+
+- `resonance_scores`: Array of score arrays, one per input text
+- `texts`: The input texts that were analyzed
+- `axis_names`: Names of the ethical dimensions
+- `intermediate` (if `return_intermediate=true`): Detailed calculation results
+  - `embeddings`: Raw embedding vectors
+  - `projections`: Projections onto each axis
+  - `scores`: Raw scores before normalization
+- `model_name`: Name of the embedding model used
+- `axis_pack_id`: ID of the axis pack used for analysis
+
+#### Example Request
+
+```bash
+curl -X POST "http://localhost:8080/resonance" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "texts": ["AI systems should be transparent about their decision-making processes"],
+    "pack_id": "ethical_principles"
+  }'
+```
+
+#### Status Codes
+
+- `200 OK`: Successfully analyzed text
+- `400 Bad Request`: Invalid input or missing required fields
+- `404 Not Found`: Specified axis pack not found
+- `422 Unprocessable Entity`: Validation error in request
+- `500 Internal Server Error`: Failed to process request
+
+#### Rate Limit
+
+This endpoint is rate limited to 30 requests per minute per IP address.
   - `encoder_name`?: string
   - `device`?: string
   - `normalize_input`?: boolean

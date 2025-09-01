@@ -1,66 +1,142 @@
-# Coherence
+# EthicalAI
 
-Coherence is a semantic analysis engine that allows users to define semantic axes and compute resonance and internal coherence over text. It outputs per-axis vectors at token, span, frame, and frame-span levels, with multi-scale diffusion and a lightweight logical frame layer.
+EthicalAI is a comprehensive framework for analyzing and evaluating text through the lens of ethical principles and frameworks. It provides tools for embedding, analyzing, and visualizing text based on customizable ethical dimensions.
 
-This repository follows the authoritative build plan provided. We will implement the system milestone-by-milestone with concrete artifacts, tests, and a runnable API.
+## 🌟 Key Features
 
-## Goals
+- **Multi-dimensional Ethical Analysis**: Evaluate text against multiple ethical frameworks including consequentialism, deontology, and virtue ethics.
+- **Custom Axis Packs**: Define and apply custom ethical dimensions for specialized analysis.
+- **Real-time Processing**: Fast, efficient processing suitable for both batch and real-time applications.
+- **Comprehensive API**: RESTful API with detailed documentation for easy integration.
+- **Visualization Tools**: Built-in visualization for analyzing ethical dimensions in text.
+- **Extensible Architecture**: Modular design allowing for custom components and extensions.
 
-- Axis-aware, magnitude-sensitive resonance (no cosine).
-- Non-adjacent span coherence via SkipMesh and field diffusion.
-- Semantic frames with logic operators and gating.
-- Vectors everywhere: alpha, u, r, U (and C for spans) at multiple diffusion scales.
+## 🚀 Quick Start
 
-## Assumptions
+### Prerequisites
 
-- Default encoder: `sentence-transformers/all-mpnet-base-v2`.
-- Device auto-selection (`cpu`/`cuda`) handled in encoder.
-- Tokenization starts with simple whitespace (can swap later).
-- Deterministic seeds set in config (`coherence.seed`).
-- Choquet capacity disabled by default (linear aggregation) unless provided.
+- Python 3.8+
+- pip (Python package manager)
+- Git
 
-## Runbook (Quick Start)
+### Installation
 
-1. Create a virtual environment and activate it
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/GlenABradley/EthicalAI.git
+   cd EthicalAI
+   ```
+
+2. Create and activate a virtual environment:
+   ```bash
+   # Windows
+   python -m venv .venv
+   .venv\Scripts\activate
+   
+   # Unix/macOS
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Running the API Server
+
+Start the FastAPI development server:
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8080
 ```
 
-1. Install dependencies
+The API will be available at `http://localhost:8080` with interactive documentation at `http://localhost:8080/docs`.
+
+## 🛠 Core Components
+
+### API Endpoints
+
+- **Text Analysis**: `/analyze` - Analyze text against ethical dimensions
+- **Embeddings**: `/embed` - Generate text embeddings
+- **Health Check**: `/health/ready` - System status and readiness
+- **Axis Management**: `/v1/axes/*` - Manage ethical dimensions
+
+### Key Modules
+
+- **API Layer**: FastAPI-based REST interface
+- **Processing Pipeline**: Text processing and ethical analysis
+- **Vector Store**: Efficient storage and retrieval of embeddings
+- **Visualization**: Tools for ethical analysis visualization
+
+## 📚 Documentation
+
+For detailed documentation, please refer to:
+
+- [API Reference](docs/API.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Testing Guide](TESTING_GUIDE.md)
+- [Ethical Guidelines](docs/ETHICS.md)
+- [Model Details](docs/Models.md)
+
+## 🧪 Running Tests
+
+Run the full test suite:
 
 ```bash
+pytest
+```
 
-pip install -r requirements.txt
+For a specific test file:
 
-```text
+```bash
+pytest tests/test_end_to_end.py -v
+```
 
-1. Run tests (initially mostly skipped)
-
-
-```text
-
-pytest -q
-
-```text
-
-1. Run the API server
-
+## 🏗 Project Structure
 
 ```text
+.
+├── api/                  # API server implementation
+│   ├── main.py          # FastAPI application
+│   └── routers/         # API route definitions
+├── configs/             # Configuration files
+│   └── axis_packs/      # Predefined ethical dimension configurations
+├── data/                # Data storage
+│   ├── axes/            # Axis pack data
+│   └── calibration/     # Calibration data
+├── docs/                # Documentation
+├── scripts/             # Utility scripts
+├── src/                 # Source code
+│   ├── coherence/       # Core analysis logic
+│   └── ethicalai/       # EthicalAI-specific implementations
+├── tests/               # Test suite
+│   ├── api/             # API tests
+│   └── integration/     # Integration tests
+└── ui/                  # Web interface
+```
 
-uvicorn coherence.api.main:app --reload --host 0.0.0.0 --port 8080
+## 🤝 Contributing
 
-```text
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to contribute to this project.
 
-1. Seed an example axis pack
+### Development Setup
 
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a pull request
 
-```text
+## 📄 License
 
-python scripts/seed_axes.py --config configs/axis_packs/sample.json
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-```text
+## 🙏 Acknowledgments
+
+- Built with FastAPI, PyTorch, and other amazing open-source projects
+- Inspired by research in ethical AI and natural language processing
 
 ## Repository Layout
 
