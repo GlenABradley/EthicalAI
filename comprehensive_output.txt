@@ -5,3 +5,8 @@ rootdir: C:\Users\glen4\Code\EthicalAI2\EthicalAI
 configfile: pytest.ini
 plugins: anyio-4.10.0, asyncio-1.1.0, cov-6.2.1
 asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collecting ... collected 99 items
+
+tests/api/test_frames_endpoints.py::test_frames_index_empty_ok 
+------------------------------- live log setup --------------------------------
+INFO     sentence_transformers.SentenceTransformer:SentenceTransformer.py:227 Load pretrained SentenceTransformer: all-MiniLM-L6-v2
