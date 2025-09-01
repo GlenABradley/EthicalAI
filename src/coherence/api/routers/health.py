@@ -14,18 +14,24 @@ router = APIRouter()
 
 @router.get("/ready")
 def ready() -> Dict[str, Any]:
-    """Readiness probe with encoder and active pack info."""
+    """Lightweight readiness probe.
+
+    Avoid loading models here. Report basic config and any active pack if the
+    registry was already initialized by the app startup.
+    """
     encoder_model = os.getenv("COHERENCE_ENCODER")
     if not encoder_model:
         cfg = load_app_config()
         encoder_model = cfg.get("encoder", {}).get("name", "sentence-transformers/all-mpnet-base-v2")
 
-    # Ensure registry exists so it can restore active from artifacts
+    # Ensure registry exists; initialize using real encoder if missing
     reg = getattr(axis_registry, "REGISTRY", None)
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = axis_registry.init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            encoder_dim_val = int(enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = os.environ.get("COHERENCE_ARTIFACTS_DIR", "artifacts")
+            reg = axis_registry.init_registry(encoder_dim=encoder_dim_val, artifacts_dir=artifacts_dir)
         except Exception:
             reg = None
 

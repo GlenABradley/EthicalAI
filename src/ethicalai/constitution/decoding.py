@@ -4,7 +4,7 @@ import numpy as np
 from ..types import AxisPack, DecisionProof
 from ..eval.spans import project_scores
 from ..eval.minspan import minimal_veto_spans
-from ..encoders import get_encoder
+from ..encoders import get_encoder, align_dim
 
 def _axis_composite(spans: List[Dict], axes: Tuple[str, str]) -> float:
     """Average window scores for the named axes. If axis missing, treat as 0."""
@@ -15,13 +15,19 @@ def _axis_composite(spans: List[Dict], axes: Tuple[str, str]) -> float:
     vals = [(np.mean(collected[a]) if collected[a] else 0.0) for a in axes]
     return float(np.mean(vals)) if vals else 0.0
 
+def _encode_tokens(text: str, dim: int, enc=None) -> np.ndarray:
+    enc = enc or get_encoder()
+    X = enc.encode_text(text)  # [T,D] or [D]
+    if X.ndim == 1:
+        return align_dim(X, dim)[None, :]
+    if X.shape[1] != dim:
+        X = np.stack([align_dim(t, dim) for t in X], axis=0)
+    return X.astype(np.float32)
+
 def _score_candidate(text: str, logprob: float, pack: AxisPack, enc=None,
                      window: int = 32, stride: int = 16,
                      pref_axes: Tuple[str, str] = ("autonomy", "truthfulness")):
-    enc = enc or get_encoder()
-    X = enc.encode_text(text)  # [T,D]
-    if X.shape[1] != pack.dim:
-        raise ValueError(f"Encoder dim {X.shape[1]} != pack dim {pack.dim}")
+    X = _encode_tokens(text, pack.dim, enc=enc)
     spans = project_scores(X, pack, window, stride)
     veto = minimal_veto_spans(spans)
     composite = _axis_composite(spans, pref_axes)

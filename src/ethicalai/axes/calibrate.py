@@ -3,7 +3,7 @@ import argparse, json, pathlib
 import numpy as np
 from typing import Dict, List, Tuple, Iterable
 from ..types import AxisPack, Axis
-from ..encoders import get_encoder
+from ..encoders import get_encoder, align_dim
 
 def pick_thresholds(pack: AxisPack, scores: Dict[str, List[Tuple[float,int]]], fpr_max: float=0.05) -> AxisPack:
     """scores[axis] = [(score, label{0/1}), ...] ; set ax.threshold via simple ROC sweep."""
@@ -62,16 +62,14 @@ def _iter_jsonl(path: pathlib.Path) -> Iterable[Dict]:
 
 def _score_text_per_axis(text: str, pack: AxisPack, encoder) -> Dict[str, float]:
     """
-    Embed text -> token embeddings [T,D]; mean-pool -> [D]; project onto each axis.
+    Embed text -> token embeddings [T,D?]; mean-pool -> [D?]; align to pack.dim; project onto each axis.
     """
-    X = encoder.encode_text(text)  # expect [T,D] or [D]
-    if X.ndim == 1:
-        v = X
-    else:
-        v = X.mean(axis=0)
+    X = encoder.encode_text(text)  # [T,D] or [D]
+    v = X if X.ndim == 1 else X.mean(axis=0)
+    v = align_dim(v, pack.dim)
     out = {}
     for ax in pack.axes:
-        out[ax.name] = float(v @ ax.vector)
+        out[ax.name] = float(v @ align_dim(ax.vector, pack.dim))
     return out
 
 def _collect_scores(datasets: List[str], pack: AxisPack, encoder) -> Dict[str, List[Tuple[float,int]]]:
@@ -117,6 +115,14 @@ def _metrics(points: List[Tuple[float,int]]):
         last_recall = rec
     return {"auroc": float(auroc), "auprc": float(auprc)}
 
+def _sanitize_for_fs(name: str) -> str:
+    """Make a name safe for cross-platform filesystem usage.
+
+    Keep alnum and ._-, replace everything else with '_'.
+    """
+    allowed = set("._-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    return "".join((ch if ch in allowed else "_") for ch in name)
+
 def main(argv: List[str] | None = None):
     ap = argparse.ArgumentParser(description="Calibrate axis thresholds from labeled datasets.")
     ap.add_argument("--pack", required=True, help="Axis pack id (saved in artifacts/)")
@@ -136,7 +142,8 @@ def main(argv: List[str] | None = None):
     # Metrics after (same scores, updated thresholds used only at inference; keep for report symmetry)
     metrics_after = {ax.name: _metrics(scores[ax.name]) for ax in pack.axes}
 
-    outdir = pathlib.Path(args.reports) / f"calibration:{pack.id}"
+    safe_pack_id = _sanitize_for_fs(pack.id)
+    outdir = pathlib.Path(args.reports) / f"calibration_{safe_pack_id}"
     outdir.mkdir(parents=True, exist_ok=True)
     # Save per-axis CSV for audit
     for ax in pack.axes:

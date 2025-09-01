@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import logging, time
+import logging, time, os
 from fastapi import FastAPI
 from fastapi import Depends
 from fastapi.middleware.cors import CORSMiddleware
@@ -89,7 +89,8 @@ def create_app() -> FastAPI:
     try:
         enc = get_default_encoder()
         encoder_dim = enc._model.get_sentence_embedding_dimension()
-        init_registry(encoder_dim=encoder_dim)
+        artifacts_dir = os.environ.get("COHERENCE_ARTIFACTS_DIR", "artifacts")
+        init_registry(encoder_dim=encoder_dim, artifacts_dir=artifacts_dir)
     except Exception as e:
         logging.getLogger("coherence.api").warning(f"Registry init skipped (encoder load failed): {e}")
 

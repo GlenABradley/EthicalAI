@@ -14,9 +14,9 @@ PASSED                                                                   [  1%]
 tests/api/test_frames_endpoints.py::test_frames_search_and_trace_empties PASSED [  2%]
 tests/api/test_frames_index_contracts.py::test_index_wrong_coords_length_422 PASSED [  3%]
 tests/api/test_frames_index_contracts.py::test_index_missing_pack_no_active_400 PASSED [  4%]
-tests/api/test_frames_index_contracts.py::test_index_empty_frames_with_pack_returns_k_and_zero_ingested PASSED [  5%]
+tests/api/test_frames_index_contracts.py::test_index_empty_frames_with_pack_returns_k_and_zero_ingested FAILED [  5%]
 tests/api/test_frames_stats.py::test_frames_stats_ok PASSED              [  6%]
-tests/api/test_payload_limits.py::test_analyze_payload_limit_413 PASSED  [  7%]
+tests/api/test_payload_limits.py::test_analyze_payload_limit_413 FAILED  [  7%]
 tests/memory/test_store_stubs.py::test_store_put_and_k_infer_and_stubs PASSED [  8%]
 tests/test_advanced_axis_integration.py::test_advanced_axis_resonance PASSED [  9%]
 tests/test_api.py::test_health_ready PASSED                              [ 10%]
@@ -24,7 +24,7 @@ tests/test_api_endpoints.py::test_resonance_with_vectors PASSED          [ 11%]
 tests/test_api_endpoints.py::test_pipeline_analyze_with_vectors PASSED   [ 12%]
 tests/test_api_endpoints.py::test_embed_endpoint_smoke PASSED            [ 13%]
 tests/test_app_imports.py::test_app_importable PASSED                    [ 14%]
-tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds FAILED [ 15%]
+tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds PASSED [ 15%]
 tests/test_axes_orthonormal.py::test_gram_schmidt_orthonormal PASSED     [ 16%]
 tests/test_axis_pack.py::test_axis_pack_builds_and_is_orthonormal PASSED [ 17%]
 tests/test_axis_pack_384d.py::test_384d_axis_pack PASSED                 [ 18%]
@@ -41,7 +41,7 @@ tests/test_axis_packs_comprehensive.py::TestEthicalEvaluationPipeline::test_real
 tests/test_calibrate_cli.py::test_calibrate_cli_runs_and_writes_reports FAILED [ 29%]
 tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_health_check_comprehensive PASSED [ 30%]
 tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_text_embedding_functionality PASSED [ 31%]
-tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_axis_pack_loading PASSED [ 32%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_axis_pack_loading FAILED [ 32%]
 tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_ethical_evaluation_pipeline PASSED [ 33%]
 tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_batch_ethical_analysis PASSED [ 34%]
 tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_complex_ethical_scenarios PASSED [ 35%]
@@ -80,8 +80,8 @@ tests/test_frontend_integration.py::TestAPIContractCompliance::test_embedding_ap
 tests/test_frontend_integration.py::TestAPIContractCompliance::test_health_api_contract PASSED [ 68%]
 tests/test_frontend_integration.py::TestAPIContractCompliance::test_error_handling_contract PASSED [ 69%]
 tests/test_health_ready.py::test_health_ready_fast PASSED                [ 70%]
-tests/test_interaction_api.py::test_interaction_allow_path FAILED        [ 71%]
-tests/test_interaction_refusal.py::test_interaction_refusal_and_alternatives FAILED [ 72%]
+tests/test_interaction_api.py::test_interaction_allow_path PASSED        [ 71%]
+tests/test_interaction_refusal.py::test_interaction_refusal_and_alternatives PASSED [ 72%]
 tests/test_minimal.py::test_minimal PASSED                               [ 73%]
 tests/test_openapi_generates.py::test_openapi_generation PASSED          [ 74%]
 tests/test_performance.py::test_embed_endpoint_performance PASSED        [ 75%]
@@ -111,892 +111,412 @@ tests/test_skipmesh.py::test_span_coherence_monotonic_with_signal PASSED [ 98%]
 tests/test_spans.py::test_minimal_spans_and_scores_present SKIPPED       [100%]
 
 ================================== FAILURES ===================================
-_______________________ test_activate_reads_thresholds ________________________
-tests\test_axes_activate_thresholds.py:16: in test_activate_reads_thresholds
-    assert r.status_code == 200
+________ test_index_empty_frames_with_pack_returns_k_and_zero_ingested ________
+tests\api\test_frames_index_contracts.py:69: in test_index_empty_frames_with_pack_returns_k_and_zero_ingested
+    assert r.status_code == 200, r.text
+E   AssertionError: {"detail":"pack_id not found"}
+E   assert 400 == 200
+E    +  where 400 = <Response [400 Bad Request]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 19:59:53,572 INFO coherence.api - create_app: start
+2025-08-31 19:59:53,585 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 19:59:53,585 INFO coherence.api - create_app: done in 0.017s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 19:59:53,585 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 19:59:53,601 INFO coherence.axis.advanced_builder - Building axis pack from 2 JSON files
+2025-08-31 19:59:53,601 DEBUG coherence.axis.advanced_builder -   Encoding 2 positive examples for axis 'a1'...
+2025-08-31 19:59:53,624 DEBUG coherence.axis.advanced_builder -   Encoded positive vectors shape: (2, 768)
+2025-08-31 19:59:53,624 DEBUG coherence.axis.advanced_builder -   Encoding 2 negative examples for axis 'a1'...
+2025-08-31 19:59:53,644 DEBUG coherence.axis.advanced_builder -   Encoded negative vectors shape: (2, 768)
+2025-08-31 19:59:53,644 INFO coherence.axis.advanced_builder -   Successfully processed axis: a1 with 2 positive and 2 negative vectors
+2025-08-31 19:59:53,644 DEBUG coherence.axis.advanced_builder -   Encoding 2 positive examples for axis 'a2'...
+2025-08-31 19:59:53,673 DEBUG coherence.axis.advanced_builder -   Encoded positive vectors shape: (2, 768)
+2025-08-31 19:59:53,673 DEBUG coherence.axis.advanced_builder -   Encoding 2 negative examples for axis 'a2'...
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -   Encoded negative vectors shape: (2, 768)
+2025-08-31 19:59:53,695 INFO coherence.axis.advanced_builder -   Successfully processed axis: a2 with 2 positive and 2 negative vectors
+2025-08-31 19:59:53,695 INFO coherence.axis.advanced_builder - Successfully processed 2 axes. Building axis pack...
+2025-08-31 19:59:53,695 INFO coherence.axis.advanced_builder - Building axis pack from 2 axes
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder - Input vectors for a1:
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -   Positive: 2 vectors
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -   Negative: 2 vectors
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder - Input vectors for a2:
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -   Positive: 2 vectors
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -   Negative: 2 vectors
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:53,695 INFO coherence.axis.advanced_builder - Inferred embedding dimension D=768
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder - Collecting vectors for whitening...
+2025-08-31 19:59:53,695 DEBUG coherence.axis.advanced_builder - Computing whitener over 8 samples, D=768
+2025-08-31 19:59:53,853 DEBUG coherence.axis.advanced_builder - Whitener shapes: mu=(768,), W=(768, 768)
+2025-08-31 19:59:53,853 INFO coherence.axis.advanced_builder - Starting to process 2 axes...
+2025-08-31 19:59:53,854 INFO coherence.axis.advanced_builder - 
+================================================================================
+2025-08-31 19:59:53,854 INFO coherence.axis.advanced_builder - Processing axis: a1
+2025-08-31 19:59:53,854 INFO coherence.axis.advanced_builder - ================================================================================
+2025-08-31 19:59:53,866 INFO coherence.axis.advanced_builder - Successfully processed axis: a1
+2025-08-31 19:59:53,866 INFO coherence.axis.advanced_builder -   Axis shape: (768,), dtype: float32
+2025-08-31 19:59:53,866 INFO coherence.axis.advanced_builder -   Axis norm: 1.0000
+2025-08-31 19:59:53,866 INFO coherence.axis.advanced_builder - 
+================================================================================
+2025-08-31 19:59:53,866 INFO coherence.axis.advanced_builder - Processing axis: a2
+2025-08-31 19:59:53,866 INFO coherence.axis.advanced_builder - ================================================================================
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder - Successfully processed axis: a2
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder -   Axis shape: (768,), dtype: float32
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder -   Axis norm: 1.0000
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder - Processed 2 axes: ['a1', 'a2']
+2025-08-31 19:59:53,880 DEBUG coherence.axis.advanced_builder - Q list length: 2
+2025-08-31 19:59:53,880 DEBUG coherence.axis.advanced_builder - Q[0] shape: (768, 1), type: <class 'numpy.ndarray'>
+2025-08-31 19:59:53,880 DEBUG coherence.axis.advanced_builder - Q[1] shape: (768, 1), type: <class 'numpy.ndarray'>
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder - Stacking 2 axis vectors into Q matrix...
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder - Q matrix raw shape: (768, 2)
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder - Orthonormalizing Q columns via QR (reduced)...
+2025-08-31 19:59:53,880 INFO coherence.axis.advanced_builder - Q^T Q max deviation from I: 3.54e-08
+2025-08-31 19:59:53,882 INFO coherence.axis.advanced_builder - Final Q matrix shape: (768, 2)
+2025-08-31 19:59:53,882 INFO coherence.axis.advanced_builder - Creating AxisPack with 2 axes: a1, a2
+2025-08-31 19:59:53,882 DEBUG coherence.axis.advanced_builder - Q shape: (768, 2), lambda shape: (2,), beta shape: (2,), weights shape: (2,)
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - Validating AxisPack with k=2
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - Q shape: (768, 2), ndim: 2
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - lambda_ shape: (2,), expected: (2,)
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - beta shape: (2,), expected: (2,)
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - weights shape: (2,), expected: (2,)
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - Q.T @ Q shape: (2, 2), expected: (2, 2)
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - Q.T @ Q diagonal: [1. 1.]
+2025-08-31 19:59:53,882 DEBUG coherence.axis.pack - Q.T @ Q off-diagonal max: 3.5390257835388184e-08
+2025-08-31 19:59:53,882 INFO coherence.axis.advanced_builder - Successfully validated AxisPack
+2025-08-31 19:59:53,882 INFO coherence.axis.advanced_builder - Successfully built axis pack with 2 axes
+2025-08-31 19:59:53,882 DEBUG coherence.axis.advanced_builder - Axis pack type: AxisPack
+2025-08-31 19:59:53,882 DEBUG coherence.axis.advanced_builder - Axis pack Q matrix shape: (768, 2)
+2025-08-31 19:59:53,887 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 201 Created"
+2025-08-31 19:59:53,889 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 19:59:53,891 INFO httpx - HTTP Request: POST http://testserver/v1/frames/index "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 201 Created"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/frames/index "HTTP/1.1 400 Bad Request"
+_______________________ test_analyze_payload_limit_413 ________________________
+tests\api\test_payload_limits.py:16: in test_analyze_payload_limit_413
+    assert r.status_code == 413, r.text
+E   AssertionError: {"detail":"No axis pack provided and no active pack"}
+E   assert 400 == 413
+E    +  where 400 = <Response [400 Bad Request]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 19:59:54,225 INFO coherence.api - create_app: start
+2025-08-31 19:59:54,243 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 19:59:54,243 INFO coherence.api - create_app: done in 0.019s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 19:59:54,245 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 19:59:54,255 INFO coherence.axis.advanced_builder - Building axis pack from 2 JSON files
+2025-08-31 19:59:54,255 DEBUG coherence.axis.advanced_builder -   Encoding 2 positive examples for axis 'a1'...
+2025-08-31 19:59:54,277 DEBUG coherence.axis.advanced_builder -   Encoded positive vectors shape: (2, 768)
+2025-08-31 19:59:54,277 DEBUG coherence.axis.advanced_builder -   Encoding 2 negative examples for axis 'a1'...
+2025-08-31 19:59:54,300 DEBUG coherence.axis.advanced_builder -   Encoded negative vectors shape: (2, 768)
+2025-08-31 19:59:54,300 INFO coherence.axis.advanced_builder -   Successfully processed axis: a1 with 2 positive and 2 negative vectors
+2025-08-31 19:59:54,301 DEBUG coherence.axis.advanced_builder -   Encoding 2 positive examples for axis 'a2'...
+2025-08-31 19:59:54,327 DEBUG coherence.axis.advanced_builder -   Encoded positive vectors shape: (2, 768)
+2025-08-31 19:59:54,327 DEBUG coherence.axis.advanced_builder -   Encoding 2 negative examples for axis 'a2'...
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -   Encoded negative vectors shape: (2, 768)
+2025-08-31 19:59:54,359 INFO coherence.axis.advanced_builder -   Successfully processed axis: a2 with 2 positive and 2 negative vectors
+2025-08-31 19:59:54,359 INFO coherence.axis.advanced_builder - Successfully processed 2 axes. Building axis pack...
+2025-08-31 19:59:54,359 INFO coherence.axis.advanced_builder - Building axis pack from 2 axes
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder - Input vectors for a1:
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -   Positive: 2 vectors
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -   Negative: 2 vectors
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder - Input vectors for a2:
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -   Positive: 2 vectors
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -   Negative: 2 vectors
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder -     Shape: (768,) (first vector)
+2025-08-31 19:59:54,359 INFO coherence.axis.advanced_builder - Inferred embedding dimension D=768
+2025-08-31 19:59:54,359 DEBUG coherence.axis.advanced_builder - Collecting vectors for whitening...
+2025-08-31 19:59:54,360 DEBUG coherence.axis.advanced_builder - Computing whitener over 8 samples, D=768
+2025-08-31 19:59:54,509 DEBUG coherence.axis.advanced_builder - Whitener shapes: mu=(768,), W=(768, 768)
+2025-08-31 19:59:54,510 INFO coherence.axis.advanced_builder - Starting to process 2 axes...
+2025-08-31 19:59:54,510 INFO coherence.axis.advanced_builder - 
+================================================================================
+2025-08-31 19:59:54,510 INFO coherence.axis.advanced_builder - Processing axis: a1
+2025-08-31 19:59:54,510 INFO coherence.axis.advanced_builder - ================================================================================
+2025-08-31 19:59:54,522 INFO coherence.axis.advanced_builder - Successfully processed axis: a1
+2025-08-31 19:59:54,522 INFO coherence.axis.advanced_builder -   Axis shape: (768,), dtype: float32
+2025-08-31 19:59:54,522 INFO coherence.axis.advanced_builder -   Axis norm: 1.0000
+2025-08-31 19:59:54,522 INFO coherence.axis.advanced_builder - 
+================================================================================
+2025-08-31 19:59:54,522 INFO coherence.axis.advanced_builder - Processing axis: a2
+2025-08-31 19:59:54,522 INFO coherence.axis.advanced_builder - ================================================================================
+2025-08-31 19:59:54,533 INFO coherence.axis.advanced_builder - Successfully processed axis: a2
+2025-08-31 19:59:54,533 INFO coherence.axis.advanced_builder -   Axis shape: (768,), dtype: float32
+2025-08-31 19:59:54,533 INFO coherence.axis.advanced_builder -   Axis norm: 1.0000
+2025-08-31 19:59:54,533 INFO coherence.axis.advanced_builder - Processed 2 axes: ['a1', 'a2']
+2025-08-31 19:59:54,533 DEBUG coherence.axis.advanced_builder - Q list length: 2
+2025-08-31 19:59:54,533 DEBUG coherence.axis.advanced_builder - Q[0] shape: (768, 1), type: <class 'numpy.ndarray'>
+2025-08-31 19:59:54,533 DEBUG coherence.axis.advanced_builder - Q[1] shape: (768, 1), type: <class 'numpy.ndarray'>
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Stacking 2 axis vectors into Q matrix...
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Q matrix raw shape: (768, 2)
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Orthonormalizing Q columns via QR (reduced)...
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Q^T Q max deviation from I: 3.54e-08
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Final Q matrix shape: (768, 2)
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Creating AxisPack with 2 axes: a1, a2
+2025-08-31 19:59:54,534 DEBUG coherence.axis.advanced_builder - Q shape: (768, 2), lambda shape: (2,), beta shape: (2,), weights shape: (2,)
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - Validating AxisPack with k=2
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - Q shape: (768, 2), ndim: 2
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - lambda_ shape: (2,), expected: (2,)
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - beta shape: (2,), expected: (2,)
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - weights shape: (2,), expected: (2,)
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - Q.T @ Q shape: (2, 2), expected: (2, 2)
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - Q.T @ Q diagonal: [1. 1.]
+2025-08-31 19:59:54,534 DEBUG coherence.axis.pack - Q.T @ Q off-diagonal max: 3.5390257835388184e-08
+2025-08-31 19:59:54,534 INFO coherence.axis.advanced_builder - Successfully validated AxisPack
+2025-08-31 19:59:54,535 INFO coherence.axis.advanced_builder - Successfully built axis pack with 2 axes
+2025-08-31 19:59:54,535 DEBUG coherence.axis.advanced_builder - Axis pack type: AxisPack
+2025-08-31 19:59:54,535 DEBUG coherence.axis.advanced_builder - Axis pack Q matrix shape: (768, 2)
+2025-08-31 19:59:54,539 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 201 Created"
+2025-08-31 19:59:54,540 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 19:59:54,544 INFO httpx - HTTP Request: POST http://testserver/pipeline/analyze "HTTP/1.1 400 Bad Request"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 201 Created"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/pipeline/analyze "HTTP/1.1 400 Bad Request"
+_________________ test_calibrate_cli_runs_and_writes_reports __________________
+tests\test_calibrate_cli.py:30: in test_calibrate_cli_runs_and_writes_reports
+    assert (outdir / "summary.json").exists()
+E   AssertionError: assert False
+E    +  where False = <bound method Path.exists of WindowsPath('C:/Users/glen4/AppData/Local/Temp/pytest-of-glen4/pytest-19/test_calibrate_cli_runs_and_wr0/reports/calibration:cli-test-pack/summary.json')>()
+E    +    where <bound method Path.exists of WindowsPath('C:/Users/glen4/AppData/Local/Temp/pytest-of-glen4/pytest-19/test_calibrate_cli_runs_and_wr0/reports/calibration:cli-test-pack/summary.json')> = (WindowsPath('C:/Users/glen4/AppData/Local/Temp/pytest-of-glen4/pytest-19/test_calibrate_cli_runs_and_wr0/reports/calibration:cli-test-pack') / 'summary.json').exists
+______________ TestComprehensiveEthicalAI.test_axis_pack_loading ______________
+tests\test_comprehensive_e2e.py:141: in test_axis_pack_loading
+    assert response.status_code == 200
 E   assert 404 == 200
 E    +  where 404 = <Response [404 Not Found]>.status_code
 ---------------------------- Captured stdout setup ----------------------------
-2025-08-31 18:23:25,110 INFO coherence.api - create_app: start
-2025-08-31 18:23:25,126 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
-2025-08-31 18:23:25,126 INFO coherence.api - create_app: done in 0.017s
+2025-08-31 19:59:57,618 INFO coherence.api - create_app: start
+2025-08-31 19:59:57,639 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 19:59:57,640 INFO coherence.api - create_app: done in 0.021s
 ---------------------------- Captured stdout call -----------------------------
-2025-08-31 18:23:25,128 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:25,135 INFO httpx - HTTP Request: POST http://testserver/v1/axes/thresh-pack/activate "HTTP/1.1 404 Not Found"
+\n\U0001f4ca Testing axis pack loading...\n2025-08-31 19:59:57,641 DEBUG asyncio - Using proactor: IocpProactor\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - Validating AxisPack with k=1\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - Q shape: (768, 1), ndim: 2\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - lambda_ shape: (1,), expected: (1,)\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - beta shape: (1,), expected: (1,)\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - weights shape: (1,), expected: (1,)\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - Q.T @ Q shape: (1, 1), expected: (1, 1)\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - Q.T @ Q diagonal: [1.]\n2025-08-31 19:59:57,705 DEBUG coherence.axis.pack - Q.T @ Q off-diagonal max: 0.0\n2025-08-31 19:59:57,721 INFO httpx - HTTP Request: POST http://testserver/v1/axes/create "HTTP/1.1 201 Created"\nCreate axis pack status: 201\n2025-08-31 19:59:57,722 DEBUG asyncio - Using proactor: IocpProactor\n2025-08-31 19:59:57,729 INFO httpx - HTTP Request: GET http://testserver/v1/axes/consequentialism_test "HTTP/1.1 404 Not Found"\nAxis pack response status: 404\nAxis pack response: {"detail":"Pack not found"}
 ------------------------------ Captured log call ------------------------------
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/thresh-pack/activate "HTTP/1.1 404 Not Found"
-_________________ test_calibrate_cli_runs_and_writes_reports __________________
-tests\test_calibrate_cli.py:28: in test_calibrate_cli_runs_and_writes_reports
-    assert res.returncode == 0, res.stderr
-E   AssertionError: Traceback (most recent call last):
-E       File "<frozen runpy>", line 198, in _run_module_as_main
-E       File "<frozen runpy>", line 88, in _run_code
-E       File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 158, in <module>
-E         main()
-E       File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 130, in main
-E         scores = _collect_scores(args.dataset, pack, enc)
-E                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E       File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 84, in _collect_scores
-E         s = _score_text_per_axis(text, pack, encoder)
-E             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-E       File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 74, in _score_text_per_axis
-E         out[ax.name] = float(v @ ax.vector)
-E                              ~~^~~~~~~~~~~
-E     ValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 16 is different from 384)
-E     
-E   assert 1 == 0
-E    +  where 1 = CompletedProcess(args=['C:\\Users\\glen4\\AppData\\Local\\Programs\\Python\\Python312\\python.exe', '-m', 'ethicalai.axes.calibrate', '--pack', 'cli-test-pack', '--dataset', 'data/calibration/autonomy.jsonl', '--dataset', 'data/calibration/truth.jsonl', '--reports', 'C:\\Users\\glen4\\AppData\\Local\\Temp\\pytest-of-glen4\\pytest-15\\test_calibrate_cli_runs_and_wr0\\reports'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "<frozen runpy>", line 198, in _run_module_as_main\n  File "<frozen runpy>", line 88, in _run_code\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 158, in <module>\n    main()\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 130, in main\n    scores = _collect_scores(args.dataset, pack, enc)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 84, in _collect_scores\n    s = _score_text_per_axis(text, pack, encoder)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 74, in _score_text_per_axis\n    out[ax.name] = float(v @ ax.vector)\n                         ~~^~~~~~~~~~~\nValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 16 is different from 384)\n').returncode
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/create "HTTP/1.1 201 Created"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/v1/axes/consequentialism_test "HTTP/1.1 404 Not Found"
 ____________ test_rank_prefers_no_veto_then_composite_then_logprob ____________
 tests\test_constitution_rank.py:47: in test_rank_prefers_no_veto_then_composite_then_logprob
     assert result["choice"]["text"] in ("A T","AT","A T ")
 E   AssertionError: assert 'A' in ('A T', 'AT', 'A T ')
-_________________________ test_interaction_allow_path _________________________
-  + Exception Group Traceback (most recent call last):
-  |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py", line 77, in collapse_excgroups
-  |     yield
-  |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 183, in __call__
-  |     async with anyio.create_task_group() as task_group:
-  |                ^^^^^^^^^^^^^^^^^^^^^^^^^
-  |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py", line 772, in __aexit__
-  |     raise BaseExceptionGroup(
-  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
-  +-+---------------- 1 ----------------
-    | Traceback (most recent call last):
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 341, in from_call
-    |     result: Optional[TResult] = func()
-    |                                 ^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 241, in <lambda>
-    |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
-    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_hooks.py", line 512, in __call__
-    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
-    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 167, in _multicall
-    |     raise exception
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\threadexception.py", line 87, in pytest_runtest_call
-    |     yield from thread_exception_runtest_hook()
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\threadexception.py", line 63, in thread_exception_runtest_hook
-    |     yield
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\unraisableexception.py", line 90, in pytest_runtest_call
-    |     yield from unraisable_exception_runtest_hook()
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\unraisableexception.py", line 65, in unraisable_exception_runtest_hook
-    |     yield
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\logging.py", line 850, in pytest_runtest_call
-    |     yield from self._runtest_for(item, "call")
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\logging.py", line 833, in _runtest_for
-    |     yield
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 53, in run_old_style_hookwrapper
-    |     return result.get_result()
-    |            ^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_result.py", line 103, in get_result
-    |     raise exc.with_traceback(tb)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 38, in run_old_style_hookwrapper
-    |     res = yield
-    |           ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\capture.py", line 878, in pytest_runtest_call
-    |     return (yield)
-    |             ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\skipping.py", line 257, in pytest_runtest_call
-    |     return (yield)
-    |             ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 121, in _multicall
-    |     res = hook_impl.function(*args)
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 183, in pytest_runtest_call
-    |     raise e
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 173, in pytest_runtest_call
-    |     item.runtest()
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\python.py", line 1627, in runtest
-    |     self.ihook.pytest_pyfunc_call(pyfuncitem=self)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_hooks.py", line 512, in __call__
-    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
-    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 167, in _multicall
-    |     raise exception
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 53, in run_old_style_hookwrapper
-    |     return result.get_result()
-    |            ^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_result.py", line 103, in get_result
-    |     raise exc.with_traceback(tb)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 38, in run_old_style_hookwrapper
-    |     res = yield
-    |           ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 121, in _multicall
-    |     res = hook_impl.function(*args)
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\python.py", line 162, in pytest_pyfunc_call
-    |     result = testfunction(**testargs)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\tests\test_interaction_api.py", line 15, in test_interaction_allow_path
-    |     r = api_client.post("/v1/interaction/respond", json={"prompt":"hello world"})
-    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 552, in post
-    |     return super().post(
-    |            ^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1144, in post
-    |     return self.request(
-    |            ^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 451, in request
-    |     return super().request(
-    |            ^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 825, in request
-    |     return self.send(request, auth=auth, follow_redirects=follow_redirects)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
-    |     response = self._send_handling_auth(
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
-    |     response = self._send_handling_redirects(
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
-    |     response = self._send_single_request(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
-    |     response = transport.handle_request(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 354, in handle_request
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 351, in handle_request
-    |     portal.call(self.app, scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py", line 291, in call
-    |     return cast(T_Retval, self.start_task_soon(func, *args).result())
-    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 456, in result
-    |     return self.__get_result()
-    |            ^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 401, in __get_result
-    |     raise self._exception
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py", line 222, in _call_func
-    |     retval = await retval_or_awaitable
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
-    |     await super().__call__(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 113, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
-    |     await self.app(scope, receive, _send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
-    |     await self.app(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 182, in __call__
-    |     with recv_stream, send_stream, collapse_excgroups():
-    |                                    ^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
-    |     self.gen.throw(value)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py", line 83, in collapse_excgroups
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
-    |     response = await self.dispatch_func(request, call_next)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\coherence\api\main.py", line 45, in dispatch
-    |     response = await call_next(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 159, in call_next
-    |     raise app_exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
-    |     await self.app(scope, receive_or_disconnect, send_no_error)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
-    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 716, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 736, in app
-    |     await route.handle(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 290, in handle
-    |     await self.app(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 78, in app
-    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 75, in app
-    |     response = await f(request)
-    |                ^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 302, in app
-    |     raw_response = await run_endpoint_function(
-    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 215, in run_endpoint_function
-    |     return await run_in_threadpool(dependant.call, **values)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\concurrency.py", line 38, in run_in_threadpool
-    |     return await anyio.to_thread.run_sync(func)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\to_thread.py", line 56, in run_sync
-    |     return await get_async_backend().run_sync_in_worker_thread(
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py", line 2476, in run_sync_in_worker_thread
-    |     return await future
-    |            ^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py", line 967, in run
-    |     result = context.run(func, *args)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\api\interaction.py", line 40, in respond
-    |     result = rank_candidates(cands, pack)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\constitution\decoding.py", line 50, in rank_candidates
-    |     key, proof = _score_candidate(text, logp, pack, enc=enc, pref_axes=pref_axes)
-    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\constitution\decoding.py", line 24, in _score_candidate
-    |     raise ValueError(f"Encoder dim {X.shape[1]} != pack dim {pack.dim}")
-    | ValueError: Encoder dim 384 != pack dim 16
-    +------------------------------------
-
-During handling of the above exception, another exception occurred:
-tests\test_interaction_api.py:15: in test_interaction_allow_path
-    r = api_client.post("/v1/interaction/respond", json={"prompt":"hello world"})
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:552: in post
-    return super().post(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:1144: in post
-    return self.request(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:451: in request
-    return super().request(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:825: in request
-    return self.send(request, auth=auth, follow_redirects=follow_redirects)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:914: in send
-    response = self._send_handling_auth(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
-    response = self._send_handling_redirects(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
-    response = self._send_single_request(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
-    response = transport.handle_request(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:354: in handle_request
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:351: in handle_request
-    portal.call(self.app, scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py:291: in call
-    return cast(T_Retval, self.start_task_soon(func, *args).result())
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
-    return self.__get_result()
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
-    raise self._exception
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py:222: in _call_func
-    retval = await retval_or_awaitable
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py:1054: in __call__
-    await super().__call__(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py:113: in __call__
-    await self.middleware_stack(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
-    await self.app(scope, receive, _send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
-    await self.app(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:182: in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:158: in __exit__
-    self.gen.throw(value)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py:83: in collapse_excgroups
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:184: in __call__
-    response = await self.dispatch_func(request, call_next)
-src\coherence\api\main.py:45: in dispatch
-    response = await call_next(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:159: in call_next
-    raise app_exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:144: in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
-    await app(scope, receive, sender)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:716: in __call__
-    await self.middleware_stack(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:736: in app
-    await route.handle(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:290: in handle
-    await self.app(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:78: in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
-    await app(scope, receive, sender)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:75: in app
-    response = await f(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py:302: in app
-    raw_response = await run_endpoint_function(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py:215: in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\concurrency.py:38: in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\to_thread.py:56: in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py:2476: in run_sync_in_worker_thread
-    return await future
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py:967: in run
-    result = context.run(func, *args)
-src\ethicalai\api\interaction.py:40: in respond
-    result = rank_candidates(cands, pack)
-src\ethicalai\constitution\decoding.py:50: in rank_candidates
-    key, proof = _score_candidate(text, logp, pack, enc=enc, pref_axes=pref_axes)
-src\ethicalai\constitution\decoding.py:24: in _score_candidate
-    raise ValueError(f"Encoder dim {X.shape[1]} != pack dim {pack.dim}")
-E   ValueError: Encoder dim 384 != pack dim 16
----------------------------- Captured stdout setup ----------------------------
-2025-08-31 18:23:30,172 INFO coherence.api - create_app: start
-2025-08-31 18:23:30,186 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
-2025-08-31 18:23:30,186 INFO coherence.api - create_app: done in 0.016s
----------------------------- Captured stdout call -----------------------------
-2025-08-31 18:23:30,186 DEBUG asyncio - Using proactor: IocpProactor
------------------------------- Captured log call ------------------------------
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-__________________ test_interaction_refusal_and_alternatives __________________
-  + Exception Group Traceback (most recent call last):
-  |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py", line 77, in collapse_excgroups
-  |     yield
-  |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 183, in __call__
-  |     async with anyio.create_task_group() as task_group:
-  |                ^^^^^^^^^^^^^^^^^^^^^^^^^
-  |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py", line 772, in __aexit__
-  |     raise BaseExceptionGroup(
-  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
-  +-+---------------- 1 ----------------
-    | Traceback (most recent call last):
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 341, in from_call
-    |     result: Optional[TResult] = func()
-    |                                 ^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 241, in <lambda>
-    |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
-    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_hooks.py", line 512, in __call__
-    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
-    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 167, in _multicall
-    |     raise exception
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\threadexception.py", line 87, in pytest_runtest_call
-    |     yield from thread_exception_runtest_hook()
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\threadexception.py", line 63, in thread_exception_runtest_hook
-    |     yield
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\unraisableexception.py", line 90, in pytest_runtest_call
-    |     yield from unraisable_exception_runtest_hook()
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\unraisableexception.py", line 65, in unraisable_exception_runtest_hook
-    |     yield
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\logging.py", line 850, in pytest_runtest_call
-    |     yield from self._runtest_for(item, "call")
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\logging.py", line 833, in _runtest_for
-    |     yield
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 53, in run_old_style_hookwrapper
-    |     return result.get_result()
-    |            ^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_result.py", line 103, in get_result
-    |     raise exc.with_traceback(tb)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 38, in run_old_style_hookwrapper
-    |     res = yield
-    |           ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\capture.py", line 878, in pytest_runtest_call
-    |     return (yield)
-    |             ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\skipping.py", line 257, in pytest_runtest_call
-    |     return (yield)
-    |             ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 121, in _multicall
-    |     res = hook_impl.function(*args)
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 183, in pytest_runtest_call
-    |     raise e
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\runner.py", line 173, in pytest_runtest_call
-    |     item.runtest()
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\python.py", line 1627, in runtest
-    |     self.ihook.pytest_pyfunc_call(pyfuncitem=self)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_hooks.py", line 512, in __call__
-    |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_manager.py", line 120, in _hookexec
-    |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 167, in _multicall
-    |     raise exception
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 139, in _multicall
-    |     teardown.throw(exception)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 53, in run_old_style_hookwrapper
-    |     return result.get_result()
-    |            ^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_result.py", line 103, in get_result
-    |     raise exc.with_traceback(tb)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 38, in run_old_style_hookwrapper
-    |     res = yield
-    |           ^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\pluggy\_callers.py", line 121, in _multicall
-    |     res = hook_impl.function(*args)
-    |           ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\_pytest\python.py", line 162, in pytest_pyfunc_call
-    |     result = testfunction(**testargs)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\tests\test_interaction_refusal.py", line 15, in test_interaction_refusal_and_alternatives
-    |     r = api_client.post("/v1/interaction/respond", json={"prompt":"edge case"})
-    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 552, in post
-    |     return super().post(
-    |            ^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1144, in post
-    |     return self.request(
-    |            ^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 451, in request
-    |     return super().request(
-    |            ^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 825, in request
-    |     return self.send(request, auth=auth, follow_redirects=follow_redirects)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 914, in send
-    |     response = self._send_handling_auth(
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 942, in _send_handling_auth
-    |     response = self._send_handling_redirects(
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 979, in _send_handling_redirects
-    |     response = self._send_single_request(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py", line 1014, in _send_single_request
-    |     response = transport.handle_request(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 354, in handle_request
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py", line 351, in handle_request
-    |     portal.call(self.app, scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py", line 291, in call
-    |     return cast(T_Retval, self.start_task_soon(func, *args).result())
-    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 456, in result
-    |     return self.__get_result()
-    |            ^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py", line 401, in __get_result
-    |     raise self._exception
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py", line 222, in _call_func
-    |     retval = await retval_or_awaitable
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
-    |     await super().__call__(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py", line 113, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
-    |     await self.app(scope, receive, _send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
-    |     await self.app(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 182, in __call__
-    |     with recv_stream, send_stream, collapse_excgroups():
-    |                                    ^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 158, in __exit__
-    |     self.gen.throw(value)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py", line 83, in collapse_excgroups
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 184, in __call__
-    |     response = await self.dispatch_func(request, call_next)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\coherence\api\main.py", line 45, in dispatch
-    |     response = await call_next(request)
-    |                ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 159, in call_next
-    |     raise app_exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py", line 144, in coro
-    |     await self.app(scope, receive_or_disconnect, send_no_error)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
-    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 716, in __call__
-    |     await self.middleware_stack(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 736, in app
-    |     await route.handle(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 290, in handle
-    |     await self.app(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 78, in app
-    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
-    |     raise exc
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
-    |     await app(scope, receive, sender)
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 75, in app
-    |     response = await f(request)
-    |                ^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 302, in app
-    |     raw_response = await run_endpoint_function(
-    |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 215, in run_endpoint_function
-    |     return await run_in_threadpool(dependant.call, **values)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\concurrency.py", line 38, in run_in_threadpool
-    |     return await anyio.to_thread.run_sync(func)
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\to_thread.py", line 56, in run_sync
-    |     return await get_async_backend().run_sync_in_worker_thread(
-    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py", line 2476, in run_sync_in_worker_thread
-    |     return await future
-    |            ^^^^^^^^^^^^
-    |   File "C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py", line 967, in run
-    |     result = context.run(func, *args)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\api\interaction.py", line 40, in respond
-    |     result = rank_candidates(cands, pack)
-    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\constitution\decoding.py", line 50, in rank_candidates
-    |     key, proof = _score_candidate(text, logp, pack, enc=enc, pref_axes=pref_axes)
-    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    |   File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\constitution\decoding.py", line 24, in _score_candidate
-    |     raise ValueError(f"Encoder dim {X.shape[1]} != pack dim {pack.dim}")
-    | ValueError: Encoder dim 384 != pack dim 16
-    +------------------------------------
-
-During handling of the above exception, another exception occurred:
-tests\test_interaction_refusal.py:15: in test_interaction_refusal_and_alternatives
-    r = api_client.post("/v1/interaction/respond", json={"prompt":"edge case"})
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:552: in post
-    return super().post(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:1144: in post
-    return self.request(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:451: in request
-    return super().request(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:825: in request
-    return self.send(request, auth=auth, follow_redirects=follow_redirects)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:914: in send
-    response = self._send_handling_auth(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:942: in _send_handling_auth
-    response = self._send_handling_redirects(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:979: in _send_handling_redirects
-    response = self._send_single_request(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\httpx\_client.py:1014: in _send_single_request
-    response = transport.handle_request(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:354: in handle_request
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:351: in handle_request
-    portal.call(self.app, scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py:291: in call
-    return cast(T_Retval, self.start_task_soon(func, *args).result())
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:456: in result
-    return self.__get_result()
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\concurrent\futures\_base.py:401: in __get_result
-    raise self._exception
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\from_thread.py:222: in _call_func
-    retval = await retval_or_awaitable
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\applications.py:1054: in __call__
-    await super().__call__(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\applications.py:113: in __call__
-    await self.middleware_stack(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py:186: in __call__
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py:164: in __call__
-    await self.app(scope, receive, _send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\cors.py:85: in __call__
-    await self.app(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:182: in __call__
-    with recv_stream, send_stream, collapse_excgroups():
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\contextlib.py:158: in __exit__
-    self.gen.throw(value)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_utils.py:83: in collapse_excgroups
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:184: in __call__
-    response = await self.dispatch_func(request, call_next)
-src\coherence\api\main.py:45: in dispatch
-    response = await call_next(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:159: in call_next
-    raise app_exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\base.py:144: in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py:63: in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
-    await app(scope, receive, sender)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:716: in __call__
-    await self.middleware_stack(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:736: in app
-    await route.handle(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:290: in handle
-    await self.app(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:78: in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:53: in wrapped_app
-    raise exc
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py:42: in wrapped_app
-    await app(scope, receive, sender)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py:75: in app
-    response = await f(request)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py:302: in app
-    raw_response = await run_endpoint_function(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py:215: in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\concurrency.py:38: in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\to_thread.py:56: in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py:2476: in run_sync_in_worker_thread
-    return await future
-..\..\..\AppData\Local\Programs\Python\Python312\Lib\site-packages\anyio\_backends\_asyncio.py:967: in run
-    result = context.run(func, *args)
-src\ethicalai\api\interaction.py:40: in respond
-    result = rank_candidates(cands, pack)
-src\ethicalai\constitution\decoding.py:50: in rank_candidates
-    key, proof = _score_candidate(text, logp, pack, enc=enc, pref_axes=pref_axes)
-src\ethicalai\constitution\decoding.py:24: in _score_candidate
-    raise ValueError(f"Encoder dim {X.shape[1]} != pack dim {pack.dim}")
-E   ValueError: Encoder dim 384 != pack dim 16
----------------------------- Captured stdout setup ----------------------------
-2025-08-31 18:23:30,500 INFO coherence.api - create_app: start
-2025-08-31 18:23:30,518 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
-2025-08-31 18:23:30,518 INFO coherence.api - create_app: done in 0.017s
----------------------------- Captured stdout call -----------------------------
-2025-08-31 18:23:30,519 DEBUG asyncio - Using proactor: IocpProactor
------------------------------- Captured log call ------------------------------
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 __________________________ test_concurrent_requests ___________________________
 tests\test_performance.py:224: in test_concurrent_requests
     assert success_rate >= 0.95, "Success rate below 95% for concurrent requests"
 E   AssertionError: Success rate below 95% for concurrent requests
 E   assert 0.0 >= 0.95
 ---------------------------- Captured stdout setup ----------------------------
-2025-08-31 18:23:37,603 INFO coherence.api - create_app: start
-2025-08-31 18:23:37,627 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
-2025-08-31 18:23:37,627 INFO coherence.api - create_app: done in 0.025s
+2025-08-31 20:00:07,723 INFO coherence.api - create_app: start
+2025-08-31 20:00:07,749 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 20:00:07,749 INFO coherence.api - create_app: done in 0.026s
 ---------------------------- Captured stdout call -----------------------------
-2025-08-31 18:23:37,629 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,630 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,631 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,631 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,632 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,633 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,633 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,635 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,635 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,638 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,647 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,651 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,653 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,653 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,655 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,655 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,656 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,656 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,657 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,660 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,660 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,661 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,661 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,662 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,662 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,662 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,663 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,665 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,667 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,667 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,670 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,676 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,677 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,678 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,680 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,680 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,683 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,683 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,683 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,687 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,687 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,690 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,692 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,692 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,695 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,695 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,697 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,698 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,698 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,698 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,699 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,704 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,704 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,705 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,705 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,707 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,707 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,708 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,710 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,710 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,712 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,713 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,715 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,720 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,720 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,722 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,723 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,723 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,726 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,726 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,729 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,731 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,732 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,732 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,732 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,734 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,735 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,736 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,738 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,741 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,742 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,742 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,745 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,745 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,746 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,746 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,747 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,748 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,749 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,752 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,753 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,754 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,755 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,755 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,756 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,760 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,761 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,762 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,763 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,764 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,765 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,766 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,771 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,772 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,773 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,774 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,774 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,775 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,778 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,780 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,782 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,784 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,784 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,784 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,785 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,785 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,786 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,786 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,786 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,787 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,787 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,788 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,790 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,791 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,792 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,792 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,792 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,794 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,795 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,795 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,797 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,798 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,799 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,801 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,801 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,802 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,802 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,803 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,803 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,804 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,805 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,808 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,809 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,810 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,811 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,813 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,813 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,813 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,813 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,814 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,815 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,815 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,815 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,815 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,816 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,818 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,818 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,818 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,819 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,820 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,822 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,823 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,827 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,828 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,828 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,829 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,829 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,830 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,831 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,832 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,832 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,833 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,833 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,833 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,835 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,835 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,835 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,837 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,838 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,838 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,839 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,840 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,842 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,842 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,843 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,843 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,844 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,845 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,847 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,848 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:37,848 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,848 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,850 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,852 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,855 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,856 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,856 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,856 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,856 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-2025-08-31 18:23:37,857 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,751 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,751 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,753 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,753 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,753 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,754 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,755 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,757 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,759 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,765 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,770 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,770 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,773 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,773 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,776 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,777 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,777 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,778 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,779 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,781 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,782 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,782 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,783 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,785 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,786 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,788 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,789 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,791 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,794 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,796 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,796 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,798 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,798 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,800 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,803 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,803 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,805 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,807 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,809 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,809 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,811 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,811 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,811 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,813 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,814 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,816 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,819 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,820 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,821 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,821 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,824 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,824 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,824 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,826 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,827 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,828 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,829 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,831 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,834 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,839 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,840 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,841 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,843 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,844 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,844 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,845 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,846 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,846 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,847 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,850 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,851 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,851 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,857 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,858 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,859 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,859 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,860 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,862 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,863 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,866 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,867 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,867 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,867 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,869 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,872 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,873 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,875 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,875 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,876 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,879 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,879 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,881 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,884 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,888 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,889 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,890 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,890 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,891 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,892 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,892 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,892 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,893 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,893 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,894 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,897 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,897 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,898 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,898 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,899 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,900 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,901 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,901 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,902 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,905 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,905 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,905 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,907 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,908 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,912 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,912 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,913 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,914 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,914 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,915 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,916 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,916 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,917 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,918 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,918 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,920 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,921 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,921 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,921 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,922 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,923 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,923 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,924 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,925 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,927 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,930 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,930 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,931 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,932 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,933 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,934 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,934 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,936 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,937 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,938 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,938 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,939 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,940 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,941 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,941 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,942 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,943 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,944 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,944 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,945 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,946 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,948 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,948 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,951 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,951 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,952 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,954 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,955 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,955 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,955 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,955 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,956 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,957 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,957 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,961 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,962 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,962 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,963 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,964 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,965 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,965 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,967 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,967 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,968 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,968 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,969 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,970 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,970 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,972 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,972 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,974 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,975 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,977 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:07,978 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,978 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,979 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,982 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,982 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,984 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,985 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+2025-08-31 20:00:07,985 INFO httpx - HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 
 Concurrent Requests Test (100 requests, 10 concurrent):
 Success rate: 0.00%
@@ -1012,39 +532,35 @@ DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
@@ -1058,9 +574,11 @@ INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
@@ -1075,27 +593,31 @@ DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
@@ -1103,13 +625,21 @@ INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
@@ -1125,74 +655,64 @@ INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
-DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
-INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
 INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/health "HTTP/1.1 404 Not Found"
@@ -1207,14 +727,14 @@ tests\test_performance_benchmarks.py:250: in test_error_recovery_performance
 E   assert 200 in [400, 422]
 E    +  where 200 = <Response [200 OK]>.status_code
 ---------------------------- Captured stdout setup ----------------------------
-2025-08-31 18:23:42,353 INFO coherence.api - create_app: start
-2025-08-31 18:23:42,372 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
-2025-08-31 18:23:42,372 INFO coherence.api - create_app: done in 0.018s
+2025-08-31 20:00:12,752 INFO coherence.api - create_app: start
+2025-08-31 20:00:12,771 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 20:00:12,771 INFO coherence.api - create_app: done in 0.019s
 ---------------------------- Captured stdout call -----------------------------
-2025-08-31 18:23:42,372 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:42,376 INFO httpx - HTTP Request: POST http://testserver/embed "HTTP/1.1 422 Unprocessable Entity"
-2025-08-31 18:23:42,377 DEBUG asyncio - Using proactor: IocpProactor
-2025-08-31 18:23:42,391 INFO httpx - HTTP Request: POST http://testserver/embed "HTTP/1.1 200 OK"
+2025-08-31 20:00:12,772 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:12,776 INFO httpx - HTTP Request: POST http://testserver/embed "HTTP/1.1 422 Unprocessable Entity"
+2025-08-31 20:00:12,776 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 20:00:12,794 INFO httpx - HTTP Request: POST http://testserver/embed "HTTP/1.1 200 OK"
 ------------------------------ Captured log call ------------------------------
 DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
 INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/embed "HTTP/1.1 422 Unprocessable Entity"
@@ -1243,20 +763,20 @@ src\coherence\agent\__init__.py                     0      0   100%
 src\coherence\agent\query_map.py                   20     10    50%   17, 29-38
 src\coherence\agent\tools.py                       28     28     0%   1-57
 src\coherence\api\__init__.py                       0      0   100%
-src\coherence\api\axis_registry.py                136     33    76%   45-46, 60, 62, 65, 67, 70, 75, 80, 82, 112-130, 154-156, 177, 192, 195-196
-src\coherence\api\main.py                          69      4    94%   83-84, 93-94
+src\coherence\api\axis_registry.py                140     15    89%   45-46, 66, 68, 71, 73, 76, 86, 88, 121, 130-131, 183, 201-202
+src\coherence\api\main.py                          70      4    94%   83-84, 94-95
 src\coherence\api\models.py                       100      0   100%
 src\coherence\api\routers\__init__.py               0      0   100%
 src\coherence\api\routers\analyze.py               85      9    89%   32, 42-45, 51, 63, 65, 118
 src\coherence\api\routers\axes.py                  59     20    66%   36-44, 53-54, 71, 88-90, 92-94, 96-98
 src\coherence\api\routers\embed.py                 30      4    87%   40-41, 45-46
-src\coherence\api\routers\health.py                38      9    76%   20-21, 26-30, 37-38
+src\coherence\api\routers\health.py                40     12    70%   24-25, 30-36, 43-44, 47
 src\coherence\api\routers\index.py                 12      6    50%   16-21
-src\coherence\api\routers\pipeline.py             112     30    73%   88-96, 101, 104, 111, 117-118, 122-135, 151, 153-154, 171-174
-src\coherence\api\routers\resonance.py             95     34    64%   60-73, 89-93, 96, 111, 113-124, 131, 133-134, 144-145
+src\coherence\api\routers\pipeline.py             112     38    66%   88-96, 101, 105, 111-137, 151, 153-154, 171-174
+src\coherence\api\routers\resonance.py             95     36    62%   60-73, 89-93, 97, 111-126, 131, 133-134, 144-145
 src\coherence\api\routers\search.py                91     79    13%   24-38, 47-148
-src\coherence\api\routers\v1_axes.py              282     98    65%   64, 66, 68, 82-152, 164, 172-173, 178-179, 184-186, 188-190, 192-194, 198-205, 212-213, 240-241, 279-280, 288, 293-294, 314, 327-328, 341-342, 371-373, 395-396, 401-404, 423-424, 427-428, 454-465, 495-497
-src\coherence\api\routers\v1_frames.py            196     41    79%   90, 93-94, 99, 102, 105, 107-111, 116, 119-123, 141, 159-174, 178, 188-190, 225-226, 274-275
+src\coherence\api\routers\v1_axes.py              282     95    66%   64, 66, 68, 82-152, 164, 172-173, 178-179, 184-186, 188-190, 192-194, 198-205, 212-213, 240-241, 279-280, 288, 293-294, 314, 327-328, 341-342, 395-396, 399-403, 423-424, 454-465, 495-497
+src\coherence\api\routers\v1_frames.py            196     43    78%   89-94, 99, 102, 105, 107-111, 116, 119-123, 141, 146-150, 165-174, 188-190, 225-226, 274-275, 282
 src\coherence\api\routers\whatif.py                 7      0   100%
 src\coherence\axis\__init__.py                      0      0   100%
 src\coherence\axis\advanced_builder.py            385    199    48%   41, 56-167, 183-190, 208-275, 324-343, 388, 395-397, 404, 406-419, 448, 450, 458-460, 481, 483, 487-488, 499-501, 506, 513-514, 525-526, 532, 545, 552, 561, 563, 567, 576, 583-587, 620-622, 657-658, 672-674, 677, 689-691, 708-728
@@ -1300,49 +820,38 @@ src\coherence\metrics\resonance.py                 38      6    84%   34, 49, 65
 src\coherence\pipeline\orchestrator.py             47     10    79%   87-103
 src\coherence\pipeline\scoring.py                  54     20    63%   69, 75-82, 95-102, 110-113
 src\ethicalai\__init__.py                           0      0   100%
-src\ethicalai\api\axes.py                          60     36    40%   27-65, 69-86, 90-91
-src\ethicalai\api\eval.py                          31      2    94%   27, 31
-src\ethicalai\api\interaction.py                   41     11    73%   30, 35, 41-53
+src\ethicalai\api\axes.py                          63     37    41%   27-65, 69-86, 91, 95-96
+src\ethicalai\api\eval.py                          33      2    94%   27, 32
+src\ethicalai\api\interaction.py                   45      5    89%   30, 35, 67-74
 src\ethicalai\axes\build.py                        14      8    43%   8-15
-src\ethicalai\axes\calibrate.py                   121     65    46%   10-30, 39, 52-54, 60, 69, 75, 85-87, 91-118, 132-155
+src\ethicalai\axes\calibrate.py                   124      6    95%   13-14, 39, 60, 90, 95
 src\ethicalai\axes\utils.py                        12      0   100%
-src\ethicalai\constitution\decoding.py             37      0   100%
+src\ethicalai\constitution\decoding.py             42      2    95%   22, 24
 src\ethicalai\constitution\regularizer.py          26     10    62%   8-9, 31-38
-src\ethicalai\encoders.py                          27      3    89%   18, 31-33
+src\ethicalai\encoders.py                          46      9    80%   19, 41, 59-65
 src\ethicalai\eval\minspan.py                      11      0   100%
 src\ethicalai\eval\spans.py                        24      1    96%   23
-src\ethicalai\interaction\explain.py               10      6    40%   5-9, 16
+src\ethicalai\interaction\explain.py               10      1    90%   6
 src\ethicalai\interaction\generate.py               6      0   100%
 src\ethicalai\interaction\policy.py                21      1    95%   29
 src\ethicalai\types.py                             30      0   100%
 -----------------------------------------------------------------------------
-TOTAL                                            3193   1089    66%
+TOTAL                                            3236   1022    68%
 =========================== short test summary info ===========================
-FAILED tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds - assert 404 == 200
+FAILED tests/api/test_frames_index_contracts.py::test_index_empty_frames_with_pack_returns_k_and_zero_ingested - AssertionError: {"detail":"pack_id not found"}
+assert 400 == 200
+ +  where 400 = <Response [400 Bad Request]>.status_code
+FAILED tests/api/test_payload_limits.py::test_analyze_payload_limit_413 - AssertionError: {"detail":"No axis pack provided and no active pack"}
+assert 400 == 413
+ +  where 400 = <Response [400 Bad Request]>.status_code
+FAILED tests/test_calibrate_cli.py::test_calibrate_cli_runs_and_writes_reports - AssertionError: assert False
+ +  where False = <bound method Path.exists of WindowsPath('C:/Users/glen4/AppData/Local/Temp/pytest-of-glen4/pytest-19/test_calibrate_cli_runs_and_wr0/reports/calibration:cli-test-pack/summary.json')>()
+ +    where <bound method Path.exists of WindowsPath('C:/Users/glen4/AppData/Local/Temp/pytest-of-glen4/pytest-19/test_calibrate_cli_runs_and_wr0/reports/calibration:cli-test-pack/summary.json')> = (WindowsPath('C:/Users/glen4/AppData/Local/Temp/pytest-of-glen4/pytest-19/test_calibrate_cli_runs_and_wr0/reports/calibration:cli-test-pack') / 'summary.json').exists
+FAILED tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_axis_pack_loading - assert 404 == 200
  +  where 404 = <Response [404 Not Found]>.status_code
-FAILED tests/test_calibrate_cli.py::test_calibrate_cli_runs_and_writes_reports - AssertionError: Traceback (most recent call last):
-    File "<frozen runpy>", line 198, in _run_module_as_main
-    File "<frozen runpy>", line 88, in _run_code
-    File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 158, in <module>
-      main()
-    File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 130, in main
-      scores = _collect_scores(args.dataset, pack, enc)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 84, in _collect_scores
-      s = _score_text_per_axis(text, pack, encoder)
-          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    File "C:\Users\glen4\Code\EthicalAI2\EthicalAI\src\ethicalai\axes\calibrate.py", line 74, in _score_text_per_axis
-      out[ax.name] = float(v @ ax.vector)
-                           ~~^~~~~~~~~~~
-  ValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 16 is different from 384)
-  
-assert 1 == 0
- +  where 1 = CompletedProcess(args=['C:\\Users\\glen4\\AppData\\Local\\Programs\\Python\\Python312\\python.exe', '-m', 'ethicalai.axes.calibrate', '--pack', 'cli-test-pack', '--dataset', 'data/calibration/autonomy.jsonl', '--dataset', 'data/calibration/truth.jsonl', '--reports', 'C:\\Users\\glen4\\AppData\\Local\\Temp\\pytest-of-glen4\\pytest-15\\test_calibrate_cli_runs_and_wr0\\reports'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "<frozen runpy>", line 198, in _run_module_as_main\n  File "<frozen runpy>", line 88, in _run_code\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 158, in <module>\n    main()\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 130, in main\n    scores = _collect_scores(args.dataset, pack, enc)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 84, in _collect_scores\n    s = _score_text_per_axis(text, pack, encoder)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "C:\\Users\\glen4\\Code\\EthicalAI2\\EthicalAI\\src\\ethicalai\\axes\\calibrate.py", line 74, in _score_text_per_axis\n    out[ax.name] = float(v @ ax.vector)\n                         ~~^~~~~~~~~~~\nValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 16 is different from 384)\n').returncode
 FAILED tests/test_constitution_rank.py::test_rank_prefers_no_veto_then_composite_then_logprob - AssertionError: assert 'A' in ('A T', 'AT', 'A T ')
-FAILED tests/test_interaction_api.py::test_interaction_allow_path - ValueError: Encoder dim 384 != pack dim 16
-FAILED tests/test_interaction_refusal.py::test_interaction_refusal_and_alternatives - ValueError: Encoder dim 384 != pack dim 16
 FAILED tests/test_performance.py::test_concurrent_requests - AssertionError: Success rate below 95% for concurrent requests
 assert 0.0 >= 0.95
 FAILED tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_error_recovery_performance - assert 200 in [400, 422]
  +  where 200 = <Response [200 OK]>.status_code
-======= 7 failed, 91 passed, 1 skipped, 8 warnings in 193.94s (0:03:13) =======
+======= 7 failed, 91 passed, 1 skipped, 8 warnings in 194.72s (0:03:14) =======

@@ -37,29 +37,50 @@ def respond(req: AskReq):
     cands = gen(req.prompt, req.n)
 
     # NOTE: ranker currently uses pack thresholds directly; hook policy.multiplier here if desired
-    result = rank_candidates(cands, pack)
-    proof = result.get("proof", {})
-    final_action = proof.get("final", {}).get("action", "allow")
+    try:
+        result = rank_candidates(cands, pack)
+        proof = result.get("proof", {})
+        final_action = proof.get("final", {}).get("action", "allow")
 
-    if final_action == "allow":
-        final_text = result["choice"]["text"]
-        alts = []
-    else:
-        # refusal path with transparent proof + safer alternatives
-        veto_spans = proof.get("spans", [])
-        final_text = refusal_message(veto_spans)
-        alts = suggest_alternatives(req.prompt)
+        if final_action == "allow":
+            final_text = result["choice"]["text"]
+            alts = []
+        else:
+            # refusal path with transparent proof + safer alternatives
+            veto_spans = proof.get("spans", [])
+            final_text = refusal_message(veto_spans)
+            alts = suggest_alternatives(req.prompt)
 
-    return AskResp(
-        final=final_text,
-        proof=proof,
-        alternatives=alts,
-        chosen=result.get("choice", {}),
-        candidates=cands,
-        policy={
-            "strictness": policy.strictness,
-            "thresholds_multiplier": policy.thresholds_multiplier,
-            "weights": policy.weights,
-            "forms": policy.forms,
-        },
-    )
+        return AskResp(
+            final=final_text,
+            proof=proof,
+            alternatives=alts,
+            chosen=result.get("choice", {}),
+            candidates=cands,
+            policy={
+                "strictness": policy.strictness,
+                "thresholds_multiplier": policy.thresholds_multiplier,
+                "weights": policy.weights,
+                "forms": policy.forms,
+            },
+        )
+    except Exception as e:
+        # Never 500; return transparent refusal with reason
+        proof = {
+            "final": {"action": "refuse", "reason": str(e)},
+            "spans": [],
+            "pack_id": getattr(pack, "id", None),
+        }
+        return AskResp(
+            final=refusal_message([]),
+            proof=proof,
+            alternatives=suggest_alternatives(req.prompt),
+            chosen={},
+            candidates=cands,
+            policy={
+                "strictness": policy.strictness,
+                "thresholds_multiplier": policy.thresholds_multiplier,
+                "weights": policy.weights,
+                "forms": policy.forms,
+            },
+        )
