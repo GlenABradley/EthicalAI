@@ -1,0 +1,401 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-8.2.0, pluggy-1.6.0 -- C:\Users\glen4\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\glen4\Code\EthicalAI2\EthicalAI
+configfile: pytest.ini
+plugins: anyio-4.10.0, asyncio-1.1.0, cov-6.2.1
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collecting ... collected 99 items
+
+tests/api/test_frames_endpoints.py::test_frames_index_empty_ok 
+------------------------------- live log setup --------------------------------
+INFO     sentence_transformers.SentenceTransformer:SentenceTransformer.py:227 Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+FAILED                                                                   [  1%]
+tests/api/test_frames_endpoints.py::test_frames_search_and_trace_empties FAILED [  2%]
+tests/api/test_frames_index_contracts.py::test_index_wrong_coords_length_422 FAILED [  3%]
+tests/api/test_frames_index_contracts.py::test_index_missing_pack_no_active_400 PASSED [  4%]
+tests/api/test_frames_index_contracts.py::test_index_empty_frames_with_pack_returns_k_and_zero_ingested FAILED [  5%]
+tests/api/test_frames_stats.py::test_frames_stats_ok FAILED              [  6%]
+tests/api/test_payload_limits.py::test_analyze_payload_limit_413 FAILED  [  7%]
+tests/memory/test_store_stubs.py::test_store_put_and_k_infer_and_stubs PASSED [  8%]
+tests/test_advanced_axis_integration.py::test_advanced_axis_resonance PASSED [  9%]
+tests/test_api.py::test_health_ready PASSED                              [ 10%]
+tests/test_api_endpoints.py::test_resonance_with_vectors PASSED          [ 11%]
+tests/test_api_endpoints.py::test_pipeline_analyze_with_vectors PASSED   [ 12%]
+tests/test_api_endpoints.py::test_embed_endpoint_smoke PASSED            [ 13%]
+tests/test_app_imports.py::test_app_importable PASSED                    [ 14%]
+tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds FAILED [ 15%]
+tests/test_axes_orthonormal.py::test_gram_schmidt_orthonormal PASSED     [ 16%]
+tests/test_axis_pack.py::test_axis_pack_builds_and_is_orthonormal PASSED [ 17%]
+tests/test_axis_pack_384d.py::test_384d_axis_pack PASSED                 [ 18%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_all_axis_packs_structure PASSED [ 19%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_consequentialism_axis_pack PASSED [ 20%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_deontology_axis_pack PASSED [ 21%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_virtue_ethics_axis_pack PASSED [ 22%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_cross_axis_ethical_analysis PASSED [ 23%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_axis_pack_examples_quality PASSED [ 24%]
+tests/test_axis_packs_comprehensive.py::TestAxisPacksComprehensive::test_ethical_evaluation_consistency PASSED [ 25%]
+tests/test_axis_packs_comprehensive.py::TestEthicalEvaluationPipeline::test_full_pipeline_workflow PASSED [ 26%]
+tests/test_axis_packs_comprehensive.py::TestEthicalEvaluationPipeline::test_vector_topology_ethical_mapping PASSED [ 27%]
+tests/test_axis_packs_comprehensive.py::TestEthicalEvaluationPipeline::test_real_world_ethical_scenarios PASSED [ 28%]
+tests/test_calibrate_cli.py::test_calibrate_cli_runs_and_writes_reports PASSED [ 29%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_health_check_comprehensive PASSED [ 30%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_text_embedding_functionality PASSED [ 31%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_axis_pack_loading FAILED [ 32%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_ethical_evaluation_pipeline PASSED [ 33%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_batch_ethical_analysis PASSED [ 34%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_complex_ethical_scenarios PASSED [ 35%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_what_if_analysis PASSED [ 36%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_vector_topology_analysis PASSED [ 37%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_performance_large_inputs PASSED [ 38%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_error_handling PASSED [ 39%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_axis_configuration PASSED [ 40%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_resonance_analysis PASSED [ 41%]
+tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_pipeline_integration PASSED [ 42%]
+tests/test_comprehensive_e2e.py::TestEthicalAIIntegration::test_end_to_end_ethical_workflow PASSED [ 43%]
+tests/test_comprehensive_e2e.py::TestEthicalAIIntegration::test_cross_axis_consistency PASSED [ 44%]
+tests/test_constitution_rank.py::test_rank_prefers_no_veto_then_composite_then_logprob PASSED [ 45%]
+tests/test_constitution_rank.py::test_axis_composite_meaningful PASSED   [ 46%]
+tests/test_diffusion.py::test_energy_decreases_with_tau PASSED           [ 47%]
+tests/test_end_to_end.py::test_health_check PASSED                       [ 48%]
+tests/test_end_to_end.py::test_embed_endpoint PASSED                     [ 49%]
+tests/test_end_to_end.py::test_analyze_endpoint PASSED                   [ 50%]
+tests/test_end_to_end.py::test_batch_analysis PASSED                     [ 51%]
+tests/test_end_to_end.py::test_whatif_analysis PASSED                    [ 52%]
+tests/test_eval_api.py::test_eval_text_flow PASSED                       [ 53%]
+tests/test_eval_spans.py::test_project_scores_shapes PASSED              [ 54%]
+tests/test_frames_logic.py::test_srl_lite_and_vectorize_deterministic PASSED [ 55%]
+tests/test_frames_logic.py::test_three_valued_logic_tables PASSED        [ 56%]
+tests/test_frontend_integration.py::TestFrontendBackendIntegration::test_api_endpoints_for_frontend PASSED [ 57%]
+tests/test_frontend_integration.py::TestFrontendBackendIntegration::test_cors_configuration PASSED [ 58%]
+tests/test_frontend_integration.py::TestFrontendBackendIntegration::test_api_response_format PASSED [ 59%]
+tests/test_frontend_integration.py::TestFrontendBackendIntegration::test_error_response_format PASSED [ 60%]
+tests/test_frontend_integration.py::TestFrontendBackendIntegration::test_batch_processing_for_ui PASSED [ 61%]
+tests/test_frontend_integration.py::TestFrontendBackendIntegration::test_real_time_analysis_simulation PASSED [ 62%]
+tests/test_frontend_integration.py::TestUIComponentDataFlow::test_interaction_page_workflow PASSED [ 63%]
+tests/test_frontend_integration.py::TestUIComponentDataFlow::test_visualization_data_format PASSED [ 64%]
+tests/test_frontend_integration.py::TestUIComponentDataFlow::test_ethical_axis_data_structure PASSED [ 65%]
+tests/test_frontend_integration.py::TestUIComponentDataFlow::test_performance_for_interactive_ui PASSED [ 66%]
+tests/test_frontend_integration.py::TestAPIContractCompliance::test_embedding_api_contract PASSED [ 67%]
+tests/test_frontend_integration.py::TestAPIContractCompliance::test_health_api_contract PASSED [ 68%]
+tests/test_frontend_integration.py::TestAPIContractCompliance::test_error_handling_contract PASSED [ 69%]
+tests/test_health_ready.py::test_health_ready_fast PASSED                [ 70%]
+tests/test_interaction_api.py::test_interaction_allow_path PASSED        [ 71%]
+tests/test_interaction_refusal.py::test_interaction_refusal_and_alternatives PASSED [ 72%]
+tests/test_minimal.py::test_minimal PASSED                               [ 73%]
+tests/test_openapi_generates.py::test_openapi_generation PASSED          [ 74%]
+tests/test_performance.py::test_embed_endpoint_performance PASSED        [ 75%]
+tests/test_performance.py::test_analyze_endpoint_performance PASSED      [ 76%]
+tests/test_performance.py::test_concurrent_requests PASSED               [ 77%]
+tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_single_embedding_performance PASSED [ 78%]
+tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_batch_embedding_performance PASSED [ 79%]
+tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_concurrent_request_handling PASSED [ 80%]
+tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_large_text_performance PASSED [ 81%]
+tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_memory_usage_stability PASSED [ 82%]
+tests/test_performance_benchmarks.py::TestPerformanceBenchmarks::test_error_recovery_performance PASSED [ 83%]
+tests/test_performance_benchmarks.py::TestStressTests::test_rapid_fire_requests PASSED [ 84%]
+tests/test_performance_benchmarks.py::TestStressTests::test_edge_case_inputs PASSED [ 85%]
+tests/test_pipeline_shapes.py::test_orchestrator_shapes PASSED           [ 86%]
+tests/test_policy_loader.py::test_policy_loader_defaults PASSED          [ 87%]
+tests/test_real_encoder.py::TestRealEncoderFunctionality::test_real_embedding_functionality PASSED [ 88%]
+tests/test_real_encoder.py::TestRealEncoderFunctionality::test_real_axis_pack_creation_and_analysis PASSED [ 89%]
+tests/test_real_encoder.py::TestRealEncoderFunctionality::test_real_health_check PASSED [ 90%]
+tests/test_real_encoder.py::TestRealEncoderFunctionality::test_real_what_if_analysis PASSED [ 91%]
+tests/test_real_encoder.py::TestRealEncoderFunctionality::test_real_error_handling PASSED [ 92%]
+tests/test_regularizer.py::test_regularizer_numpy_basic PASSED           [ 93%]
+tests/test_resonance.py::test_resonance_linear_weights_deterministic PASSED [ 94%]
+tests/test_resonance.py::test_resonance_choquet_two_axes PASSED          [ 95%]
+tests/test_simple.py::test_simple PASSED                                 [ 96%]
+tests/test_skipmesh.py::test_build_and_span_pairs_basic PASSED           [ 97%]
+tests/test_skipmesh.py::test_span_coherence_monotonic_with_signal PASSED [ 98%]
+tests/test_spans.py::test_minimal_spans_and_scores_present SKIPPED       [100%]
+
+================================== FAILURES ===================================
+_________________________ test_frames_index_empty_ok __________________________
+tests\api\test_frames_endpoints.py:12: in test_frames_index_empty_ok
+    assert r0.status_code in (200, 201), r0.text
+E   AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+E   assert 500 in (200, 201)
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+[DEBUG] Loading SBERT model: all-MiniLM-L6-v2 on device: cpu
+[DEBUG] Model max sequence length: 256
+[DEBUG] Model device: cpu
+[DEBUG] Model dimension: 384
+2025-08-31 22:41:02,210 INFO coherence.api - create_app: start
+[DEBUG] Loading SBERT model: all-mpnet-base-v2 on device: cpu
+2025-08-31 22:41:02,244 INFO sentence_transformers.SentenceTransformer - Load pretrained SentenceTransformer: all-mpnet-base-v2
+2025-08-31 22:41:02,302 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/modules.json HTTP/1.1" 307 0
+2025-08-31 22:41:02,336 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/modules.json HTTP/1.1" 200 0
+2025-08-31 22:41:02,402 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-08-31 22:41:02,433 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-08-31 22:41:02,486 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/config_sentence_transformers.json HTTP/1.1" 307 0
+2025-08-31 22:41:02,519 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/config_sentence_transformers.json HTTP/1.1" 200 0
+2025-08-31 22:41:02,578 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/README.md HTTP/1.1" 307 0
+2025-08-31 22:41:02,611 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/README.md HTTP/1.1" 200 0
+2025-08-31 22:41:02,669 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/modules.json HTTP/1.1" 307 0
+2025-08-31 22:41:02,704 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/modules.json HTTP/1.1" 200 0
+2025-08-31 22:41:02,765 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/sentence_bert_config.json HTTP/1.1" 307 0
+2025-08-31 22:41:02,794 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/sentence_bert_config.json HTTP/1.1" 200 0
+2025-08-31 22:41:02,868 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/adapter_config.json HTTP/1.1" 404 0
+2025-08-31 22:41:02,923 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/config.json HTTP/1.1" 307 0
+2025-08-31 22:41:02,955 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/config.json HTTP/1.1" 200 0
+2025-08-31 22:41:03,068 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/tokenizer_config.json HTTP/1.1" 307 0
+2025-08-31 22:41:03,102 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/tokenizer_config.json HTTP/1.1" 200 0
+2025-08-31 22:41:03,168 DEBUG urllib3.connectionpool - https://huggingface.co:443 "GET /api/models/sentence-transformers/all-mpnet-base-v2/tree/main/additional_chat_templates?recursive=False&expand=False HTTP/1.1" 404 64
+2025-08-31 22:41:03,242 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /sentence-transformers/all-mpnet-base-v2/resolve/main/1_Pooling/config.json HTTP/1.1" 307 0
+2025-08-31 22:41:03,276 DEBUG urllib3.connectionpool - https://huggingface.co:443 "HEAD /api/resolve-cache/models/sentence-transformers/all-mpnet-base-v2/e8c3b32edf5434bc2275fc9bab85f82640a19130/1_Pooling%2Fconfig.json HTTP/1.1" 200 0
+2025-08-31 22:41:03,347 DEBUG urllib3.connectionpool - https://huggingface.co:443 "GET /api/models/sentence-transformers/all-mpnet-base-v2 HTTP/1.1" 200 6893
+[DEBUG] Model max sequence length: 384
+[DEBUG] Model device: cpu
+[DEBUG] Model dimension: 768
+2025-08-31 22:41:03,350 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,350 INFO coherence.api - create_app: done in 1.141s
+2025-08-31 22:41:03,358 INFO coherence.api - create_app: start
+2025-08-31 22:41:03,374 WARNING coherence.api - Registry init skipped (encoder load failed): 'AxisRegistry' object has no attribute 'artifacts_dir'
+2025-08-31 22:41:03,374 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,374 INFO coherence.api - create_app: done in 0.017s
+----------------------------- Captured log setup ------------------------------
+INFO     sentence_transformers.SentenceTransformer:SentenceTransformer.py:227 Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:03,383 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:03,394 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+____________________ test_frames_search_and_trace_empties _____________________
+tests\api\test_frames_endpoints.py:30: in test_frames_search_and_trace_empties
+    assert r0.status_code in (200, 201), r0.text
+E   AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+E   assert 500 in (200, 201)
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:03,404 INFO coherence.api - create_app: start
+2025-08-31 22:41:03,421 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,421 INFO coherence.api - create_app: done in 0.017s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:03,422 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:03,428 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+_____________________ test_index_wrong_coords_length_422 ______________________
+tests\api\test_frames_index_contracts.py:16: in test_index_wrong_coords_length_422
+    build = build_active_pack(c, sample_axis_jsons)
+tests\api\test_frames_index_contracts.py:10: in build_active_pack
+    assert r0.status_code in (200, 201), r0.text
+E   AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+E   assert 500 in (200, 201)
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:03,436 INFO coherence.api - create_app: start
+2025-08-31 22:41:03,457 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,457 INFO coherence.api - create_app: done in 0.018s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:03,459 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:03,466 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+________ test_index_empty_frames_with_pack_returns_k_and_zero_ingested ________
+tests\api\test_frames_index_contracts.py:59: in test_index_empty_frames_with_pack_returns_k_and_zero_ingested
+    build = build_active_pack(c, sample_axis_jsons)
+tests\api\test_frames_index_contracts.py:10: in build_active_pack
+    assert r0.status_code in (200, 201), r0.text
+E   AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+E   assert 500 in (200, 201)
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:03,502 INFO coherence.api - create_app: start
+2025-08-31 22:41:03,527 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,527 INFO coherence.api - create_app: done in 0.017s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:03,527 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:03,534 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+____________________________ test_frames_stats_ok _____________________________
+tests\api\test_frames_stats.py:12: in test_frames_stats_ok
+    assert r0.status_code in (200, 201), r0.text
+E   AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+E   assert 500 in (200, 201)
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:03,541 INFO coherence.api - create_app: start
+2025-08-31 22:41:03,550 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,550 INFO coherence.api - create_app: done in 0.016s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:03,550 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:03,569 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+_______________________ test_analyze_payload_limit_413 ________________________
+tests\api\test_payload_limits.py:12: in test_analyze_payload_limit_413
+    assert r0.status_code in (200, 201), r0.text
+E   AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+E   assert 500 in (200, 201)
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:03,579 INFO coherence.api - create_app: start
+2025-08-31 22:41:03,597 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:03,597 INFO coherence.api - create_app: done in 0.018s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:03,598 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:03,604 INFO httpx - HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/build "HTTP/1.1 500 Internal Server Error"
+_______________________ test_activate_reads_thresholds ________________________
+tests\test_axes_activate_thresholds.py:41: in test_activate_reads_thresholds
+    assert r.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:04,211 INFO coherence.api - create_app: start
+2025-08-31 22:41:04,228 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:04,228 INFO coherence.api - create_app: done in 0.018s
+---------------------------- Captured stdout call -----------------------------
+2025-08-31 22:41:04,228 DEBUG asyncio - Using proactor: IocpProactor
+2025-08-31 22:41:04,236 INFO httpx - HTTP Request: POST http://testserver/v1/axes/thresh-pack/activate "HTTP/1.1 500 Internal Server Error"
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/thresh-pack/activate "HTTP/1.1 500 Internal Server Error"
+______________ TestComprehensiveEthicalAI.test_axis_pack_loading ______________
+tests\test_comprehensive_e2e.py:143: in test_axis_pack_loading
+    assert response.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <Response [500 Internal Server Error]>.status_code
+---------------------------- Captured stdout setup ----------------------------
+2025-08-31 22:41:06,635 INFO coherence.api - create_app: start
+2025-08-31 22:41:06,659 INFO coherence.api - App created with config: {'server': {'host': '0.0.0.0', 'port': 8080, 'reload': True}, 'api': {'max_doc_chars': 100000}}
+2025-08-31 22:41:06,659 INFO coherence.api - create_app: done in 0.024s
+---------------------------- Captured stdout call -----------------------------
+\n\U0001f4ca Testing axis pack loading...\n2025-08-31 22:41:06,660 DEBUG asyncio - Using proactor: IocpProactor\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - Validating AxisPack with k=1\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - Q shape: (768, 1), ndim: 2\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - lambda_ shape: (1,), expected: (1,)\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - beta shape: (1,), expected: (1,)\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - weights shape: (1,), expected: (1,)\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - Q.T @ Q shape: (1, 1), expected: (1, 1)\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - Q.T @ Q diagonal: [1.]\n2025-08-31 22:41:06,721 DEBUG coherence.axis.pack - Q.T @ Q off-diagonal max: 0.0\n2025-08-31 22:41:06,733 INFO httpx - HTTP Request: POST http://testserver/v1/axes/create "HTTP/1.1 201 Created"\nCreate axis pack status: 201\n2025-08-31 22:41:06,735 DEBUG asyncio - Using proactor: IocpProactor\n2025-08-31 22:41:06,741 INFO httpx - HTTP Request: GET http://testserver/v1/axes/consequentialism_test "HTTP/1.1 500 Internal Server Error"\nAxis pack response status: 500\nAxis pack response: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+------------------------------ Captured log call ------------------------------
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/v1/axes/create "HTTP/1.1 201 Created"
+DEBUG    asyncio:proactor_events.py:634 Using proactor: IocpProactor
+INFO     httpx:_client.py:1025 HTTP Request: GET http://testserver/v1/axes/consequentialism_test "HTTP/1.1 500 Internal Server Error"
+============================== warnings summary ===============================
+tests/test_end_to_end.py::test_embed_endpoint
+tests/test_end_to_end.py::test_analyze_endpoint
+tests/test_end_to_end.py::test_batch_analysis
+tests/test_end_to_end.py::test_batch_analysis
+tests/test_end_to_end.py::test_batch_analysis
+tests/test_end_to_end.py::test_batch_analysis
+tests/test_end_to_end.py::test_batch_analysis
+tests/test_end_to_end.py::test_whatif_analysis
+  C:\Users\glen4\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\testclient.py:445: DeprecationWarning: You should not use the 'timeout' argument with the TestClient. See https://github.com/encode/starlette/issues/1108 for more information.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+______________ coverage: platform win32, python 3.12.10-final-0 _______________
+
+Name                                            Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------
+src\coherence\__init__.py                           1      0   100%
+src\coherence\agent\__init__.py                     0      0   100%
+src\coherence\agent\query_map.py                   20     10    50%   17, 29-38
+src\coherence\agent\tools.py                       28     28     0%   1-57
+src\coherence\api\__init__.py                       0      0   100%
+src\coherence\api\axis_registry.py                144     80    44%   42-46, 61-62, 65-76, 79-88, 93, 106-189, 193-197, 203-206
+src\coherence\api\main.py                          70      2    97%   83-84
+src\coherence\api\models.py                       100      0   100%
+src\coherence\api\routers\__init__.py               0      0   100%
+src\coherence\api\routers\analyze.py               85      9    89%   32, 42-45, 51, 63, 65, 118
+src\coherence\api\routers\axes.py                  59     20    66%   36-44, 53-54, 71, 88-90, 92-94, 96-98
+src\coherence\api\routers\embed.py                 30      4    87%   40-41, 45-46
+src\coherence\api\routers\health.py                43     12    72%   29-30, 35-41, 48-49, 52
+src\coherence\api\routers\index.py                 12      6    50%   16-21
+src\coherence\api\routers\pipeline.py             113     38    66%   88-95, 99-107, 112, 116, 122-139, 153, 155-156, 173-176
+src\coherence\api\routers\resonance.py             95     36    62%   60-73, 89-93, 97, 111-126, 131, 133-134, 144-145
+src\coherence\api\routers\search.py                91     79    13%   24-38, 47-148
+src\coherence\api\routers\v1_axes.py              334    173    48%   29-32, 36-39, 79, 81, 83, 97-167, 179, 187-188, 193-194, 199-201, 203-205, 207-209, 213-220, 227-228, 255-256, 290, 295-298, 313, 318-410, 432, 435-454, 475, 478-494, 520-533, 563-565
+src\coherence\api\routers\v1_frames.py            209    127    39%   27-32, 87-94, 97-119, 123-131, 150-156, 161-165, 169-173, 177-189, 196-243, 254-259, 264-267, 273-303
+src\coherence\api\routers\whatif.py                 7      0   100%
+src\coherence\axis\__init__.py                      0      0   100%
+src\coherence\axis\advanced_builder.py            385    199    48%   41, 56-167, 183-190, 208-275, 324-343, 388, 395-397, 404, 406-419, 448, 450, 458-460, 481, 483, 487-488, 499-501, 506, 513-514, 525-526, 532, 545, 552, 561, 563, 567, 576, 583-587, 620-622, 657-658, 672-674, 677, 689-691, 708-728
+src\coherence\axis\builder.py                      53      7    87%   27, 60, 77-80, 111
+src\coherence\axis\choquet.py                      22      1    95%   32
+src\coherence\axis\pack.py                         87     17    80%   28-32, 38-44, 75, 99-102
+src\coherence\cfg\loader.py                        10      0   100%
+src\coherence\cfg\logging.py                       12      1    92%   21
+src\coherence\coherence\diffusion.py               27      6    78%   33-39
+src\coherence\coherence\skipmesh.py                27      1    96%   29
+src\coherence\coherence\spans.py                   24     13    46%   27-34, 39-44
+src\coherence\coherence\substrate.py               23      0   100%
+src\coherence\encoders\__init__.py                  0      0   100%
+src\coherence\encoders\registry.py                 14      2    86%   23, 28
+src\coherence\encoders\text_sbert.py               87     32    63%   52, 71, 99-135
+src\coherence\frames\__init__.py                    0      0   100%
+src\coherence\frames\detectors\__init__.py          0      0   100%
+src\coherence\frames\detectors\causal.py            0      0   100%
+src\coherence\frames\detectors\conditional.py      15     10    33%   24-33
+src\coherence\frames\detectors\evidence.py         15     10    33%   24-34
+src\coherence\frames\detectors\modality.py          0      0   100%
+src\coherence\frames\detectors\negation.py          0      0   100%
+src\coherence\frames\detectors\power.py             0      0   100%
+src\coherence\frames\detectors\quantifiers.py       0      0   100%
+src\coherence\frames\detectors\speech_act.py        0      0   100%
+src\coherence\frames\detectors\temporal.py          0      0   100%
+src\coherence\frames\logic\__init__.py              0      0   100%
+src\coherence\frames\logic\eval.py                 25      0   100%
+src\coherence\frames\logic\lf_builder.py            0      0   100%
+src\coherence\frames\logic\normalize.py             0      0   100%
+src\coherence\frames\schema.py                     21      0   100%
+src\coherence\frames\srl_lite.py                   82     26    68%   81-93, 103-113, 118-129
+src\coherence\frames\syntax.py                      0      0   100%
+src\coherence\frames\vectorize.py                  20      1    95%   20
+src\coherence\index\__init__.py                     0      0   100%
+src\coherence\index\ann.py                         52     38    27%   16, 20, 24-46, 50-57, 61-74
+src\coherence\index\pipeline.py                    83     83     0%   1-131
+src\coherence\index\store.py                       51     51     0%   1-64
+src\coherence\memory\store.py                      87      7    92%   77-79, 124, 127, 171, 229
+src\coherence\metrics\resonance.py                 38      6    84%   34, 49, 65-67, 70
+src\coherence\pipeline\orchestrator.py             47     10    79%   87-103
+src\coherence\pipeline\scoring.py                  54     20    63%   69, 75-82, 95-102, 110-113
+src\ethicalai\__init__.py                           0      0   100%
+src\ethicalai\api\axes.py                          71     43    39%   15-17, 20-22, 37-75, 79-96, 101, 106-107
+src\ethicalai\api\eval.py                          33      2    94%   27, 32
+src\ethicalai\api\interaction.py                   45      5    89%   30, 35, 67-74
+src\ethicalai\axes\build.py                        14      8    43%   8-15
+src\ethicalai\axes\calibrate.py                   131      6    95%   13-14, 46, 71, 101, 106
+src\ethicalai\axes\utils.py                        12      0   100%
+src\ethicalai\constitution\decoding.py             42      2    95%   22, 24
+src\ethicalai\constitution\regularizer.py          26     10    62%   8-9, 31-38
+src\ethicalai\encoders.py                          46      9    80%   19, 41, 59-65
+src\ethicalai\eval\minspan.py                      11      0   100%
+src\ethicalai\eval\spans.py                        24      1    96%   23
+src\ethicalai\interaction\explain.py               10      1    90%   6
+src\ethicalai\interaction\generate.py               6      0   100%
+src\ethicalai\interaction\policy.py                21      1    95%   29
+src\ethicalai\types.py                             30      0   100%
+-----------------------------------------------------------------------------
+TOTAL                                            3324   1253    62%
+=========================== short test summary info ===========================
+FAILED tests/api/test_frames_endpoints.py::test_frames_index_empty_ok - AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+assert 500 in (200, 201)
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/api/test_frames_endpoints.py::test_frames_search_and_trace_empties - AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+assert 500 in (200, 201)
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/api/test_frames_index_contracts.py::test_index_wrong_coords_length_422 - AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+assert 500 in (200, 201)
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/api/test_frames_index_contracts.py::test_index_empty_frames_with_pack_returns_k_and_zero_ingested - AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+assert 500 in (200, 201)
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/api/test_frames_stats.py::test_frames_stats_ok - AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+assert 500 in (200, 201)
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/api/test_payload_limits.py::test_analyze_payload_limit_413 - AssertionError: {"detail":"Registry init failed: 'AxisRegistry' object has no attribute 'artifacts_dir'"}
+assert 500 in (200, 201)
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/test_axes_activate_thresholds.py::test_activate_reads_thresholds - assert 500 == 200
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+FAILED tests/test_comprehensive_e2e.py::TestComprehensiveEthicalAI::test_axis_pack_loading - assert 500 == 200
+ +  where 500 = <Response [500 Internal Server Error]>.status_code
+======= 8 failed, 90 passed, 1 skipped, 8 warnings in 192.59s (0:03:12) =======

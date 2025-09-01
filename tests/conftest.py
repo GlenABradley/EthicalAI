@@ -17,6 +17,22 @@ if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
 
+@pytest.fixture(scope="session", autouse=True)
+def _preload_real_encoder() -> None:
+    """Pre-load the real encoder once per test session.
+
+    Forces real model usage in tests (no mocks/stubs) and primes the cache
+    so repeated app startups reuse the already-initialized encoder.
+    """
+    # Ensure real encoder is used even under pytest
+    os.environ["COHERENCE_TEST_REAL_ENCODER"] = "1"
+    try:
+        from coherence.encoders.text_sbert import get_default_encoder
+        get_default_encoder()
+    except Exception as e:
+        print(f"Warning: failed to preload real encoder: {e}")
+
+
 def _make_sample_axis(path: Path, name: str):
     data = {
         "name": name,
@@ -35,7 +51,7 @@ def _make_sample_axis(path: Path, name: str):
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def tmp_artifacts_dir() -> Iterator[Path]:
     tmp = Path(tempfile.mkdtemp(prefix="coh_artifacts_"))
     try:
@@ -45,7 +61,7 @@ def tmp_artifacts_dir() -> Iterator[Path]:
         shutil.rmtree(tmp, ignore_errors=True)
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def sample_axis_jsons(tmp_artifacts_dir: Path) -> List[Path]:
     a1 = tmp_artifacts_dir / "a1.json"
     a2 = tmp_artifacts_dir / "a2.json"
@@ -54,24 +70,34 @@ def sample_axis_jsons(tmp_artifacts_dir: Path) -> List[Path]:
     return [a1, a2]
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def api_client(tmp_artifacts_dir: Path) -> TestClient:
     # Reset registry and load app fresh
     import coherence.api.axis_registry as axis_registry
     axis_registry.REGISTRY = None
-    # Reload frames router to pick up new env and recreate STORE at correct DB path
-    try:
-        vr = importlib.import_module("coherence.api.routers.v1_frames")
-        importlib.reload(vr)
-    except Exception:
-        pass
-    mod = importlib.import_module("coherence.api.main")
-    importlib.reload(mod)
-    app = getattr(mod, "app", None)
-    if app is None:
-        # Use factory if module-level app is not exported
-        app = mod.create_app()
+
+    # Set test environment variables for real encoder usage
+    os.environ["COHERENCE_ARTIFACTS_DIR"] = str(tmp_artifacts_dir)
+    os.environ["COHERENCE_TEST_REAL_ENCODER"] = "1"
+    os.environ["COHERENCE_ENCODER"] = "all-mpnet-base-v2"
+
+    from coherence.api.main import create_app
+    app = create_app()
     client = TestClient(app)
-    # Trigger lazy init of registry for health
-    client.get("/health/ready")
+    return client
+
+
+@pytest.fixture(scope="function")
+def api_client_real_encoder(tmp_artifacts_dir: Path) -> TestClient:
+    """API client fixture that uses the real encoder (no mocking)."""
+    import coherence.api.axis_registry as axis_registry
+    axis_registry.REGISTRY = None
+
+    os.environ["COHERENCE_ARTIFACTS_DIR"] = str(tmp_artifacts_dir)
+    os.environ["COHERENCE_TEST_REAL_ENCODER"] = "1"
+    os.environ["COHERENCE_ENCODER"] = "all-mpnet-base-v2"
+
+    from coherence.api.main import create_app
+    app = create_app()
+    client = TestClient(app)
     return client

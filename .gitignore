@@ -1,6 +1,9 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+*.so
 *.egg-info/
 .build/
 dist/
@@ -20,8 +23,12 @@ Thumbs.db
 # Artifacts & outputs (generated)
 artifacts/
 output/
+reports/
+docs/openapi.json
 *.npz
-*.sqlite*
+*.npz.*
+*.sqlite
+*.sqlite3
 *.db
 *.pt
 *.bin

@@ -14,11 +14,29 @@ from pydantic import BaseModel, Field
 from coherence.api.axis_registry import REGISTRY, init_registry
 from coherence.axis.advanced_builder import build_advanced_axis_pack
 from coherence.encoders.text_sbert import get_default_encoder
+from coherence.api.models import CreateAxisPack
+from coherence.axis.builder import build_axis_pack_from_seeds
+from coherence.axis.pack import AxisPack
 
 router = APIRouter()
 
 SCHEMA_VERSION = "axis-pack/1.1"
-DEFAULT_ARTIFACTS_DIR = os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")
+def get_artifacts_dir() -> str:
+    return os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")
+
+def _find_npz_path(pack_id: str) -> Path:
+    """Find NPZ file with either colon or underscore naming convention."""
+    artifacts_dir = Path(get_artifacts_dir())
+    colon_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
+    underscore_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    return colon_path if colon_path.exists() else underscore_path
+
+def _find_meta_path(pack_id: str) -> Path:
+    """Find meta file with either colon or underscore naming convention."""
+    artifacts_dir = Path(get_artifacts_dir())
+    colon_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    underscore_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
+    return colon_path if colon_path.exists() else underscore_path
 
 
 class BuildRequest(BaseModel):
@@ -35,14 +53,264 @@ class BuildResponse(BaseModel):
     pack_hash: str
 
 
+class CreateResponse(BaseModel):
+    pack_id: str
+    dim: int
+    k: int
+    names: List[str]
+
+
+@router.post("", response_model=CreateResponse, status_code=status.HTTP_201_CREATED)
+def create_axis_pack_from_config(payload: Dict[str, object]) -> CreateResponse:
+    """Create an axis pack from a single axis config JSON.
+
+    Expects fields similar to configs under `configs/axis_packs/`:
+    - name: str
+    - max_examples: List[str] (treated as positives)
+    - min_examples: List[str] (treated as negatives)
+    Other fields are ignored but preserved in `meta` where reasonable.
+    """
+    # Basic validation
+    name = (payload.get("name") if isinstance(payload, dict) else None)
+    max_examples = (payload.get("max_examples") if isinstance(payload, dict) else None)
+    min_examples = (payload.get("min_examples") if isinstance(payload, dict) else None)
+
+    if not isinstance(name, str) or name.strip() == "":
+        raise HTTPException(status_code=400, detail="Missing or invalid 'name'")
+    if not isinstance(max_examples, list) or not all(isinstance(x, str) for x in max_examples):
+        raise HTTPException(status_code=400, detail="'max_examples' must be a list of strings")
+    if not isinstance(min_examples, list) or not all(isinstance(x, str) for x in min_examples):
+        raise HTTPException(status_code=400, detail="'min_examples' must be a list of strings")
+
+    # Determine pack_id from name
+    raw = name.strip()
+    pack_id = "".join(ch if (ch.isalnum() or ch in "_-") else "_" for ch in raw)
+
+    # If already exists, return 409 (tests accept 409 for idempotency)
+    data_axes_dir = Path("data/axes")
+    data_axes_dir.mkdir(parents=True, exist_ok=True)
+    pack_json_path = data_axes_dir / f"{pack_id}.json"
+    if pack_json_path.exists():
+        raise HTTPException(status_code=409, detail="Axis pack already exists")
+
+    # Build seeds mapping expected by simple builder
+    seeds = {name: {"positive": max_examples, "negative": min_examples}}
+
+    # Encoder
+    try:
+        enc = get_default_encoder()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Encoder init failed: {e}")
+
+    # Build using diff-of-means
+    try:
+        pack = build_axis_pack_from_seeds(seeds, encode_fn=enc.encode)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Axis build failed: {e}")
+
+    # Enrich meta minimally
+    try:
+        base_meta = dict(payload) if isinstance(payload, dict) else {}
+    except Exception:
+        base_meta = {}
+    pack.meta = {**(pack.meta or {}), **{k: v for k, v in base_meta.items() if k not in {"max_examples", "min_examples"}}, "built_from": "v1.root"}
+
+    # Persist JSON for analyzer
+    pack.save(pack_json_path)
+
+    # Persist artifacts for registry
+    artifacts_dir = Path(get_artifacts_dir())
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    temp_npz = artifacts_dir / "axis_pack_temp_root.npz"
+    np.savez_compressed(
+        temp_npz,
+        Q=pack.Q,
+        lambda_=pack.lambda_,
+        beta=pack.beta,
+        weights=pack.weights,
+    )
+    npz_bytes = temp_npz.read_bytes()
+    pack_hash = sha256(npz_bytes).hexdigest()
+    npz_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
+    npz_path.write_bytes(npz_bytes)
+    try:
+        temp_npz.unlink(missing_ok=True)  # type: ignore[arg-type]
+    except Exception:
+        pass
+
+    D = int(pack.Q.shape[0])
+    names = list(pack.names)
+    builder_params = {
+        "whitening_method": "qr",
+        "use_lda": False,
+        "orthogonalize": True,
+        "margin_alpha": 0.0,
+        "encoder_model": enc.model_name,
+        "encoder_dim": enc._model.get_sentence_embedding_dimension(),
+    }
+    meta = {
+        "schema_version": SCHEMA_VERSION,
+        "encoder_model": enc.model_name,
+        "encoder_dim": enc._model.get_sentence_embedding_dimension(),
+        "names": names,
+        "modes": {},
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "builder_version": "diffmean-basic",
+        "pack_hash": pack_hash,
+        "json_embeddings_hash": "",
+        "builder_params": builder_params,
+        "notes": "",
+    }
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    return CreateResponse(pack_id=pack_id, dim=D, k=len(names), names=names)
+
+
+@router.post("/create", response_model=CreateResponse, status_code=status.HTTP_201_CREATED)
+def create_axis_pack(req: CreateAxisPack) -> CreateResponse:
+    """Create an axis pack from seed phrases.
+
+    - Builds using diff-of-means and QR orthonormalization.
+    - Persists JSON under data/axes for the /analyze endpoint.
+    - Persists artifacts (npz + meta.json) under artifacts/ for AxisRegistry.
+    """
+    if not req.axes:
+        raise HTTPException(status_code=400, detail="No axes provided")
+
+    # Build seeds mapping expected by simple builder
+    seeds = {a.name: {"positive": a.positives, "negative": a.negatives} for a in req.axes}
+
+    # Encoder
+    try:
+        enc = get_default_encoder()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Encoder init failed: {e}")
+
+    # Build using diff-of-means
+    try:
+        pack = build_axis_pack_from_seeds(seeds, encode_fn=enc.encode)
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Axis build failed: {e}")
+
+    # Apply overrides if provided
+    k = pack.k
+    if req.lambda_ is not None:
+        if len(req.lambda_) != k:
+            raise HTTPException(status_code=400, detail="lambda_ length must equal k")
+        pack.lambda_ = np.asarray(req.lambda_, dtype=np.float32)
+    if req.beta is not None:
+        if len(req.beta) != k:
+            raise HTTPException(status_code=400, detail="beta length must equal k")
+        pack.beta = np.asarray(req.beta, dtype=np.float32)
+    if req.weights is not None:
+        if len(req.weights) != k:
+            raise HTTPException(status_code=400, detail="weights length must equal k")
+        pack.weights = np.asarray(req.weights, dtype=np.float32)
+
+    # Optional Choquet capacity
+    if req.choquet_capacity:
+        mu: Dict[frozenset[int], float] = {}
+        for key, val in req.choquet_capacity.items():
+            try:
+                idx = frozenset(int(x) for x in key.split(",") if x.strip() != "")
+                mu[idx] = float(val)
+            except Exception:
+                raise HTTPException(status_code=400, detail=f"Invalid choquet_capacity key: {key}")
+        pack.mu = mu
+
+    # Determine pack_id
+    if len(req.axes) == 1 and req.axes[0].name:
+        raw = req.axes[0].name.strip()
+        pack_id = "".join(ch if (ch.isalnum() or ch in "_-") else "_" for ch in raw)
+    else:
+        ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
+        pack_id = f"ap_{ts}"
+
+    # Persist JSON for analyzer
+    data_axes_dir = Path("data/axes")
+    data_axes_dir.mkdir(parents=True, exist_ok=True)
+    # Enrich meta minimally
+    pack.meta = {**(pack.meta or {}), "built_from": "v1.create"}
+    pack.save(data_axes_dir / f"{pack_id}.json")
+
+    # Persist artifacts for registry
+    artifacts_dir = Path(get_artifacts_dir())
+    artifacts_dir.mkdir(parents=True, exist_ok=True)
+    temp_npz = artifacts_dir / "axis_pack_temp_create.npz"
+    np.savez_compressed(
+        temp_npz,
+        Q=pack.Q,
+        lambda_=pack.lambda_,
+        beta=pack.beta,
+        weights=pack.weights,
+    )
+    npz_bytes = temp_npz.read_bytes()
+    pack_hash = sha256(npz_bytes).hexdigest()
+    npz_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
+    npz_path.write_bytes(npz_bytes)
+    try:
+        temp_npz.unlink(missing_ok=True)  # type: ignore[arg-type]
+    except Exception:
+        pass
+
+    D = int(pack.Q.shape[0])
+    names = list(pack.names)
+    builder_params = {
+        "whitening_method": "qr",
+        "use_lda": False,
+        "orthogonalize": True,
+        "margin_alpha": 0.0,
+        "encoder_model": enc.model_name,
+        "encoder_dim": enc._model.get_sentence_embedding_dimension(),
+    }
+    meta = {
+        "schema_version": SCHEMA_VERSION,
+        "encoder_model": enc.model_name,
+        "encoder_dim": enc._model.get_sentence_embedding_dimension(),
+        "names": names,
+        "modes": {},
+        "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "builder_version": "diffmean-basic",
+        "pack_hash": pack_hash,
+        "json_embeddings_hash": "",
+        "builder_params": builder_params,
+        "notes": "",
+    }
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    # Activate the newly created pack in the registry
+    global REGISTRY
+    reg = REGISTRY
+    if reg is None:
+        try:
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
+        except Exception:
+            pass  # Continue without activation if registry init fails
+    
+    if reg is not None:
+        try:
+            reg.activate(pack_id)
+        except Exception:
+            pass  # Continue without activation if activation fails
+
+    return CreateResponse(pack_id=pack_id, dim=D, k=len(names), names=names)
+
+
 @router.post("/build", response_model=BuildResponse, status_code=status.HTTP_201_CREATED)
 def build_axis_pack(req: BuildRequest) -> BuildResponse:
     # Ensure registry
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
 
@@ -61,11 +329,11 @@ def build_axis_pack(req: BuildRequest) -> BuildResponse:
         raise HTTPException(status_code=400, detail=f"Axis build failed: {e}")
 
     # Save artifacts
-    artifacts_dir = Path(DEFAULT_ARTIFACTS_DIR)
+    artifacts_dir = Path(get_artifacts_dir())
     artifacts_dir.mkdir(parents=True, exist_ok=True)
 
     # Temporary npz path to compute hash first
-    temp_npz = artifacts_dir / "axis_pack:temp_build.npz"
+    temp_npz = artifacts_dir / "axis_pack_temp_build.npz"
     np.savez_compressed(
         temp_npz,
         Q=axis_pack.Q,
@@ -83,9 +351,9 @@ def build_axis_pack(req: BuildRequest) -> BuildResponse:
         ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         pack_id = f"ap_{ts}_{pack_hash[:8]}"
 
-    # Final paths
-    npz_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
-    meta_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
+    # Final paths (Windows-safe)
+    npz_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
+    meta_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
 
     # Move temp to final
     npz_path.write_bytes(npz_bytes)
@@ -154,20 +422,35 @@ class ActivateResponse(BaseModel):
 
 @router.post("/{pack_id}/activate", response_model=ActivateResponse)
 def activate_pack(pack_id: str) -> ActivateResponse:
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
     try:
         lp = reg.activate(pack_id)
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Pack not found")
+        # Debug: Check if files exist with both naming conventions
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
+        artifacts_dir = get_artifacts_dir()
+        detail = f"Pack not found: {pack_id}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=404, detail=detail)
     except ValueError as e:
         # Dimension or orthonormality mismatch
         raise HTTPException(status_code=409, detail=str(e))
+    except Exception as e:
+        # Debug: Catch any other exceptions during activation
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
+        artifacts_dir = get_artifacts_dir()
+        detail = f"Pack activate error: {pack_id}. Error: {e}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=500, detail=detail)
     return ActivateResponse(active={"pack_id": lp["pack_id"], "dim": lp["D"], "k": lp["k"], "pack_hash": lp["hash"]})
 
 
@@ -182,17 +465,32 @@ class GetResponse(BaseModel):
 
 @router.get("/{pack_id}", response_model=GetResponse)
 def get_pack(pack_id: str) -> GetResponse:
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
     try:
         lp = reg.load(pack_id)
     except FileNotFoundError:
-        raise HTTPException(status_code=404, detail="Pack not found")
+        # Debug: Check if files exist with both naming conventions
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
+        artifacts_dir = get_artifacts_dir()
+        detail = f"Pack not found: {pack_id}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=404, detail=detail)
+    except Exception as e:
+        # Debug: Catch any other exceptions during loading
+        npz_path = _find_npz_path(pack_id)
+        meta_path = _find_meta_path(pack_id)
+        artifacts_dir = get_artifacts_dir()
+        detail = f"Pack load error: {pack_id}. Error: {e}. NPZ exists: {npz_path.exists()}, Meta exists: {meta_path.exists()}, Artifacts dir: {artifacts_dir}"
+        raise HTTPException(status_code=500, detail=detail)
     return GetResponse(
         pack_id=lp["pack_id"],
         dim=lp["D"],
@@ -218,11 +516,14 @@ def export_pack(pack_id: str) -> ExportResponse:
 
     Note: Large payloads; intended for dev/test only.
     """
+    global REGISTRY
     reg = REGISTRY
     if reg is None:
         try:
             enc = get_default_encoder()
-            reg = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension())
+            artifacts_dir = get_artifacts_dir()
+            REGISTRY = init_registry(encoder_dim=enc._model.get_sentence_embedding_dimension(), artifacts_dir=artifacts_dir)
+            reg = REGISTRY
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Registry init failed: {e}")
     try:
@@ -237,3 +538,29 @@ def export_pack(pack_id: str) -> ExportResponse:
         beta=lp["beta"].tolist(),
         weights=lp["weights"].tolist(),
     )
+
+
+class ListItem(BaseModel):
+    id: str
+    names: List[str]
+    k: int
+
+
+class ListResponse(BaseModel):
+    items: List[ListItem]
+
+
+@router.get("", response_model=ListResponse)
+def list_axis_packs() -> ListResponse:
+    """List available axis packs stored under data/axes."""
+    data_axes_dir = Path("data/axes")
+    data_axes_dir.mkdir(parents=True, exist_ok=True)
+    items: List[ListItem] = []
+    for p in sorted(data_axes_dir.glob("*.json")):
+        try:
+            ap = AxisPack.load(p)
+            items.append(ListItem(id=p.stem, names=list(ap.names), k=int(ap.k)))
+        except Exception:
+            # Skip invalid packs
+            continue
+    return ListResponse(items=items)

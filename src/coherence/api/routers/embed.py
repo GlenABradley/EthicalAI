@@ -27,6 +27,10 @@ class EmbedResponse(BaseModel):
 
 @router.post("/embed", response_model=EmbedResponse)
 def embed(req: EmbedRequest) -> EmbedResponse:
+    # Validate input
+    if not req.texts:
+        raise HTTPException(status_code=422, detail="texts cannot be empty")
+    
     try:
         enc = get_default_encoder(
             name=req.encoder_name,

@@ -37,9 +37,10 @@ class CreateAxisPack(BaseModel):
 class AnalyzeText(BaseModel):
     """Analyze text request payload."""
 
-    axis_pack_id: str
-    texts: List[str]
-    options: Dict[str, object] = {}
+    axis_pack_id: Optional[str] = None
+    texts: Optional[List[str]] = None
+    text: Optional[str] = None
+    options: Dict[str, object] = Field(default_factory=dict)
 
 
 class AxialVectorsModel(BaseModel):

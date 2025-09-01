@@ -1,0 +1,2211 @@
+
+> ethicalai-ui@0.1.0 test
+> vitest run --passWithNoTests
+
+
+[1m[46m RUN [49m[22m [36mv3.2.4 [39m[90mC:/Users/glen4/Code/EthicalAI2/EthicalAI/ui[39m
+      [2mCoverage enabled with [22m[33mv8[39m
+
+ [32mΓ£ô[39m src/__tests__/simple.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32mΓ£ô[39m src/__tests__/smoke.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32mΓ£ô[39m src/__tests__/api.spec.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32mΓ£ô[39m src/__tests__/basic.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 2[2mms[22m[39m
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2mhealth[2m > [22m[2mshould check API health
+[22m[39mMSW intercepted: GET http://localhost:8000/health/ready
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2mhealth[2m > [22m[2mshould check API health
+[22m[39mMSW handled: GET http://localhost:8000/health/ready
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2maxes[2m > [22m[2mshould build axes
+[22m[39mMSW intercepted: POST http://localhost:8000/v1/axes/build
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2maxes[2m > [22m[2mshould build axes
+[22m[39mMSW handled: POST http://localhost:8000/v1/axes/build
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2maxes[2m > [22m[2mshould activate axes
+[22m[39mMSW intercepted: POST http://localhost:8000/v1/axes/activate?pack_id=test-pack
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2maxes[2m > [22m[2mshould activate axes
+[22m[39mMSW handled: POST http://localhost:8000/v1/axes/activate?pack_id=test-pack
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2maxes[2m > [22m[2mshould get active axes
+[22m[39mMSW intercepted: GET http://localhost:8000/v1/axes/active
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2maxes[2m > [22m[2mshould get active axes
+[22m[39mMSW handled: GET http://localhost:8000/v1/axes/active
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2mevalText[2m > [22m[2mshould evaluate text
+[22m[39mMSW intercepted: POST http://localhost:8000/v1/eval/text
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2mevalText[2m > [22m[2mshould evaluate text
+[22m[39mMSW handled: POST http://localhost:8000/v1/eval/text
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2mrespond[2m > [22m[2mshould get a response
+[22m[39mMSW intercepted: POST http://localhost:8000/v1/interaction/respond
+
+[90mstdout[2m | src/__tests__/api.test.ts[2m > [22m[2mAPI Client[2m > [22m[2mrespond[2m > [22m[2mshould get a response
+[22m[39mMSW handled: POST http://localhost:8000/v1/interaction/respond
+
+ [32mΓ£ô[39m src/__tests__/api.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 35[2mms[22m[39m
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > App Component Integration > should render the main application
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > App Component Integration > should handle API connectivity
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > App Component Integration > should handle API connectivity
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should handle text input and trigger analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ [32mΓ£ô[39m src/__tests__/App.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 53[2mms[22m[39m
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should display analysis results
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should display analysis results
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should display analysis results
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should display analysis results
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should display analysis results
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Text Input and Analysis Workflow > should display analysis results
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Real-time Feedback > should provide real-time feedback as user types
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should handle vector visualization data
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Visualization Components > should update visualizations based on analysis
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Error Handling > should handle network connectivity issues
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Performance and Responsiveness > should handle large text inputs
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Performance and Responsiveness > should provide loading states for long operations
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Performance and Responsiveness
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Performance and Responsiveness
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility > should be accessible to screen readers
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility > should be accessible to screen readers
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility > should be accessible to screen readers
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility > should support keyboard navigation
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility > should support keyboard navigation
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility > should support keyboard navigation
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Accessibility
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should maintain consistent data flow from input to output
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should maintain consistent data flow from input to output
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should maintain consistent data flow from input to output
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should maintain consistent data flow from input to output
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should maintain consistent data flow from input to output
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should handle multiple concurrent analyses
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should handle multiple concurrent analyses
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should handle multiple concurrent analyses
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should handle multiple concurrent analyses
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration > should handle multiple concurrent analyses
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > EthicalAI Frontend Integration Tests > Data Flow Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ [32mΓ£ô[39m src/__tests__/components/DecisionProof.test.tsx [2m([22m[2m4 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > Interaction Page Integration > should integrate all interaction features
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/__tests__/comprehensive-integration.test.tsx > Component-Specific Integration Tests > API Integration Layer > should handle all API endpoints correctly
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/health/ready
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+[MSW] Warning: intercepted a request without a matching request handler:
+
+  ΓÇó GET http://localhost:8000/v1/axes/active
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ [32mΓ£ô[39m src/__tests__/comprehensive-integration.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 414[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+[2m      Tests [22m [1m[32m33 passed[39m[22m[90m (33)[39m
+[2m   Start at [22m 17:02:32
+[2m   Duration [22m 1.76s[2m (transform 313ms, setup 754ms, collect 1.30s, tests 547ms, environment 4.56s, prepare 920ms)[22m
+
+[34m % [39m[2mCoverage report from [22m[33mv8[39m
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   43.79 |    56.36 |   51.85 |   43.79 |                   
+ ui                |       0 |       10 |      10 |       0 |                   
+  ...ess.config.ts |       0 |        0 |       0 |       0 | 1-15              
+  ...ght.config.ts |       0 |        0 |       0 |       0 | 1-57              
+  simple-test.js   |       0 |        0 |       0 |       0 | 1-6               
+  test-node.js     |       0 |        0 |       0 |       0 | 1-6               
+  test-simple.js   |       0 |        0 |       0 |       0 | 1-7               
+  test-vitest.js   |       0 |        0 |       0 |       0 | 1-6               
+  test.js          |       0 |        0 |       0 |       0 | 1-6               
+  vite.config.ts   |       0 |        0 |       0 |       0 | 1-13              
+  vitest.config.js |       0 |        0 |       0 |       0 | 1-9               
+  vitest.config.ts |       0 |      100 |     100 |       0 | 4-37              
+ ui/src            |   90.24 |     62.5 |   66.66 |   90.24 |                   
+  App.tsx          |     100 |    57.14 |      50 |     100 | 36-38             
+  main.tsx         |       0 |      100 |     100 |       0 | 2-5               
+ ui/src/__mocks__  |     100 |    85.71 |     100 |     100 |                   
+  server.ts        |     100 |    85.71 |     100 |     100 | 66                
+ ui/src/__tests__  |     100 |      100 |     100 |     100 |                   
+  test-utils.tsx   |     100 |      100 |     100 |     100 |                   
+ ui/src/components |     100 |       40 |     100 |     100 |                   
+  ...sionProof.tsx |     100 |       40 |     100 |     100 | 3-10,27-28        
+ ui/src/lib        |     100 |       90 |     100 |     100 |                   
+  api.ts           |     100 |       90 |     100 |     100 | 8                 
+ ui/src/pages      |   23.12 |       50 |      25 |   23.12 |                   
+  Analyze.tsx      |   10.34 |      100 |       0 |   10.34 | 5-31              
+  Axes.tsx         |    3.77 |      100 |       0 |    3.77 | 4-61              
+  Interaction.tsx  |   10.34 |      100 |       0 |   10.34 | 5-31              
+  Status.tsx       |   72.22 |       50 |     100 |   72.22 | 14,26-28,31-36    
+-------------------|---------|----------|---------|---------|-------------------

@@ -1,0 +1,98 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-8.2.0, pluggy-1.6.0 -- C:\Users\glen4\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\glen4\Code\EthicalAI2\EthicalAI
+configfile: pytest.ini
+plugins: anyio-4.10.0, asyncio-1.1.0, cov-6.2.1
+asyncio: mode=Mode.AUTO, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collecting ... collected 1 item
+
+tests/test_api.py::test_health_ready 
+------------------------------- live log setup --------------------------------
+INFO     sentence_transformers.SentenceTransformer:SentenceTransformer.py:227 Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+PASSED                                                                   [100%]
+
+=============================== tests coverage ================================
+______________ coverage: platform win32, python 3.12.10-final-0 _______________
+
+Name                                            Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------
+src\coherence\__init__.py                           1      0   100%
+src\coherence\agent\__init__.py                     0      0   100%
+src\coherence\agent\query_map.py                   20     10    50%   17, 29-38
+src\coherence\agent\tools.py                       28     28     0%   1-57
+src\coherence\api\__init__.py                       0      0   100%
+src\coherence\api\axis_registry.py                113     63    44%   42-46, 49, 52, 55-56, 59-70, 73-82, 85-88, 96-128, 132-136, 142-145
+src\coherence\api\main.py                          69      4    94%   83-84, 93-94
+src\coherence\api\models.py                       100      0   100%
+src\coherence\api\routers\__init__.py               0      0   100%
+src\coherence\api\routers\analyze.py               85     72    15%   25, 30-148
+src\coherence\api\routers\axes.py                  59     35    41%   36-44, 50-54, 70-105
+src\coherence\api\routers\embed.py                 30     11    63%   31-48
+src\coherence\api\routers\health.py                38     10    74%   20-21, 26-30, 37-38, 41
+src\coherence\api\routers\index.py                 12      6    50%   16-21
+src\coherence\api\routers\pipeline.py             112     64    43%   28-37, 75, 87-175
+src\coherence\api\routers\resonance.py             95     61    36%   27-36, 59-147
+src\coherence\api\routers\search.py                91     79    13%   24-38, 47-148
+src\coherence\api\routers\v1_axes.py              212    152    28%   56-161, 167-268, 283-297, 311-322, 347-358
+src\coherence\api\routers\v1_frames.py            196    135    31%   27-32, 87-94, 97-111, 115-123, 130-228, 239-244, 249-252, 258-288
+src\coherence\api\routers\whatif.py                 7      1    86%   15
+src\coherence\axis\__init__.py                      0      0   100%
+src\coherence\axis\advanced_builder.py            385    362     6%   34-43, 56-167, 183-190, 208-275, 308-315, 324-343, 366-624, 642-691, 708-728, 747-748
+src\coherence\axis\builder.py                      53     41    23%   26-30, 35-36, 40-43, 58-81, 106-115
+src\coherence\axis\choquet.py                      22     16    27%   29-46
+src\coherence\axis\pack.py                         87     56    36%   26-32, 36-44, 71, 75, 78-102, 105-106, 118-127, 130-133, 137-140
+src\coherence\cfg\loader.py                        10      0   100%
+src\coherence\cfg\logging.py                       12      1    92%   21
+src\coherence\coherence\diffusion.py               27     20    26%   17-19, 28-39, 54-61
+src\coherence\coherence\skipmesh.py                27     18    33%   19-23, 28-32, 47-54
+src\coherence\coherence\spans.py                   24     15    38%   21-22, 27-34, 39-44
+src\coherence\coherence\substrate.py               23     16    30%   20-28, 33-37, 42-44
+src\coherence\encoders\__init__.py                  0      0   100%
+src\coherence\encoders\registry.py                 14      8    43%   20-28
+src\coherence\encoders\text_sbert.py               87     35    60%   52, 70-74, 99-135
+src\coherence\frames\__init__.py                    0      0   100%
+src\coherence\frames\detectors\__init__.py          0      0   100%
+src\coherence\frames\detectors\causal.py            0      0   100%
+src\coherence\frames\detectors\conditional.py      15     10    33%   24-33
+src\coherence\frames\detectors\evidence.py         15     10    33%   24-34
+src\coherence\frames\detectors\modality.py          0      0   100%
+src\coherence\frames\detectors\negation.py          0      0   100%
+src\coherence\frames\detectors\power.py             0      0   100%
+src\coherence\frames\detectors\quantifiers.py       0      0   100%
+src\coherence\frames\detectors\speech_act.py        0      0   100%
+src\coherence\frames\detectors\temporal.py          0      0   100%
+src\coherence\frames\logic\__init__.py              0      0   100%
+src\coherence\frames\logic\eval.py                 25     25     0%   1-40
+src\coherence\frames\logic\lf_builder.py            0      0   100%
+src\coherence\frames\logic\normalize.py             0      0   100%
+src\coherence\frames\schema.py                     21      0   100%
+src\coherence\frames\srl_lite.py                   82     69    16%   21-28, 32-34, 38-46, 67-133
+src\coherence\frames\syntax.py                      0      0   100%
+src\coherence\frames\vectorize.py                  20     13    35%   18-21, 33-42
+src\coherence\index\__init__.py                     0      0   100%
+src\coherence\index\ann.py                         52     38    27%   16, 20, 24-46, 50-57, 61-74
+src\coherence\index\pipeline.py                    83     83     0%   1-131
+src\coherence\index\store.py                       51     51     0%   1-64
+src\coherence\memory\store.py                      87     71    18%   22-31, 34-85, 89-90, 113-179, 182-210, 214-240, 245
+src\coherence\metrics\resonance.py                 38     27    29%   29-34, 42-49, 58-70, 78-80
+src\coherence\pipeline\orchestrator.py             47     22    53%   54-105
+src\coherence\pipeline\scoring.py                  54     40    26%   25-29, 49-58, 66-71, 75-82, 95-102, 110-113
+src\ethicalai\__init__.py                           0      0   100%
+src\ethicalai\api\axes.py                          60     36    40%   27-65, 69-86, 90-91
+src\ethicalai\api\eval.py                          31     11    65%   25-41
+src\ethicalai\api\interaction.py                   41     18    56%   28-53
+src\ethicalai\axes\build.py                        14      8    43%   8-15
+src\ethicalai\axes\calibrate.py                   121    106    12%   10-30, 35-49, 52-54, 57-61, 67-75, 78-87, 91-118, 121-155, 158
+src\ethicalai\axes\utils.py                        12      9    25%   5-13
+src\ethicalai\constitution\decoding.py             37     27    27%   11-16, 21-38, 43-54
+src\ethicalai\encoders.py                          27     18    33%   9, 11-15, 17-19, 21-23, 29-35
+src\ethicalai\eval\minspan.py                      11      7    36%   8-14
+src\ethicalai\eval\spans.py                        24     17    29%   8, 11-17, 21-29
+src\ethicalai\interaction\explain.py               10      6    40%   5-9, 16
+src\ethicalai\interaction\generate.py               6      1    83%   8
+src\ethicalai\interaction\policy.py                21      8    62%   21, 24-30
+src\ethicalai\types.py                             30      0   100%
+-----------------------------------------------------------------------------
+TOTAL                                            3074   2050    33%
+======================== 1 passed in 89.88s (0:01:29) =========================
