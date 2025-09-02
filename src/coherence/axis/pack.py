@@ -1,17 +1,24 @@
-from __future__ import annotations
+"""AxisPack dataclass and JSON IO for semantic axis operations.
 
-"""AxisPack dataclass and JSON IO.
+This module defines the core AxisPack dataclass which represents a multi-dimensional
+semantic space for ethical evaluation and text analysis. An AxisPack contains:
 
-Defines the semantic axis basis and parameters.
+- Orthonormal projection matrix Q for mapping text embeddings to axis space
+- Axis names and metadata for interpretability
+- Calibration parameters (lambda, beta) for scoring
+- Optional Choquet integral weights for non-linear aggregation
+- Optional veto thresholds for hard constraints
 
-Shapes
-- Q: (d, k) orthonormal columns, i.e., Q.T @ Q = I_k
-- lambda_/beta/weights: (k,)
+Shapes:
+- Q: (d, k) orthonormal columns where Q.T @ Q = I_k
+- lambda_/beta/weights: (k,) calibration and weighting vectors
 - mu: mapping from frozenset[int] -> float for Choquet capacity (optional)
 
-Determinism
-- Pure functions; IO is deterministic given inputs.
+Determinism:
+- All operations are pure functions with deterministic I/O
+- Reproducible results given the same inputs and random seeds
 """
+from __future__ import annotations
 
 from dataclasses import dataclass, asdict
 from pathlib import Path
@@ -23,6 +30,14 @@ import numpy as np
 
 
 def _mu_to_json(mu: Optional[Dict[FrozenSet[int], float]]) -> Dict[str, float]:
+    """Convert Choquet capacity from frozenset keys to JSON-serializable format.
+    
+    Args:
+        mu: Choquet capacity mapping from axis subsets to weights.
+        
+    Returns:
+        JSON-serializable dict with comma-separated string keys.
+    """
     if not mu:
         return {}
     out: Dict[str, float] = {}
@@ -33,6 +48,14 @@ def _mu_to_json(mu: Optional[Dict[FrozenSet[int], float]]) -> Dict[str, float]:
 
 
 def _mu_from_json(d: Optional[Dict[str, float]]) -> Dict[FrozenSet[int], float]:
+    """Convert JSON Choquet capacity to frozenset-keyed format.
+    
+    Args:
+        d: JSON dict with comma-separated string keys.
+        
+    Returns:
+        Choquet capacity mapping with frozenset keys.
+    """
     if not d:
         return {}
     out: dict[frozenset[int], float] = {}
@@ -46,7 +69,14 @@ def _mu_from_json(d: Optional[Dict[str, float]]) -> Dict[FrozenSet[int], float]:
 
 @dataclass
 class AxisPack:
-    """Axis pack container.
+    """Container for semantic axis pack data and operations.
+    
+    An AxisPack represents a learned semantic space with multiple ethical
+    or conceptual dimensions. It provides methods for:
+    - Projecting text embeddings onto semantic axes
+    - Computing axis scores with calibration
+    - Aggregating scores across dimensions
+    - Detecting veto conditions
 
     Attributes
     - names: list of axis names (len k)

@@ -1,3 +1,17 @@
+"""Version 1 API router for axis pack operations.
+
+This module provides the core API endpoints for creating, managing, and
+using axis packs for ethical evaluation and semantic analysis. It handles:
+
+- Axis pack creation from seed texts
+- Advanced axis pack building with custom configurations
+- Text analysis and ethical scoring
+- Axis pack persistence and retrieval
+- Registry management for axis pack metadata
+
+The module integrates with the SentenceTransformer encoder for text embedding
+and uses the axis pack system for multi-dimensional ethical evaluation.
+"""
 from __future__ import annotations
 
 import json
@@ -18,21 +32,49 @@ from coherence.api.models import CreateAxisPack
 from coherence.axis.builder import build_axis_pack_from_seeds
 from coherence.axis.pack import AxisPack
 
+# Create the API router for axis operations
 router = APIRouter()
 
+# Schema version for axis pack format compatibility
 SCHEMA_VERSION = "axis-pack/1.1"
+
 def get_artifacts_dir() -> str:
+    """Get the directory path for storing axis pack artifacts.
+    
+    Returns:
+        str: Path to artifacts directory from environment or default 'artifacts'.
+    """
     return os.getenv("COHERENCE_ARTIFACTS_DIR", "artifacts")
 
 def _find_npz_path(pack_id: str) -> Path:
-    """Find NPZ file with either colon or underscore naming convention."""
+    """Find NPZ file with either colon or underscore naming convention.
+    
+    Supports both legacy (colon) and new (underscore) naming formats
+    for backward compatibility.
+    
+    Args:
+        pack_id: The axis pack identifier.
+        
+    Returns:
+        Path: Path to the NPZ file.
+    """
     artifacts_dir = Path(get_artifacts_dir())
     colon_path = artifacts_dir / f"axis_pack:{pack_id}.npz"
     underscore_path = artifacts_dir / f"axis_pack_{pack_id}.npz"
     return colon_path if colon_path.exists() else underscore_path
 
 def _find_meta_path(pack_id: str) -> Path:
-    """Find meta file with either colon or underscore naming convention."""
+    """Find metadata file with either colon or underscore naming convention.
+    
+    Supports both legacy (colon) and new (underscore) naming formats
+    for backward compatibility.
+    
+    Args:
+        pack_id: The axis pack identifier.
+        
+    Returns:
+        Path: Path to the metadata JSON file.
+    """
     artifacts_dir = Path(get_artifacts_dir())
     colon_path = artifacts_dir / f"axis_pack:{pack_id}.meta.json"
     underscore_path = artifacts_dir / f"axis_pack_{pack_id}.meta.json"
@@ -40,14 +82,25 @@ def _find_meta_path(pack_id: str) -> Path:
 
 
 class BuildRequest(BaseModel):
-    json_paths: Optional[List[str]] = Field(None, description="Paths to axis JSON configs")
-    override: Optional[Dict] = Field(None, description="Builder overrides")
-    pack_id: Optional[str] = Field(None, description="Optional custom pack id")
+    """Request model for building axis packs from configuration files."""
+    json_paths: Optional[List[str]] = Field(
+        None, 
+        description="Paths to axis JSON configuration files"
+    )
+    override: Optional[Dict] = Field(
+        None, 
+        description="Builder configuration overrides"
+    )
+    pack_id: Optional[str] = Field(
+        None, 
+        description="Optional custom pack identifier"
+    )
 
 
 class BuildResponse(BaseModel):
-    pack_id: str
-    dim: int
+    """Response model for axis pack build operations."""
+    pack_id: str  # Unique identifier for the created pack
+    dim: int      # Number of dimensions (axes) in the pack
     k: int
     names: List[str]
     pack_hash: str

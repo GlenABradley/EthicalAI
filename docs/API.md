@@ -1,52 +1,62 @@
 # EthicalAI API Documentation
 
-This document provides comprehensive documentation for the EthicalAI REST API, including all available endpoints, request/response schemas, and usage examples. The API is built with FastAPI and provides tools for ethical text analysis, embedding generation, and axis management.
+Comprehensive documentation for the EthicalAI REST API, which provides semantic resonance analysis, ethical evaluation with veto span detection, axis pack management, and frame-based semantic analysis. The API is built on FastAPI and integrates the Coherence semantic resonance engine with EthicalAI's ethical evaluation layer.
+
+## Architecture Overview
+
+The API consists of two main layers:
+
+1. **Coherence Layer**: Core semantic resonance engine providing embeddings, resonance analysis, pipeline processing, and frame management
+2. **EthicalAI Layer**: Ethical evaluation endpoints with veto span detection based on orthonormalized semantic axes
 
 ## Base URL
 
-All API endpoints are relative to the base URL of your deployment (e.g., `http://localhost:8080` for local development).
+All API endpoints are relative to the base URL of your deployment:
+
+- Local development: `http://localhost:8080`  
+- Production: Configure via `COHERENCE_API_HOST` and `COHERENCE_API_PORT`
 
 ## Authentication
 
-Most endpoints do not require authentication for local development. For production deployments, consider implementing API key authentication.
+Currently no authentication required for local development. Production deployments should implement API key authentication via middleware.
 
 ## Response Format
 
-All API responses follow a standard format:
+Standard JSON response format:
 
-- Successful responses (HTTP 2xx) return JSON with the requested data
-- Error responses (HTTP 4xx/5xx) include a JSON body with an `error` field containing details
+- **Success (2xx)**: JSON with requested data
+- **Client Error (4xx)**: JSON with `detail` field describing the error
+- **Server Error (5xx)**: JSON with `detail` field and stack trace in debug mode
 
-## Rate Limiting
+### Architecture Notes
 
-By default, the API enforces rate limiting to prevent abuse. The current limits are:
+## Environment Variables
 
-- 60 requests per minute per IP address for most endpoints
-- 10 requests per minute for resource-intensive operations
+- `COHERENCE_ENCODER_MODEL`: Embedding model (default: `all-MiniLM-L6-v2`)
+- `COHERENCE_ENCODER_DIM`: Embedding dimensions (default: 384)
+- `COHERENCE_ARTIFACTS_DIR`: Storage for axis packs (default: `artifacts/`)
+- `COHERENCE_API_CORS_ORIGINS`: CORS allowed origins (default: `["*"]`)
+- `COHERENCE_USE_TEST_ENCODER`: Use test encoder (default: `false`)
 
-## Versioning
+---
 
-The API uses URL versioning (e.g., `/v1/endpoint`). The current version is `v1`.
+## Core Endpoints
 
-## Health Check
+### Health Check
 
-### Check API Status
-
-```http
-GET /health/ready
-```
+**GET** `/health/ready`
 
 Returns the current status of the API and its components.
 
-#### Response
+**Response:**
 
 ```json
 {
   "status": "ok",
-  "encoder_model": "all-mpnet-base-v2",
-  "encoder_dim": 768,
+  "encoder_model": "all-MiniLM-L6-v2",
+  "encoder_dim": 384,
   "active_pack": {
-    "pack_id": "default",
+    "pack_id": "ap_20241231_abc123",
     "k": 5,
     "pack_hash": "a1b2c3d4",
     "schema_version": "1.0.0"
@@ -58,127 +68,93 @@ Returns the current status of the API and its components.
 }
 ```
 
-#### Fields
+**Status Codes:**
 
-- `status`: Current status of the API ("ok" when healthy)
-- `encoder_model`: Name of the current text embedding model
-- `encoder_dim`: Dimensionality of the embedding vectors
-- `active_pack`: Information about the currently loaded axis pack
-  - `pack_id`: Unique identifier for the axis pack
-  - `k`: Number of dimensions in the axis pack
-  - `pack_hash`: Hash of the axis pack contents
-  - `schema_version`: Version of the axis pack schema
-- `frames_db_present`: Whether the frames database is available
-- `frames_db_size_bytes`: Size of the frames database in bytes
-- `version`: API version
-- `uptime_seconds`: How long the API has been running
+- `200`: Service is healthy
+- `503`: One or more components are not ready
 
-#### Example Request
+### Root Info
 
-```bash
-curl -X GET "http://localhost:8080/health/ready" \
-  -H "Accept: application/json"
-```
+**GET** `/`
 
-#### Status Codes
+Returns basic API information.
 
-- `200 OK`: Service is healthy
-- `503 Service Unavailable`: One or more components are not ready
-
----
-
-## Text Embedding
-
-### Generate Embeddings
-
-```http
-POST /embed
-```
-
-Converts input texts into dense vector representations using the configured embedding model.
-
-#### Request Body
+**Response:**
 
 ```json
 {
-  "texts": ["Sample text to embed", "Another example text"],
-  "encoder_name": "all-mpnet-base-v2",
+  "name": "Coherence API",
+  "version": "1.0.0",
+  "docs": "/docs",
+  "openapi": "/openapi.json"
+}
+```
+
+---
+
+## Embedding Endpoints
+
+### Generate Embeddings
+
+**POST** `/embed`
+
+Converts text into dense vector representations using SentenceTransformer models.
+
+**Request Body:**
+
+```json
+{
+  "texts": ["Text to embed"],
+  "encoder_name": "all-MiniLM-L6-v2",
   "device": "auto",
   "normalize_input": true
 }
 ```
 
-##### Fields
+**Parameters:**
 
-- `texts` (required, array of strings): List of text strings to embed
-- `encoder_name` (optional, string): Name of the encoder model to use (default: "all-mpnet-base-v2")
-- `device` (optional, string): Device to run the model on ("cpu", "cuda", "mps", or "auto")
-- `normalize_input` (optional, boolean): Whether to normalize input text (default: true)
+- `texts` (required): Array of text strings to embed
+- `encoder_name` (optional): Model name (default: configured encoder)
+- `device` (optional): Device for computation ("cpu", "cuda", "mps", "auto")
+- `normalize_input` (optional): Normalize text before encoding (default: true)
 
-#### Response
+**Response:**
 
 ```json
 {
-  "embeddings": [
-    [0.1, 0.2, 0.3, ...],
-    [0.4, 0.5, 0.6, ...]
-  ],
-  "shape": [2, 768],
-  "model_name": "all-mpnet-base-v2",
-  "device": "cuda:0"
+  "embeddings": [[0.1, 0.2, ...]],
+  "shape": [1, 384],
+  "model_name": "all-MiniLM-L6-v2",
+  "device": "cpu"
 }
 ```
 
-##### Fields
+**Status Codes:**
 
-- `embeddings`: Array of embedding vectors, one for each input text
-- `shape`: Dimensions of the returned embeddings array [num_texts, embedding_dimension]
-- `model_name`: Name of the model used for embedding
-- `device`: Device where the computation was performed
-
-#### Example Request
-
-```bash
-curl -X POST "http://localhost:8080/embed" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "texts": ["AI should be transparent", "Ethical considerations are important"],
-    "device": "auto"
-  }'
-```
-
-#### Status Codes
-
-- `200 OK`: Successfully generated embeddings
-- `400 Bad Request`: Invalid input (e.g., empty texts array)
-- `422 Unprocessable Entity`: Validation error in request
-- `500 Internal Server Error`: Failed to load encoder or process request
-
-#### Rate Limit
-
-This endpoint is rate limited to 60 requests per minute per IP address.text
+- `200`: Success
+- `400`: Invalid input
+- `422`: Validation error
+- `500`: Encoder failure
 
 ---
 
-## Text Analysis
+## Semantic Resonance Analysis
 
-### Analyze Text Resonance
+### Analyze Resonance
 
-```http
-POST /resonance
-```
+**POST** `/resonance`
 
-Analyzes input texts against specified ethical dimensions (axes) and returns resonance scores.
+Analyzes text or vectors against semantic axes to compute resonance scores.
 
-#### Request Body
+**Request Body:**
 
 ```json
 {
-  "texts": ["Sample text to analyze", "Another example text"],
+  "texts": ["Sample text to analyze"],
   "axis_pack": {
-    "names": ["autonomy", "fairness", "transparency"],
-    "Q": [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]],
-    "lambda_": [1.0, 1.0, 1.0],
+    "names": ["autonomy", "fairness"],
+    "Q": [[0.1, 0.2, ...], [0.3, 0.4, ...]],
+    "lambda_": [1.0, 0.8],
     "beta": [0.0, 0.0, 0.0],
     "weights": [0.33, 0.33, 0.34],
     "meta": {
@@ -189,9 +165,9 @@ Analyzes input texts against specified ethical dimensions (axes) and returns res
 }
 ```
 
-##### Fields
+**Parameters:**
 
-- `texts` (required, array of strings): List of text strings to analyze
+- `texts` (required): List of text strings to analyze
 - `vectors` (optional, array of arrays of numbers): Pre-computed embedding vectors (mutually exclusive with `texts`)
 - `axis_pack` (optional, object): Inline axis pack definition
   - `names` (required, array of strings): Names of the ethical dimensions
@@ -204,27 +180,25 @@ Analyzes input texts against specified ethical dimensions (axes) and returns res
 - `pack_id` (optional, string): ID of a pre-defined axis pack to use
 - `return_intermediate` (optional, boolean): Whether to include intermediate calculations in the response
 
-#### Response
+**Response:**
 
 ```json
 {
-  "resonance_scores": [
-    [0.85, 0.72, 0.91],
-    [0.62, 0.78, 0.55]
-  ],
-  "texts": ["Sample text to analyze", "Another example text"],
-  "axis_names": ["autonomy", "fairness", "transparency"],
-  "intermediate": {
-    "embeddings": [[...]],
-    "projections": [[...]],
-    "scores": [...]
-  },
-  "model_name": "all-mpnet-base-v2",
-  "axis_pack_id": "inline_pack_123"
+  "results": [{
+    "text": "Text to analyze",
+    "embedding": [0.1, 0.2, ...],
+    "aligned_embedding": [0.15, 0.25, ...],
+    "projections": {
+      "autonomy": 0.78,
+      "fairness": 0.65
+    }
+  }],
+  "axis_pack_id": "ap_1756646151",
+  "encoder_model": "all-MiniLM-L6-v2"
 }
 ```
 
-##### Fields
+**Response Fields:**
 
 - `resonance_scores`: Array of score arrays, one per input text
 - `texts`: The input texts that were analyzed
@@ -236,751 +210,987 @@ Analyzes input texts against specified ethical dimensions (axes) and returns res
 - `model_name`: Name of the embedding model used
 - `axis_pack_id`: ID of the axis pack used for analysis
 
-#### Example Request
+**Status Codes:**
 
-```bash
-curl -X POST "http://localhost:8080/resonance" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "texts": ["AI systems should be transparent about their decision-making processes"],
-    "pack_id": "ethical_principles"
-  }'
+- `200`: Success
+- `400`: Invalid input
+- `422`: Validation error
+- `500`: Processing error
+
+### Pipeline Analysis
+
+**POST** `/pipeline`
+
+Executes a full semantic analysis pipeline on text, including encoding, alignment, and projection.
+
+**Request Body:**
+
+```json
+{
+  "texts": ["Text to analyze"],
+  "axis_pack_id": "ap_1756646151",
+  "return_embeddings": true
+}
 ```
 
-#### Status Codes
-
-- `200 OK`: Successfully analyzed text
-- `400 Bad Request`: Invalid input or missing required fields
-- `404 Not Found`: Specified axis pack not found
-- `422 Unprocessable Entity`: Validation error in request
-- `500 Internal Server Error`: Failed to process request
-
-#### Rate Limit
-
-This endpoint is rate limited to 30 requests per minute per IP address.
-  - `encoder_name`?: string
-  - `device`?: string
-  - `normalize_input`?: boolean
-- Response model: `ResonanceResponse`
-  - `scores`: List[float]
-  - `coords`?: List[List[float]]  // when `return_intermediate=true`
-  - `utilities`?: List[List[float]]  // when `return_intermediate=true`
-
-
-Behavior:
-
-- Axis selection priority: pack_id > inline axis_pack > active registry pack.
-- Validates `X.shape[1] == pack.Q.shape[0]`.
-
-
-Errors:
-
-- 400 Provide either vectors or texts; no pack available
-- 404 Pack not found
-- 422 Embedding dim mismatch; bad registry state
-- 500 Encoder/registry/compute failure
-
-
-Example:
-
-```text
-
-curl -sX POST <<<http://localhost:8000/resonance>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "texts": ["A fast green car."],
-    "pack_id": "ap_20240620_abcdef12",
-    "return_intermediate": true
-  }'
-
-```text
-
 ---
 
-## Pipeline Analyze (Detailed Frames/Spans)
+## Advanced Pipeline Analysis
 
-- Path: `/pipeline/analyze`
-- Method: POST
-- Router: `src/coherence/api/routers/pipeline.py`
-- Request model: `AnalyzeRequest`
-  - `vectors`?: List[List[float]]  // (n,d)
-  - `texts`?: List[str]
-  - `axis_pack`?: Inline AxisPackModel (see above)
-  - `pack_id`?: string
-  - `params`: PipelineParams
-    - `max_span_len`: int = 5
-    - `max_skip`: int = 2
-    - `diffusion_tau`?: float
-    - `debug_frames`: bool = false
-    - `return_role_projections`: bool = false
-    - `role_mode`: "lr" | "agent_patient" = "lr"
-    - `detect_evidence`: bool = false
-    - `detect_condition`: bool = false
-  - `encoder_name`?: string
-  - `device`?: string
-  - `normalize_input`?: boolean
-- Response model: `AnalyzeResponse` (pipeline)
-  - `tokens`: Dict[str, Any]
-  - `spans`: Dict[str, Any]
-  - `frames`: List[Dict[str, Any]]
-  - `frame_vectors`: List[List[float]]
-  - `frame_role_coords`?: List[Dict[str, Any]]
-  - `frame_coords`?: List[Dict[str, Any]]
+### Analyze with Frames and Spans
 
+**POST** `/pipeline/analyze`
 
-Behavior:
+Performs detailed semantic analysis including span detection and frame extraction.
 
-- Axis selection: `pack_id` | `axis_pack` | active
-- Limits total text chars by `api.max_doc_chars` (default 100000).
-- Validates `d` vs pack `Q.shape[0]`.
+**Request Body:**
 
+```json
+{
+  "texts": ["Alice met Bob in Paris"],
+  "pack_id": "ap_1756646151",
+  "params": {
+    "max_span_len": 5,
+    "max_skip": 2,
+    "return_role_projections": true
+  }
+}
+```
 
-Errors:
+**Parameters:**
 
-- 400 Missing inputs; payload too large; no pack
-- 404 Pack not found
-- 422 Dim mismatch
-- 500 Encoder/pipeline failure
+- `texts` or `vectors`: Input text or pre-computed embeddings
+- `pack_id` or `axis_pack`: Axis pack specification
+- `params`:
+  - `max_span_len`: Maximum span length (default: 5)
+  - `max_skip`: Maximum word skip (default: 2)
+  - `diffusion_tau`: Diffusion parameter
+  - `debug_frames`: Include debug info (default: false)
+  - `return_role_projections`: Return role projections (default: false)
+  - `role_mode`: "lr" or "agent_patient" (default: "lr")
+  - `detect_evidence`: Detect evidence spans (default: false)
+  - `detect_condition`: Detect conditional spans (default: false)
 
+**Response:**
 
-Example:
-
-```text
-
-curl -sX POST <<<http://localhost:8000/pipeline/analyze>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "texts": ["Alice met Bob in Paris yesterday."],
-    "pack_id": "ap_20240620_abcdef12",
-    "params": {
-      "max_span_len": 5,
-      "return_role_projections": true
+```json
+{
+  "tokens": {
+    "text": "Alice met Bob in Paris",
+    "tokens": ["Alice", "met", "Bob", "in", "Paris"]
+  },
+  "spans": {
+    "detected": [
+      {"start": 0, "end": 2, "text": "Alice met", "score": 0.85}
+    ]
+  },
+  "frames": [
+    {
+      "type": "meeting",
+      "participants": ["Alice", "Bob"],
+      "location": "Paris"
     }
-  }'
-
-```text
+  ],
+  "frame_vectors": [[0.1, 0.2, ...]],
+  "frame_role_coords": {
+    "agent": [0.3, 0.4, ...],
+    "patient": [0.5, 0.6, ...]
+  }
+}
+```
 
 ---
 
-## v1 Axes (Artifact-backed)
-
-- Prefix: `/v1/axes`
-- Router: `src/coherence/api/routers/v1_axes.py`
-
+## Axis Pack Management
 
 ### Build Axis Pack
 
-- Path: `/v1/axes/build`
-- Method: POST
-- Request model: `BuildRequest`
-  - `json_paths`?: List[str]  // required non-empty
-  - `override`?: Dict  // advanced builder kwargs
-  - `pack_id`?: string
-- Response model: `BuildResponse`
-  - `pack_id`: string
-  - `dim`: int
-  - `k`: int
-  - `names`: List[str]
-  - `pack_hash`: string
+**POST** `/v1/axes/build`
 
+Builds a new axis pack from JSON configuration files.
 
-Behavior:
+**Request Body:**
 
-- Uses `build_advanced_axis_pack` with default encoder.
-- Saves:
-  - `{ARTIFACTS}/axis_pack:{pack_id}.npz`
-  - `{ARTIFACTS}/axis_pack:{pack_id}.meta.json`
-- Default `pack_id` = `ap_{UTC_YYYYMMDD_HHMMSS}_{hash8}`
-- Activates new pack.
+```json
+{
+  "json_paths": ["configs/axis_packs/sample.json"],
+  "override": {"orthogonalize": true},
+  "pack_id": "custom_pack_id"
+}
+```
 
+**Response:**
 
-Errors:
-
-- 400 Missing json_paths; build failed
-- 500 Registry init failed
-
-
-Example:
-
-```text
-
-curl -sX POST <<<http://localhost:8000/v1/axes/build>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "json_paths": ["configs/axis_packs/sample.json"],
-    "override": {"orthogonalize": true}
-  }'
-
-```text
+```json
+{
+  "pack_id": "ap_1756646151",
+  "dim": 384,
+  "k": 5,
+  "names": ["autonomy", "fairness", "non_aggression", "transparency", "beneficence"],
+  "pack_hash": "a1b2c3d4"
+}
+```
 
 ### Activate Axis Pack
 
-- Path: `/v1/axes/{pack_id}/activate`
-- Method: POST
-- Response model: `ActivateResponse`
-  - `active`: { `pack_id`: string, `dim`: int, `k`: int, `pack_hash`: string }
-
-
-Errors:
-
-- 404 Pack not found
-- 409 Dimension/orthonormality mismatch
-- 500 Registry init failed
-
-
-Example:
-
-```text
-
-curl -sX POST <<<http://localhost:8000/v1/axes/ap_20240620_abcdef12/activate>>>
-
-```text
-
-### Get Axis Pack Summary
-
-- Path: `/v1/axes/{pack_id}`
-- Method: GET
-- Response model: `GetResponse`
-  - `pack_id`: string
-  - `dim`: int
-  - `k`: int
-  - `names`: List[str]
-  - `meta`: Dict[str, Any]
-  - `pack_hash`: string
-
-
-Errors:
-
-- 404 Pack not found
-- 500 Registry init failed
-
-
-Example:
-
-```text
-
-curl -s <<<http://localhost:8000/v1/axes/ap_20240620_abcdef12>>>
-
-```text
-
-### Export Full Axis Pack
-
-- Path: `/v1/axes/{pack_id}/export`
-- Method: GET
-- Response model: `ExportResponse`
-  - `pack_id`: string
-  - `names`: List[str]
-  - `Q`: List[List[float]]
-  - `lambda_`: List[float]
-  - `beta`: List[float]
-  - `weights`: List[float]
-
-
-Notes:
-
-- Large payloads intended for dev/test.
-
-
-Errors:
-
-- 404 Pack not found
-- 500 Registry init failed
-
-
-Example:
-
-```text
-
-curl -s <<<http://localhost:8000/v1/axes/ap_20240620_abcdef12/export>>>
-
-```text
-
----
-
-## v1 Frames (SQLite-backed)
-
-- Prefix: `/v1/frames`
-- Router: `src/coherence/api/routers/v1_frames.py`
-
-
-### Index Frames
-
-- Path: `/v1/frames/index`
-- Method: POST
-- Request model: `IndexRequest`
-  - `doc_id`: string
-  - `pack_id`?: string  // preferred to derive k,d
-  - `d`?: int           // required when deriving k from coords without pack
-  - `frames`: List[FrameItem]
-    - `FrameItem`:
-      - `id`: string
-      - `predicate`?: List[int]  // [start, end]
-      - `roles`?: Dict[str, List[int]]  // { roleName: [start,end] }
-      - `coords`?: List[float]    // length k
-      - `role_coords`?: Dict[str, List[float]] // per-role length k
-      - `meta`?: Dict[str, Any]
-  - `frame_vectors`?: List[List[float]]
-- Response model: `IndexResponse`
-  - `ingested`: int
-  - `k`: int
-
-
-Behavior:
-
-- Resolves k,d in priority:
-  - pack_id -> active registry -> derive from coords (needs d provided)
-- Validates coords and role_coords lengths and finiteness.
-
-
-Errors:
-
-- 400 pack_id not found
-- 422 cannot resolve k; missing d when deriving; length mismatches; invalid numbers
-
-
-Example:
-
-```text
-
-curl -sX POST <<<http://localhost:8000/v1/frames/index>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "doc_id": "doc-001",
-    "pack_id": "ap_20240620_abcdef12",
-    "frames": [
-      {
-        "id": "f1",
-        "predicate": [0, 2],
-        "roles": {"agent": [0,1], "patient": [2,3]},
-        "coords": [0.2, 0.8, 0.1],
-        "role_coords": {"agent":[0.1,0.6,0.0], "patient":[0.2,0.7,0.1]},
-        "meta": {"note":"example"}
-      }
-    ]
-  }'
-
-```text
-
-### Search Frames
-
-- Path: `/v1/frames/search`
-- Method: GET
-- Query params:
-  - `axis`: string  // axis name or index
-  - `min`: float
-  - `max`: float
-  - `limit`: int (1..1000, default 100)
-  - `pack_id`?: string
-- Response model: `SearchResponse`
-  - `items`: List<{ `frame_id`: string, `doc_id`: string, `axis_idx`: int, `coord`: float, `predicate`: List[int], `pack_id`: string, `pack_hash`: string }>
-
-
-Example:
-
-```text
-
-curl -s "<<<http://localhost:8000/v1/frames/search?axis=Power&min=0.5&max=1.0&limit=50">>>
-
-```text
-
-### Trace Entity
-
-- Path: `/v1/frames/trace/{entity}`
-- Method: GET
-- Query:
-  - `limit`?: int = 100
-  - `pack_id`?: string
-- Response model: `TraceResponse`
-  - `items`: List<{ `frame_id`, `doc_id`, `predicate`: List[int], `pack_id`, `pack_hash` }>
-
-
-Example:
-
-```text
-
-curl -s "<<<http://localhost:8000/v1/frames/trace/Alice?limit=50">>>
-
-```text
-
-### Stats
-
-- Path: `/v1/frames/stats`
-- Method: GET
-- Response:
-  - `db_path`: string
-  - `db_size_bytes`: int
-  - `counts`: { `frames`: int, `frame_axis`: int, `frame_vectors`: int }
-  - `last_ingest_ts`: int
-  - `active_pack`?: { `pack_id`: string, `k`: int, `schema_version`?: string }
-
-
-Example:
-
-```text
-
-curl -s <<<http://localhost:8000/v1/frames/stats>>>
-
-```text
-
----
-
-## Legacy Axes (File-based)
-
-- Prefix: `/axes`
-- Router: `src/coherence/api/routers/axes.py`
-
+**POST** `/v1/axes/{pack_id}/activate`
+
+Activates a specific axis pack for use in resonance analysis.
+
+**Response:**
+
+```json
+{
+  "active": {
+    "pack_id": "ap_1756646151",
+    "dim": 384,
+    "k": 5
+  },
+  "pack_hash": "a1b2c3d4"
+}
+```
+
+### Get Axis Pack Info
+
+**GET** `/v1/axes/{pack_id}`
+
+Retrieves information about a specific axis pack.
+
+**Response:**
+
+```json
+{
+  "pack_id": "ap_1756646151",
+  "dim": 384,
+  "k": 5,
+  "names": ["autonomy", "fairness", "non_aggression", "transparency", "beneficence"],
+  "meta": {
+    "description": "Ethical evaluation axes",
+    "created": "2024-12-31T00:00:00Z"
+  },
+  "pack_hash": "a1b2c3d4"
+}
+```
 
 ### List Axis Packs
 
-- Path: `/axes/list`
-- Method: GET
-- Response: `{ items: [ { id: string, names: List[str], k: int } ] }`
+**GET** `/v1/axes`
 
+Lists all available axis packs.
 
-Example:
+**Response:**
 
-```text
+```json
+{
+  "packs": [
+    {
+      "pack_id": "ap_1756646151",
+      "dim": 384,
+      "k": 5,
+      "names": ["autonomy", "fairness", "non_aggression", "transparency", "beneficence"],
+      "active": true
+    }
+  ],
+  "total": 1
+}
+```
 
-curl -s <<<http://localhost:8000/axes/list>>>
+### Export Axis Pack
 
-```text
+**GET** `/v1/axes/{pack_id}/export`
 
-### Get Axis Pack Summary
+Exports the full axis pack data including vectors.
 
-- Path: `/axes/{axis_pack_id}`
-- Method: GET
-- Response: `{ id, names, k, d, meta }`
+**Response:**
 
-
-Example:
-
-```text
-
-curl -s <<<http://localhost:8000/axes/my_pack_id>>>
-
-```text
-
-### Create Axis Pack from Seeds
-
-- Path: `/axes/create`
-- Method: POST
-- Request model: `CreateAxisPack`
-  - `axes`: List<AxisSeed>
-    - `AxisSeed`: { `name`: string, `positives`: List[str], `negatives`: List[str] }
-  - `method`: "diffmean" | "cca" | "lda" = "diffmean"
-  - `choquet_capacity`?: Dict<string, float>
-  - `lambda_`?: List[float]
-  - `beta`?: List[float]
-  - `weights`?: List[float]
-- Response model: `CreateAxisPackResponse`
-  - `axis_pack_id`: string
-  - `k`: int
-  - `names`: List[str]
-
-
-Example:
-
-```text
-
-curl -sX POST <<<http://localhost:8000/axes/create>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "axes": [
-      {"name":"Power","positives":["dominate","lead"],"negatives":["submit","obey"]},
-      {"name":"Care","positives":["help","nurture"],"negatives":["harm","neglect"]}
-    ],
-    "method": "diffmean"
-  }'
-
-```text
+```json
+{
+  "pack_id": "ap_1756646151",
+  "Q": [[0.1, 0.2, ...], ...],
+  "lambda_": [1.0, 0.9, ...],
+  "beta": [0.0, 0.0, ...],
+  "mu": [0.1, 0.2, ...],
+  "names": ["autonomy", "fairness", ...],
+  "meta": {...}
+}
+```
 
 ---
 
-## Index (Document ANN Indexing)
+## EthicalAI Evaluation Endpoints
 
-- Path: `/index`
-- Method: POST
-- Router: `src/coherence/api/routers/index.py`
-- Request model: `IndexRequest` (from `src/coherence/api/models.py`)
-  - `axis_pack_id`: string  // pack must exist under `data/axes/`
-  - `texts`: List<IndexDoc>
-    - `IndexDoc`: { `doc_id`: string, `text`: string }
-  - `options`: Dict<string, object> (backend options)
-- Response model: `IndexResponse`
-  - `indexed`: List<string>  // doc_ids indexed
-  - `anns_built`: bool
-  - `tau_used`: List<float>
+### Evaluate Text
 
+**POST** `/v1/eval/text`
 
-Errors:
+Performs ethical evaluation on text using the active axis pack with veto span detection.
 
-- 400 on invalid values/pack issues (propagated from pipeline)
+**Request Body:**
 
+```json
+{
+  "text": "AI systems should respect human autonomy and dignity",
+  "threshold": 0.7,
+  "detect_veto_spans": true
+}
+```
 
-Example:
+**Parameters:**
 
-```text
+- `text` (required): Text to evaluate
+- `threshold` (optional): Veto threshold for concerning content (default: 0.7)
+- `detect_veto_spans` (optional): Enable veto span detection (default: true)
 
-curl -sX POST <<<http://localhost:8000/index>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "axis_pack_id": "ap_20240620_abcdef12",
-    "texts": [
-      {"doc_id": "doc-1", "text": "Alice met Bob in Paris."},
-      {"doc_id": "doc-2", "text": "Charlie visited Berlin."}
-    ],
-    "options": { "tokenizer": "simple", "taus": [0.0] }
-  }'
+**Response:**
 
-```text
+```json
+{
+  "decision": "approved",
+  "scores": {
+    "autonomy": 0.92,
+    "fairness": 0.78,
+    "non_aggression": 0.85,
+    "transparency": 0.71,
+    "beneficence": 0.82
+  },
+  "average_score": 0.816,
+  "veto_spans": [],
+  "decision_proof": {
+    "axis_pack_id": "ap_1756646151",
+    "veto_threshold": 0.7,
+    "veto_rationale": "No concerning spans detected",
+    "passed_axes": ["autonomy", "fairness", "non_aggression", "beneficence"],
+    "borderline_axes": ["transparency"]
+  }
+}
+```
 
----
+**Status Codes:**
 
-## Search (ANN + Rerank)
+- `200`: Evaluation complete
+- `400`: Invalid input
+- `422`: Validation error
+- `500`: Evaluation failure
 
-- Path: `/search`
-- Method: POST
-- Router: `src/coherence/api/routers/search.py`
-- Request model: `SearchRequest`
-  - `axis_pack_id`: string
-  - `query`: `QuerySpec`
-    - `type`: "nl" | "weights" | "expr" = "nl"
-    - `text`?: string
-    - `u`?: List[float]
-    - `expr`?: string
-  - `filters`: `SearchFilters` (default)
-    - `tau`: float = 0.0
-    - `minC`: float = 0.0
-    - `thresholds`: Dict<string, float> = {}
-  - `hyper`: `SearchHyper` (default)
-    - `beta`: float = 0.3
-    - `alpha`: float = 0.5
-    - `gamma`: float = 0.6
-  - `top_k`: int = 10
-- Response model: `SearchResponse`
-  - `hits`: List<`SearchHit`>
-    - `doc_id`: string
-    - `span`: Dict<string, object>  // {start,end,text}
-    - `vectors`: `AxialVectorsModel`
-    - `frames`: List<Dict<string, object>>  // related frames
-    - `score`: float
+### Active Axis Pack
 
+**GET** `/v1/eval/active`
 
-Behavior:
+Returns the currently active axis pack for ethical evaluation.
 
-- Requires ANN index exists for `axis_pack_id`; else 400.
-- For "nl" maps text to u via `u_from_nl`.
-- Recall top_k*4 then rerank; filters by `minC` and thresholds by axis.
+**Response:**
 
+```json
+{
+  "pack_id": "ap_1756646151",
+  "names": ["autonomy", "fairness", "non_aggression", "transparency", "beneficence"],
+  "k": 5,
+  "dim": 384,
+  "pack_hash": "a1b2c3d4"
+}
+```
 
-Errors:
+### Set Active Axis Pack
 
-- 400 Missing index; vector length mismatch; etc.
+**POST** `/v1/eval/active/{pack_id}`
 
+Sets the active axis pack for ethical evaluation.
 
-Example (natural language query):
+**Response:**
 
-```text
-
-curl -sX POST <<<http://localhost:8000/search>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "axis_pack_id": "ap_20240620_abcdef12",
-    "query": { "type": "nl", "text": "powerful leader helps team" },
-    "filters": { "minC": 0.2, "thresholds": {"Power": 0.3} },
-    "hyper": { "beta": 0.3, "alpha": 0.5, "gamma": 0.6 },
-    "top_k": 5
-  }'
-
-```text
-
-Example (explicit weights):
-
-```text
-
-curl -sX POST <<<http://localhost:8000/search>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "axis_pack_id": "ap_20240620_abcdef12",
-    "query": { "type": "weights", "u": [0.8, 0.1, 0.4] },
-    "top_k": 5
-  }'
-
-```text
+```json
+{
+  "message": "Axis pack activated",
+  "pack_id": "ap_1756646151"
+}
+```
 
 ---
 
-## What-If (Stub)
+## Frame Management
 
-- Path: `/whatif`
-- Method: POST
-- Router: `src/coherence/api/routers/whatif.py`
-- Request model: `WhatIfRequest`
-  - `axis_pack_id`: string
-  - `doc_id`: string
-  - `edits`: List<EditSpec>
-    - `EditSpec`:
-      - `type`: "remove_text" | "replace_text"
-      - `start`: int
-      - `end`: int
-      - `value`?: string
-- Response model: `WhatIfResponse`
-  - `deltas`: List<WhatIfDelta> (currently empty)
-    - `WhatIfDelta`: `span_id`: string, `dU`: float, `dC`: float, `du`: List[float]
+### Frame Indexing (SQLite-backed)
 
+**POST** `/v1/frames/index`
 
-Behavior:
+Indexes semantic frames into SQLite database for fast retrieval.
 
-- Currently returns `deltas: []`.
+**Request Body:**
 
+```json
+{
+  "doc_id": "doc-001",
+  "pack_id": "ap_1756646151",
+  "frames": [
+    {
+      "id": "frame-1",
+      "predicate": [0, 2],
+      "roles": {
+        "agent": [0, 1],
+        "patient": [2, 3]
+      },
+      "coords": [0.2, 0.8, 0.1, 0.5, 0.3],
+      "role_coords": {
+        "agent": [0.1, 0.6, 0.0, 0.4, 0.2],
+        "patient": [0.2, 0.7, 0.1, 0.6, 0.4]
+      },
+      "meta": {"confidence": 0.95}
+    }
+  ]
+}
+```
 
-Example:
+**Parameters:**
 
-```text
+- `doc_id` (required): Document identifier
+- `pack_id` (optional): Axis pack ID to derive k and d
+- `d` (optional): Dimension when deriving k from coords without pack
+- `frames` (required): List of frame items:
+  - `id`: Frame identifier
+  - `predicate`: Token indices [start, end]
+  - `roles`: Role name to token indices mapping
+  - `coords`: Frame coordinates (length k)
+  - `role_coords`: Per-role coordinates
+  - `meta`: Additional metadata
 
-curl -sX POST <<<http://localhost:8000/whatif>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "axis_pack_id": "ap_20240620_abcdef12",
-    "doc_id": "doc-1",
-    "edits": [{"type":"remove_text","start":0,"end":5}]
-  }'
+**Response:**
 
-```text
+```json
+{
+  "ingested": 1,
+  "k": 5
+}
+```
 
----
+**Status Codes:**
 
-## Analyze (Legacy, File-based Pack)
+- `200`: Frames indexed successfully
+- `400`: Pack ID not found
+- `422`: Cannot resolve k; missing d when deriving; length mismatches
 
-- Path: `/analyze`
-- Method: POST
-- Router: `src/coherence/api/routers/analyze.py`
-- Request model: `AnalyzeText`
-  - `axis_pack_id`: string
-  - `texts`: List[str]
-  - `options`: Dict<string, object> = {}
-- Response model: `AnalyzeResponse` (legacy)
-  - `axes`: { `id`: string, `names`: List[str], `k`: int }
-  - `tokens`: `TokenVectors`
-    - `alpha`: List[List[float]]
-    - `u`: List[List[float]]
-    - `r`: List[List[float]]
-    - `U`: List[float]
-  - `spans`: List<`SpanOutput`>
-  - `frames`: List<`FrameOutput`>
-  - `frame_spans`: List<`SpanOutput`>
-  - `tau_used`: List[float]
+### Search Frames
 
+**GET** `/v1/frames/search`
 
-Errors:
+Searches for frames based on axis coordinates.
 
-- 400 No texts; axis pack not found in `data/axes/{axis_pack_id}.json`
+**Query Parameters:**
 
+- `axis`: Axis name or index
+- `min`: Minimum coordinate value
+- `max`: Maximum coordinate value
+- `limit`: Result limit (1-1000, default: 100)
+- `pack_id` (optional): Specific axis pack ID
 
-Example:
+**Response:**
 
-```text
+```json
+{
+  "items": [
+    {
+      "frame_id": "frame-1",
+      "doc_id": "doc-001",
+      "axis_idx": 0,
+      "coord": 0.85,
+      "predicate": [0, 2],
+      "pack_id": "ap_1756646151",
+      "pack_hash": "a1b2c3d4"
+    }
+  ]
+}
+```
 
-curl -sX POST <<<http://localhost:8000/analyze>>> \
-  -H "Content-Type: application/json" \
-  -d '{
-    "axis_pack_id": "my_pack_id",
-    "texts": ["Alice met Bob in Paris."]
-  }'
+### Trace Entity
 
-```text
+**GET** `/v1/frames/trace/{entity}`
 
----
+Traces frames containing a specific entity.
 
-# Shared Models (from `src/coherence/api/models.py`)
+**Query Parameters:**
 
-- `AxisSeed`: { `name`: string, `positives`: List<string>=[], `negatives`: List<string>=[] }
-- `CreateAxisPack`:
-  - `axes`: List<AxisSeed>
-  - `method`: "diffmean" | "cca" | "lda" = "diffmean"
-  - `choquet_capacity`?: Dict<string, float>
-  - `lambda_`?: List<float>
-  - `beta`?: List<float>
-  - `weights`?: List<float>
+- `limit` (optional): Result limit (default: 100)
+- `pack_id` (optional): Specific axis pack ID
 
-- `AnalyzeText`:
-  - `axis_pack_id`: string
-  - `texts`: List<string>
-  - `options`: Dict<string, object> = {}
+**Response:**
 
-- `AxialVectorsModel`:
-  - `alpha`: List<float>
-  - `u`: List<float>
-  - `r`: List<float>
-  - `U`: float
-  - `C`?: float
-  - `t`: float = 1.0
-  - `tau`: float = 0.0
+```json
+{
+  "items": [
+    {
+      "frame_id": "frame-1",
+      "doc_id": "doc-001",
+      "predicate": [0, 2],
+      "pack_id": "ap_1756646151",
+      "pack_hash": "a1b2c3d4"
+    }
+  ]
+}
+```
 
-- `TokenVectors`:
-  - `alpha`: List<List<float>>
-  - `u`: List<List<float>>
-  - `r`: List<List[float]>
-  - `U`: List<float>
+### Frame Statistics
 
-- `SpanOutput`: { `start`: int, `end`: int, `vectors`: AxialVectorsModel }
-- `FrameOutput`: { `id`: string, `vectors`: AxialVectorsModel }
+**GET** `/v1/frames/stats`
 
-- `AnalyzeResponse`:
-  - `axes`: Dict<string, object>
-  - `tokens`: TokenVectors
-  - `spans`: List<SpanOutput>
-  - `frames`: List<FrameOutput>
-  - `frame_spans`: List<SpanOutput>
-  - `tau_used`: List<float>
+Returns database statistics and information.
 
-- `IndexDoc`: { `doc_id`: string, `text`: string }
-- `IndexRequest`:
-  - `axis_pack_id`: string
-  - `texts`: List<IndexDoc>
-  - `options`: Dict<string, object> = {}
-- `IndexResponse`:
-  - `indexed`: List<string>
-  - `anns_built`: bool
-  - `tau_used`: List<float>
+**Response:**
 
-- `QuerySpec`: { `type`: "nl"|"weights"|"expr"="nl", `text`?: string, `u`?: List<float>, `expr`?: string }
-- `SearchFilters`: { `tau`: float=0.0, `minC`: float=0.0, `thresholds`: Dict<string,float>={} }
-- `SearchHyper`: { `beta`: float=0.3, `alpha`: float=0.5, `gamma`: float=0.6 }
-- `SearchRequest`:
-  - `axis_pack_id`: string
-  - `query`: QuerySpec
-  - `filters`: SearchFilters = {}
-  - `hyper`: SearchHyper = {}
-  - `top_k`: int = 10
-- `SearchHit`:
-  - `doc_id`: string
-  - `span`: Dict<string, object>
-  - `vectors`: AxialVectorsModel
-  - `frames`: List<Dict<string, object>> = []
-  - `score`: float
-- `SearchResponse`: { `hits`: List<SearchHit> }
-
-- `EditSpec`: { `type`: "remove_text"|"replace_text", `start`: int, `end`: int, `value`?: string }
-- `WhatIfRequest`: { `axis_pack_id`: string, `doc_id`: string, `edits`: List<EditSpec> }
-- `WhatIfDelta`: { `span_id`: string, `dU`: float, `dC`: float, `du`: List<float> }
-- `WhatIfResponse`: { `deltas`: List<WhatIfDelta> }
-
+```json
+{
+  "db_path": "/artifacts/frames.db",
+  "db_size_bytes": 1048576,
+  "counts": {
+    "frames": 1250,
+    "frame_axis": 6250,
+    "frame_vectors": 1250
+  },
+  "last_ingest_ts": 1704089400,
+  "active_pack": {
+    "pack_id": "ap_1756646151",
+    "k": 5,
+    "schema_version": "1.0.0"
+  }
+}
+```
 
 ---
 
-# Notes and Tips
+## Constitution Endpoints
+
+### Get Constitution
+
+**GET** `/v1/constitution`
+
+Returns the current ethical constitution configuration.
+
+**Response:**
+
+```json
+{
+  "principles": [
+    {
+      "name": "autonomy",
+      "weight": 1.0,
+      "description": "Respect for human autonomy and self-determination"
+    },
+    {
+      "name": "fairness",
+      "weight": 1.0,
+      "description": "Ensure fair and unbiased treatment"
+    }
+  ],
+  "veto_thresholds": {
+    "default": 0.7,
+    "critical": 0.9
+  },
+  "version": "1.0.0"
+}
+```
+
+### Update Constitution
+
+**POST** `/v1/constitution`
+
+Updates the ethical constitution configuration.
+
+**Request Body:**
+
+```json
+{
+  "principles": [...],
+  "veto_thresholds": {...}
+}
+```
+
+---
+
+## Interaction Endpoints
+
+### Analyze Span Interaction
+
+**POST** `/v1/interaction/span`
+
+Analyzes ethical implications of text spans.
+
+**Request Body:**
+
+```json
+{
+  "text": "AI should maximize human benefit",
+  "spans": [
+    {"start": 0, "end": 2, "label": "agent"},
+    {"start": 10, "end": 23, "label": "goal"}
+  ]
+}
+```
+
+**Response:**
+
+```json
+{
+  "analysis": {
+    "ethical_scores": {...},
+    "span_interactions": [...],
+    "recommendations": [...]
+  }
+}
+```
+
+---
+
+## Legacy Endpoints
+
+### List Axis Packs (Legacy)
+
+**GET** `/axes/list`
+
+Lists available axis packs (legacy file-based system).
+
+**Response:**
+
+```json
+{
+  "items": [
+    {
+      "id": "pack_id",
+      "names": ["axis1", "axis2"],
+      "k": 5
+    }
+  ]
+}
+```
+
+### Get Axis Pack Summary (Legacy)
+
+**GET** `/axes/{axis_pack_id}`
+
+Returns axis pack details.
+
+**Response:**
+
+```json
+{
+  "id": "pack_id",
+  "names": ["axis1", "axis2"],
+  "k": 5,
+  "d": 384,
+  "meta": {...}
+}
+```
+
+### Create Axis Pack from Seeds (Legacy)
+
+**POST** `/axes/create`
+
+Creates an axis pack from seed words.
+
+**Request Body:**
+
+```json
+{
+  "axes": [
+    {
+      "name": "autonomy",
+      "positives": ["freedom", "choice", "independence"],
+      "negatives": ["coercion", "control", "restriction"]
+    }
+  ],
+  "method": "diffmean",
+  "choquet_capacity": {},
+  "lambda_": [1.0, 0.9, 0.8],
+  "beta": [0.0, 0.0, 0.0],
+  "weights": [1.0, 1.0, 1.0]
+}
+```
+
+**Response:**
+
+```json
+{
+  "axis_pack_id": "ap_generated",
+  "k": 3,
+  "names": ["autonomy"]
+}
+```
+
+---
+
+## Document Indexing and Search
+
+### Index Documents
+
+**POST** `/index`
+
+Indexes documents for semantic search with ANN (Approximate Nearest Neighbor) indexing.
+
+**Request Body:**
+
+```json
+{
+  "axis_pack_id": "ap_1756646151",
+  "texts": [
+    {
+      "doc_id": "doc-1",
+      "text": "Alice met Bob in Paris."
+    },
+    {
+      "doc_id": "doc-2",
+      "text": "Charlie visited Berlin."
+    }
+  ],
+  "options": {
+    "tokenizer": "simple",
+    "taus": [0.0]
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "indexed": ["doc-1", "doc-2"],
+  "anns_built": true,
+  "tau_used": [0.0]
+}
+```
+
+### Search Documents
+
+**POST** `/search`
+
+Performs semantic search with ANN and reranking.
+
+**Request Body:**
+
+```json
+{
+  "axis_pack_id": "ap_1756646151",
+  "query": {
+    "type": "nl",
+    "text": "powerful leader helps team"
+  },
+  "filters": {
+    "tau": 0.0,
+    "minC": 0.2,
+    "thresholds": {"Power": 0.3}
+  },
+  "hyper": {
+    "beta": 0.3,
+    "alpha": 0.5,
+    "gamma": 0.6
+  },
+  "top_k": 5
+}
+```
+
+**Query Types:**
+
+- `nl`: Natural language query
+- `weights`: Explicit weight vector
+- `expr`: Expression-based query
+
+**Response:**
+
+```json
+{
+  "hits": [
+    {
+      "doc_id": "doc-1",
+      "span": {
+        "start": 0,
+        "end": 10,
+        "text": "Alice met Bob"
+      },
+      "vectors": {...},
+      "frames": [...],
+      "score": 0.85
+    }
+  ]
+}
+```
+
+---
+
+## What-If Analysis
+
+### What-If Scenario
+
+**POST** `/whatif`
+
+Analyzes the impact of text edits (stub implementation).
+
+**Request Body:**
+
+```json
+{
+  "axis_pack_id": "ap_1756646151",
+  "doc_id": "doc-1",
+  "edits": [
+    {
+      "type": "remove_text",
+      "start": 0,
+      "end": 5
+    }
+  ]
+}
+```
+
+**Response:**
+
+```json
+{
+  "deltas": []
+}
+```
+
+**Note:** Currently returns empty deltas array.
+
+---
+
+## Analysis Endpoints
+
+### Analyze Text (Legacy)
+
+**POST** `/analyze`
+
+Performs legacy analysis on text using file-based axis packs.
+
+**Request Body:**
+
+```json
+{
+  "axis_pack_id": "my_pack_id",
+  "texts": ["Alice met Bob in Paris."],
+  "options": {}
+}
+```
+
+**Response:**
+
+```json
+{
+  "axes": {
+    "id": "my_pack_id",
+    "names": ["axis1", "axis2"],
+    "k": 3
+  },
+  "tokens": {
+    "alpha": [[0.1, 0.2, ...], ...],
+    "u": [[0.3, 0.4, ...], ...],
+    "r": [[0.5, 0.6, ...], ...],
+    "U": [0.7, 0.8, ...]
+  },
+  "spans": [...],
+  "frames": [...],
+  "frame_spans": [...],
+  "tau_used": [0.0]
+}
+```
+
+---
+
+## Shared Models
+
+Data models used across the API (from `src/coherence/api/models.py`):
+
+### AxisSeed
+
+```json
+{
+  "name": "string",
+  "positives": ["string"],
+  "negatives": ["string"]
+}
+```
+
+### CreateAxisPack
+
+```json
+{
+  "axes": [AxisSeed],
+  "method": "diffmean",
+  "choquet_capacity": {},
+  "lambda_": [1.0],
+  "beta": [0.0],
+  "weights": [1.0]
+}
+```
+
+### AnalyzeText
+
+```json
+{
+  "axis_pack_id": "string",
+  "texts": ["string"],
+  "options": {}
+}
+```
+
+### AxialVectorsModel
+
+```json
+{
+  "alpha": [0.0],
+  "u": [0.0],
+  "r": [0.0],
+  "U": 0.0,
+  "C": 0.0,
+  "t": 1.0,
+  "tau": 0.0
+}
+```
+
+### TokenVectors
+
+```json
+{
+  "alpha": [[0.0]],
+  "u": [[0.0]],
+  "r": [[0.0]],
+  "U": [0.0]
+}
+```
+
+### SpanOutput & FrameOutput
+
+```json
+// SpanOutput
+{
+  "start": 0,
+  "end": 10,
+  "vectors": AxialVectorsModel
+}
+
+// FrameOutput
+{
+  "id": "string",
+  "vectors": AxialVectorsModel
+}
+```
+
+### AnalyzeResponse
+
+```json
+{
+  "axes": {},
+  "tokens": TokenVectors,
+  "spans": [SpanOutput],
+  "frames": [FrameOutput],
+  "frame_spans": [SpanOutput],
+  "tau_used": [0.0]
+}
+```
+
+### Index Models
+
+```json
+// IndexDoc
+{
+  "doc_id": "string",
+  "text": "string"
+}
+
+// IndexRequest
+{
+  "axis_pack_id": "string",
+  "texts": [IndexDoc],
+  "options": {}
+}
+
+// IndexResponse
+{
+  "indexed": ["string"],
+  "anns_built": true,
+  "tau_used": [0.0]
+}
+```
+
+### Search Models
+
+```json
+// QuerySpec
+{
+  "type": "nl",
+  "text": "string",
+  "u": [0.0],
+  "expr": "string"
+}
+
+// SearchFilters
+{
+  "tau": 0.0,
+  "minC": 0.0,
+  "thresholds": {}
+}
+
+// SearchHyper
+{
+  "beta": 0.3,
+  "alpha": 0.5,
+  "gamma": 0.6
+}
+
+// SearchRequest
+{
+  "axis_pack_id": "string",
+  "query": QuerySpec,
+  "filters": SearchFilters,
+  "hyper": SearchHyper,
+  "top_k": 10
+}
+
+// SearchHit
+{
+  "doc_id": "string",
+  "span": {},
+  "vectors": AxialVectorsModel,
+  "frames": [],
+  "score": 0.0
+}
+
+// SearchResponse
+{
+  "hits": [SearchHit]
+}
+```
+
+### What-If Models
+
+```json
+// EditSpec
+{
+  "type": "remove_text",
+  "start": 0,
+  "end": 5,
+  "value": "string"
+}
+
+// WhatIfRequest
+{
+  "axis_pack_id": "string",
+  "doc_id": "string",
+  "edits": [EditSpec]
+}
+
+// WhatIfResponse
+{
+  "deltas": []
+}
+```
+
+---
+
+## Notes and Tips
 
 - v1 endpoints (`/v1/axes`, `/v1/frames`) integrate with the AxisRegistry and artifact store. Legacy endpoints (`/axes`, `/analyze`, `/index`, `/search`) use `data/axes/` packs and an ANN store.
 - For `resonance` and `pipeline/analyze`, if you pass `texts`, ensure the encoder dimension matches the axis pack’s `Q.shape[0]` or you’ll get 422.
 - For `/v1/frames/index`, if you don’t pass `pack_id`, either ensure an active pack exists or include `coords` and `d` so k and d can be derived.
 
-
 ---
 
-# Appendix
+## Appendix
 
 - App prefixes are defined in `src/coherence/api/main.py`:
   - `/health`, `/embed`, `/resonance`, `/pipeline`, `/v1/axes`, `/v1/frames`, `/axes`, `/index`, `/search`, `/whatif`, `/analyze`
-- Artifacts directory: `COHERENCE_ARTIFACTS_DIR` (default `artifacts/`)
 - Frames DB path: `{ARTIFACTS}/frames.sqlite`

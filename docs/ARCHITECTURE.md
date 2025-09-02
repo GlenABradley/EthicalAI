@@ -2,160 +2,423 @@
 
 ## System Overview
 
-EthicalAI is a comprehensive framework for analyzing and evaluating text content against ethical dimensions. The system combines natural language processing with ethical reasoning to provide insights and decision support for content evaluation.
+EthicalAI is a comprehensive framework for semantic analysis and ethical evaluation of text content using multi-dimensional axis-based representation. The system combines dense embeddings from sentence transformers with ethical reasoning through axial projection and veto span detection to provide nuanced ethical assessments and decision support.
 
 ## Core Components
 
-### 1. Coherence Engine (`coherence/`)
-The foundation layer responsible for text processing and embeddings:
+### 1. Coherence Engine (`src/coherence/`)
 
-- **Embeddings**: Utilizes SentenceTransformer models (default: `all-mpnet-base-v2`) to generate dense vector representations of text
-- **Pipeline**: Manages the end-to-end processing of text through the analysis pipeline
-- **FastAPI App**: Provides the web interface and API endpoints for system interaction
-- **Artifact Management**: Handles persistence of axis packs, models, and analysis results
+The foundation layer responsible for semantic analysis and axial processing:
 
-### 2. EthicalAI Integration (`ethicalai/`)
-Implements the ethical reasoning and evaluation capabilities:
+- **Encoder** (`encoder/`): Uses SentenceTransformer models (default: `all-MiniLM-L6-v2`, 384 dimensions) for dense embeddings
+- **Axis Module** (`axis/`): Core axial projection system with `AxisPack`, `AxisArtifact`, and registry management
+- **Pipeline** (`pipeline/`): Comprehensive text analysis pipeline with tokenization, embedding, and axial projection
+- **Agent** (`agent/`): Autonomous processing capabilities and decision-making logic
+- **Memory** (`memory/`): Frame-based semantic memory with SQLite backend
+- **API** (`api/`): FastAPI application with modular routers for all endpoints
 
-- **Axes**: Defines and manages ethical dimensions for analysis
-- **Evaluator**: Core logic for evaluating content against ethical dimensions
-- **Constitution**: Reranks content based on ethical principles
-- **Interaction**: Policy middleware for request/response handling
+### 2. EthicalAI Layer (`src/ethicalai/`)
+
+Implements ethical reasoning and evaluation capabilities:
+
+- **Axes** (`axes/`): Manages ethical axis packs with calibration and evaluation logic
+- **Constitution** (`constitution/`): Defines ethical principles and veto thresholds
+- **Evaluator**: Performs ethical scoring, veto span detection, and decision proof generation
+- **API** (`api/`): EthicalAI-specific endpoints for evaluation, active pack management, and interaction analysis
 
 ## Data Flow
 
-1. **Initialization**
-   - Load or build axis packs containing ethical dimensions
-   - Initialize embedding model and processing pipeline
-   - Configure evaluation thresholds and parameters
+### 1. Initialization
 
-2. **Text Processing**
-   - Input text is received via API or UI
-   - Text is tokenized and processed through the embedding model
-   - Dense vector representations are generated for analysis
+- **Encoder Loading**: SentenceTransformer model loaded once at startup
+- **Axis Registry**: Initialize and load available axis packs from artifacts
+- **Frame Database**: Initialize SQLite database for semantic memory
+- **Configuration**: Load environment variables and configuration files
 
-3. **Ethical Evaluation**
-   - Text embeddings are compared against axis vectors
-   - Scores are calculated for each ethical dimension
-   - Results are aggregated and formatted for presentation
+### 2. Text Processing Pipeline
 
-4. **Response Generation**
-   - Evaluation results are compiled into a structured response
-   - Supporting evidence and explanations are included
-   - Alternative phrasings may be suggested when applicable
+```text
+Input Text → Tokenization → Embedding → Axial Projection → Aggregation
+```
 
-## API Endpoints
+- Text tokenized into overlapping spans (configurable window/stride)
+- Each span embedded using sentence transformer
+- Embeddings projected onto axis vectors using Q matrix
+- Scores aggregated across spans with various aggregation strategies
 
-### Core Endpoints
-- `GET /health/ready` - System health check
-- `GET /health/live` - Liveness probe
-- `GET /v1/axes` - List available axis packs
-- `POST /v1/axes/build` - Build a new axis pack
-- `POST /v1/axes/activate` - Activate a specific axis pack
-- `GET /v1/axes/active` - Get currently active axis pack
+### 3. Ethical Evaluation
 
-### Evaluation Endpoints
-- `POST /v1/eval/text` - Evaluate text against active axes
-- `POST /v1/eval/batch` - Batch evaluate multiple texts
-- `GET /v1/eval/thresholds` - Get current evaluation thresholds
+- **Alignment**: Map embeddings to ethical dimensions via axis pack
+- **Projection**: Calculate α (raw scores), u (normalized), r (rectified)
+- **Veto Detection**: Identify spans violating ethical thresholds
+- **Decision Proof**: Generate explanations with supporting evidence
 
-### Advanced Features
-- `POST /v1/constitution/rank` - Rerank content based on ethical principles
-- `POST /v1/interaction/respond` - Generate ethical responses to queries
+### 4. Response Generation
 
-## Data Artifacts
+- **Structured Output**: Scores, veto spans, decision proofs
+- **Frame Integration**: Semantic frames provide context
+- **Interaction Analysis**: Detailed span-level ethical analysis
 
-### Axis Packs
-- `artifacts/axis_pack:<id>.npz` - Binary file containing axis vectors
-- `artifacts/axis_pack:<id>.meta.json` - Metadata including axis definitions and thresholds
+## API Architecture
 
-### Calibration Reports
-- `reports/calibration:<id>/` - Directory containing calibration results
-  - `summary.json` - Summary statistics and metrics
-  - `calibration_data.csv` - Raw calibration data
-  - `performance_metrics.json` - Performance metrics for the axis pack
+### Endpoint Organization
+
+The API is organized into modular routers mounted on the main FastAPI app:
+
+```python
+# Main app structure (api/main.py)
+app.include_router(health_router, prefix="/health")
+app.include_router(embed_router, prefix="/embed")
+app.include_router(resonance_router, prefix="/resonance")
+app.include_router(pipeline_router, prefix="/pipeline")
+app.include_router(v1_axes_router, prefix="/v1/axes")
+app.include_router(v1_frames_router, prefix="/v1/frames")
+app.include_router(ethicalai_eval_router, prefix="/v1/eval")
+app.include_router(constitution_router, prefix="/v1/constitution")
+app.include_router(interaction_router, prefix="/v1/interaction")
+# Legacy endpoints
+app.include_router(axes_router, prefix="/axes")
+app.include_router(index_router, prefix="")
+app.include_router(search_router, prefix="")
+app.include_router(whatif_router, prefix="")
+app.include_router(analyze_router, prefix="")
+```
+
+### Key Endpoints
+
+- **Health**: `/health/ready`, `/health/live`
+- **Embeddings**: `/embed/text`, `/embed/batch`
+- **Axes**: `/v1/axes/build`, `/v1/axes/{pack_id}/activate`, `/v1/axes/list`
+- **Evaluation**: `/v1/eval/text`, `/v1/eval/active`
+- **Frames**: `/v1/frames/index`, `/v1/frames/search`, `/v1/frames/stats`
+- **Constitution**: `/v1/constitution`, `/v1/constitution/update`
+
+## Data Storage
+
+### Artifacts Directory Structure
+
+```text
+artifacts/
+├── axis_packs/
+│   ├── ap_<timestamp>_<hash>.npz     # Axis pack data (Q matrix, metadata)
+│   └── ap_<timestamp>_<hash>.json    # Axis pack metadata
+├── frames.sqlite                      # Frame database
+└── registry.json                      # Axis pack registry
+```
+
+### Axis Pack Format
+
+**NPZ File Contents**:
+- `Q`: Projection matrix (d × k) for axis vectors
+- `names`: Axis names array
+- `metadata`: Additional configuration
+
+**Metadata JSON**:
+
+- `id`: Unique pack identifier
+- `k`: Number of axes
+- `d`: Embedding dimension (384)
+- `schema_version`: Format version
+- `created_at`: Timestamp
+- `calibration`: Optional calibration data
+
+### Frame Database Schema
+
+```sql
+CREATE TABLE frames (
+    id TEXT PRIMARY KEY,
+    doc_id TEXT,
+    text TEXT,
+    pack_id TEXT,
+    coords TEXT,  -- JSON array of coordinates
+    metadata TEXT -- JSON metadata
+);
+```
 
 ## Configuration
 
 ### Environment Variables
-- `COHERENCE_ARTIFACTS_DIR`: Directory for storing artifacts (default: `./artifacts`)
-- `COHERENCE_ENCODER`: Override default sentence transformer model
-- `COHERENCE_LOG_LEVEL`: Logging verbosity (debug, info, warning, error, critical)
-- `COHERENCE_TEST_REAL_ENCODER`: Set to 1 to use real encoder in tests
+
+```bash
+# Core Configuration
+COHERENCE_ENCODER_MODEL=all-MiniLM-L6-v2  # Sentence transformer model
+COHERENCE_ENCODER_DIM=384                 # Embedding dimensions
+COHERENCE_ARTIFACTS_DIR=artifacts/        # Storage directory
+COHERENCE_API_CORS_ORIGINS=["*"]          # CORS configuration
+
+# Testing
+COHERENCE_TEST_REAL_ENCODER=1             # Use real encoder in tests
+COHERENCE_USE_TEST_ENCODER=false          # Use test encoder (for CI)
+
+# Logging
+COHERENCE_LOG_LEVEL=INFO                  # Log verbosity
+COHERENCE_LOG_FORMAT=json                 # Log format (json/text)
+```
 
 ### Configuration Files
-- `configs/app.yaml` - Application configuration
-- `configs/logging.yaml` - Logging configuration
-- `configs/axis_packs/*.json` - Predefined axis pack configurations
 
-## Performance Considerations
+```yaml
+# configs/app.yaml
+api:
+  host: 0.0.0.0
+  port: 8000
+  workers: 4
+  
+encoder:
+  model: all-MiniLM-L6-v2
+  cache_dir: ~/.cache/sentence_transformers
+  
+processing:
+  batch_size: 32
+  max_length: 512
+```
 
-- **Model Loading**: The sentence transformer model is loaded once at startup to minimize latency
-- **Batch Processing**: Supports batch processing of multiple texts for improved throughput
-- **Caching**: Implements caching of intermediate results where appropriate
-- **Memory Management**: Includes safeguards against memory exhaustion with large inputs
+**Axis Pack Configurations** (`configs/axis_packs/`):
 
-## Security
+- `deontology.json`: Duty-based ethical axes
+- `consequentialism.json`: Outcome-based ethical axes
+- `virtue_ethics.json`: Character-based ethical axes
+- `intent_bad_inclusive.json`: Intent analysis axes
 
-- Input validation on all API endpoints
-- Rate limiting to prevent abuse
-- Secure handling of sensitive data in memory
-- Comprehensive error handling and logging
+## Performance Optimization
 
-## Monitoring and Observability
+### Model Management
 
-- Health check endpoints for monitoring
-- Structured logging for operational insights
-- Performance metrics collection
-- Error tracking and alerting
+- **Singleton Pattern**: Encoder loaded once and shared across requests
+- **Precomputation**: Axis packs precomputed and cached in memory
+- **Batch Processing**: Vectorized operations for multiple texts/spans
 
-## Testing Strategy
+### Processing Strategies
 
-- Unit tests for individual components
-- Integration tests for API endpoints
-- Performance benchmarks for critical paths
-- Real-encoder testing with `COHERENCE_TEST_REAL_ENCODER=1`
-- End-to-end tests for complete workflows
+- **Sliding Window**: Configurable window size and stride for long texts
+- **Aggregation Options**: max, mean, weighted aggregation strategies
+- **Parallel Processing**: Thread pool for independent computations
+
+### Memory Efficiency
+
+- **Streaming**: Process large texts in chunks
+- **Garbage Collection**: Explicit cleanup of large tensors
+- **Resource Limits**: Configurable limits on batch sizes and text length
+
+### Caching
+
+- **Embedding Cache**: LRU cache for frequently processed texts
+- **Axis Registry**: In-memory cache of loaded axis packs
+- **Frame Index**: SQLite indices for fast frame retrieval
+
+## Security & Reliability
+
+### Input Validation
+
+- **Schema Validation**: Pydantic models for all request/response types
+- **Size Limits**: Maximum text length and batch size enforcement
+- **Content Filtering**: Sanitization of user inputs
+
+### Error Handling
+
+```python
+# Structured error responses
+{
+    "detail": "Error description",
+    "error_code": "AXIS_NOT_FOUND",
+    "context": {"pack_id": "invalid_id"}
+}
+```
+
+### Rate Limiting
+
+- Request throttling per IP/API key
+- Concurrent request limits
+- Resource consumption monitoring
+
+## Monitoring & Observability
+
+### Health Checks
+
+```json
+// GET /health/ready
+{
+    "status": "ready",
+    "encoder_loaded": true,
+    "axis_packs_available": 5,
+    "frame_db_connected": true
+}
+```
+
+### Structured Logging
+
+```json
+{
+    "timestamp": "2024-01-01T12:00:00Z",
+    "level": "INFO",
+    "message": "Request processed",
+    "request_id": "uuid",
+    "endpoint": "/v1/eval/text",
+    "duration_ms": 125,
+    "axis_pack": "ap_1756646151"
+}
+```
+
+### Metrics
+
+- Request latency histograms
+- Embedding cache hit rates
+- Axis pack usage statistics
+- Memory and CPU utilization
+
+## Testing Architecture
+
+### Test Organization
+
+```text
+tests/
+├── api/                    # API endpoint tests
+├── memory/                 # Frame storage tests
+├── test_*.py              # Component tests
+└── conftest.py            # Shared fixtures
+```
+
+### Testing Principles
+
+- **Real Encoder**: All tests use actual SentenceTransformer (no mocks)
+- **Fixture-based**: Shared `api_client_real_encoder` fixture
+- **Comprehensive**: Unit, integration, and end-to-end coverage
+- **Performance**: Benchmark tests for critical paths
+
+### Key Test Categories
+
+1. **Unit Tests**: Component isolation with real dependencies
+2. **Integration Tests**: API endpoint verification
+3. **Frame Tests**: SQLite operations and indexing
+4. **Axis Tests**: Pack creation, loading, and projection
+5. **Performance Tests**: Latency and throughput benchmarks
 
 ## Deployment
 
-### Requirements
-- Python 3.8+
-- Dependencies from `requirements.txt`
-- Sufficient disk space for models and artifacts
+### System Requirements
 
-### Deployment Options
-1. **Local Development**:
-   ```bash
-   python -m uvicorn api.main:app --reload
-   ```
+- **Python**: 3.8+ (3.10+ recommended)
+- **Memory**: Minimum 2GB RAM (4GB+ recommended)
+- **Storage**: 1GB for models + artifact storage
+- **CPU**: Multi-core for parallel processing
 
-2. **Production**:
-   - Use a production-ready ASGI server like Gunicorn with Uvicorn workers
-   - Configure appropriate worker processes based on available CPU cores
-   - Set up monitoring and logging
+### Development Setup
 
-## Scaling Considerations
+```bash
+# Install dependencies
+pip install -r requirements.txt
 
-- Stateless design allows horizontal scaling
-- Consider model size and memory requirements when scaling
-- Database or distributed cache may be needed for session state in distributed deployments
+# Download models
+python download_model.py
 
-## Troubleshooting
+# Run development server
+python -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-Common issues and solutions:
+### Production Deployment
 
-1. **Model Loading Failures**:
-   - Verify internet connectivity for model downloads
-   - Check available disk space
-   - Ensure proper permissions for the artifacts directory
+```bash
+# Using Gunicorn with Uvicorn workers
+gunicorn api.main:app \
+    --workers 4 \
+    --worker-class uvicorn.workers.UvicornWorker \
+    --bind 0.0.0.0:8000 \
+    --timeout 120 \
+    --access-logfile - \
+    --error-logfile -
+```
 
-2. **Performance Issues**:
-   - Monitor system resources (CPU, memory, disk I/O)
-   - Consider batch processing for multiple texts
-   - Review model size and hardware requirements
+### Docker Deployment
 
-3. **API Errors**:
-   - Check request format and parameters
-   - Review server logs for detailed error messages
-   - Verify axis pack is properly loaded and activated
+```dockerfile
+FROM python:3.10-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD ["gunicorn", "api.main:app", "-c", "gunicorn.conf.py"]
+```
+
+## Scaling Architecture
+
+### Horizontal Scaling
+
+- **Stateless API**: Each request independent, enabling load balancing
+- **Shared Storage**: Artifacts on NFS/S3 for multi-instance access
+- **Database**: PostgreSQL/MySQL for distributed frame storage
+
+### Vertical Scaling
+
+- **GPU Acceleration**: CUDA support for faster embeddings
+- **Memory Optimization**: Larger caches for better performance
+- **Batch Processing**: Increased batch sizes with more RAM
+
+### Distributed Architecture
+
+```text
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│Load Balancer│────▶│ API Server 1│────▶│Shared Store │
+└─────────────┘     └─────────────┘     └─────────────┘
+                    ┌─────────────┐            │
+                    │ API Server 2│────────────┘
+                    └─────────────┘            │
+                    ┌─────────────┐            │
+                    │ API Server N│────────────┘
+                    └─────────────┘
+```
+
+## Troubleshooting Guide
+
+### Common Issues
+
+#### 1. Model Loading Errors
+
+```bash
+# Error: Can't download model
+Solution: Check internet connection and proxy settings
+export HTTP_PROXY=http://proxy.example.com:8080
+
+# Error: Insufficient memory
+Solution: Use smaller model or increase system RAM
+export COHERENCE_ENCODER_MODEL=all-MiniLM-L6-v2  # Smaller model
+```
+
+#### 2. Axis Pack Issues
+
+```python
+# Error: Axis pack not found
+Solution: Verify pack exists in artifacts/
+ls artifacts/axis_packs/
+
+# Error: Dimension mismatch
+Solution: Ensure encoder dimension matches pack dimension (384)
+```
+
+#### 3. Performance Problems
+
+```bash
+# Slow response times
+Solutions:
+- Enable embedding cache
+- Reduce batch size
+- Use GPU acceleration if available
+- Profile with: python -m cProfile api.main
+```
+
+#### 4. Database Errors
+
+```sql
+-- Frame database locked
+Solution: Check for concurrent writes, use WAL mode
+PRAGMA journal_mode=WAL;
+```
+
+### Debug Mode
+
+```bash
+# Enable debug logging
+export COHERENCE_LOG_LEVEL=DEBUG
+export PYTHONUNBUFFERED=1
+
+# Run with verbose output
+python -m uvicorn api.main:app --log-level debug

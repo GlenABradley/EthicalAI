@@ -1,10 +1,25 @@
-from __future__ import annotations
+"""Sentence-Transformers encoder for text embedding.
 
-"""Sentence-Transformers encoder.
+This module provides a robust wrapper around the SentenceTransformer library
+for generating high-quality text embeddings. It handles:
 
-Provides a simple interface to encode a list of texts into embeddings.
-Deterministic given the model and inputs.
+- Model loading and caching for efficiency
+- Device selection (CPU/GPU/MPS)
+- Text normalization and preprocessing
+- Batch encoding with proper error handling
+- Deterministic embedding generation
+
+The encoder is used throughout the system for converting text into
+dense vector representations that capture semantic meaning. These
+embeddings are then projected onto ethical axes for evaluation.
+
+Key features:
+- Module-level caching to avoid reloading models
+- Support for various Transformer models from HuggingFace
+- Consistent 384-dimensional output (for all-mpnet-base-v2)
+- Deterministic results for reproducibility
 """
+from __future__ import annotations
 
 from dataclasses import dataclass
 import os
@@ -19,11 +34,20 @@ try:
 except Exception:  # pragma: no cover - import fallback
     SentenceTransformer = None  # type: ignore
 
-# Simple module-level cache to avoid reloading models repeatedly
-# Keyed by (model_name, resolved_device, normalize_input)
+# Module-level cache to avoid expensive model reloading
+# This significantly improves performance in production and testing
+# Cache key: (model_name, resolved_device, normalize_input)
 _ENCODER_CACHE: dict[tuple[str, str, bool], "SBERTEncoder"] = {}
 
 def _select_device(device: str) -> str:
+    """Select the appropriate compute device for the encoder.
+    
+    Args:
+        device: Device specification ("auto", "cpu", "cuda", "mps").
+        
+    Returns:
+        str: Resolved device string for model initialization.
+    """
     if device == "auto":
         # Let sentence-transformers auto-select; return "cpu" to be safe in tests
         return "cpu"
@@ -32,15 +56,20 @@ def _select_device(device: str) -> str:
 
 @dataclass
 class SBERTEncoder:
-    """Wrapper around SentenceTransformer.
+    """Wrapper around SentenceTransformer for text encoding.
+    
+    This class provides a clean interface for text embedding with
+    caching, normalization, and device management. It ensures
+    consistent behavior across the application.
 
-    Fields
-    - model_name: huggingface model id
-    - device: "cpu" | "cuda" | "mps" (auto resolved to cpu by default)
-    - normalize_input: if True, lowercases and strips inputs deterministically
-
-    Methods
-    - encode(texts) -> np.ndarray of shape (N, d)
+    Attributes:
+        model_name: HuggingFace model identifier (e.g., "all-mpnet-base-v2").
+        device: Compute device ("cpu", "cuda", "mps", or "auto").
+        normalize_input: If True, applies lowercase and strip normalization.
+        
+    Methods:
+        encode: Convert texts to embeddings with shape (N, d).
+        get_embedding_dim: Return the dimensionality of embeddings.
     """
 
     model_name: str
@@ -48,6 +77,10 @@ class SBERTEncoder:
     normalize_input: bool = False
 
     def __post_init__(self) -> None:
+        """Initialize the encoder after dataclass construction.
+        
+        Resolves the device, checks cache, and loads the model if needed.
+        """
         if SentenceTransformer is None:
             raise RuntimeError("sentence-transformers is not installed")
         dev = _select_device(self.device)
@@ -86,7 +119,7 @@ def get_default_encoder(name: Optional[str] = None, device: str = "auto", normal
         enc = cfg.get("encoder", {})
         # Environment overrides
         env_name = os.getenv("COHERENCE_ENCODER")
-        env_device = os.getenv("COHERENCE_DEVICE")
+        env_device = os.getenv("COHERENCE_ENCODER_DEVICE")
         name = env_name or enc.get("name", "sentence-transformers/all-mpnet-base-v2")
         device = env_device or enc.get("device", device)
         normalize_input = bool(enc.get("normalize_input", normalize_input))
